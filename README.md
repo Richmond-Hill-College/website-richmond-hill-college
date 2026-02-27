@@ -1,0 +1,34 @@
+# Richmond Hill College – Website
+
+Next.js site with **2-way sync** between GitHub and Vercel.
+
+## 2-way sync (GitHub ↔ Vercel)
+
+1. **Connect the repo in Vercel**
+   - [Vercel Dashboard](https://vercel.com/dashboard) → **Add New** → **Project**
+   - Import **Richmond-Hill-College/website-richmond-hill-college**
+   - Vercel will detect Next.js and set build settings
+   - Deploy
+
+2. **What 2-way sync gives you**
+   - **GitHub → Vercel:** Every push to the connected branch (e.g. `main`) triggers a production deploy. Pull requests get preview deployments.
+   - **Vercel → GitHub:** (Optional) Use Vercel’s Git integration so preview/production URLs and status appear in GitHub (checks, comments).
+
+3. **Local ↔ Vercel (optional)**
+   - Install CLI: `npm i -g vercel`
+   - In this repo: `vercel link` and pick the same Vercel project
+   - Then `vercel` deploys a preview; `vercel --prod` deploys production. The `.vercel` folder is gitignored.
+
+## Local development
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Deploy
+
+- **Via GitHub:** Push to the connected branch; Vercel deploys automatically.
+- **Via CLI:** `vercel` (preview) or `vercel --prod` (production), after `vercel link`.
