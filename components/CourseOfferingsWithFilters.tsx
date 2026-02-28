@@ -2,8 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { CourseFilters } from "@/components/CourseFilters";
 import type { RhcCourse } from "@/lib/rhc-global-bridge-courses";
+import { getLocaleFromPathname, withLocale } from "@/lib/i18n-routing";
 
 const RHC_COURSES_URL = "https://www.rhcglobalbridge.com/courses/";
 const DEFAULT_IMAGE =
@@ -14,13 +16,34 @@ type CourseOfferingsWithFiltersProps = {
 };
 
 export function CourseOfferingsWithFilters({ courses }: CourseOfferingsWithFiltersProps) {
+  const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname);
+  const copy =
+    locale === "fr"
+      ? {
+          summary:
+            "Programmes passerelles et certificats professionnels alignes sur les normes canadiennes. Consultez les details complets et inscrivez-vous sur RHC Global Bridge.",
+          details: "Voir les details du cours ->",
+          external: "Voir le cours sur RHC Global Bridge ->",
+          registerExternal: "S'inscrire sur RHC Global Bridge (nouvel onglet)",
+          contact: "Nous contacter",
+        }
+      : {
+          summary:
+            "Professional bridging and certificate programs aligned with Canadian standards. View full details and register on RHC Global Bridge.",
+          details: "View course details ->",
+          external: "View course on RHC Global Bridge ->",
+          registerExternal: "Register on RHC Global Bridge (opens in new tab)",
+          contact: "Contact us",
+        };
+
   return (
     <CourseFilters
       courses={courses}
       renderItems={(filtered) => (
         <div className="space-y-16">
           {filtered.map((course) => {
-            const internalUrl = course.slug ? `/courses/${course.slug}` : null;
+            const internalUrl = course.slug ? withLocale(`/courses/${course.slug}`, locale) : null;
             const courseDetailsUrl = internalUrl ?? course.link ?? RHC_COURSES_URL;
             const isExternal = !internalUrl;
             return (
@@ -61,13 +84,12 @@ export function CourseOfferingsWithFilters({ courses }: CourseOfferingsWithFilte
                         {course.price && <span>{course.price}</span>}
                       </div>
                       <p className="mt-3 text-slate-600">
-                        Professional bridging and certificate programs aligned with Canadian
-                        standards. View full details and register on RHC Global Bridge.
+                        {copy.summary}
                       </p>
                       <span className="mt-4 inline-block text-sm font-medium text-slate-800 group-hover:underline">
                         {internalUrl
-                          ? "View course details →"
-                          : "View course on RHC Global Bridge →"}
+                          ? copy.details
+                          : copy.external}
                       </span>
                     </div>
                   </div>
@@ -80,14 +102,14 @@ export function CourseOfferingsWithFilters({ courses }: CourseOfferingsWithFilte
                       rel="noopener noreferrer"
                       className="inline-block text-sm font-medium text-slate-600 hover:underline"
                     >
-                      Register on RHC Global Bridge (opens in new tab)
+                      {copy.registerExternal}
                     </a>
                   )}
                   <Link
-                    href="/contact"
+                    href={withLocale("/contact", locale)}
                     className="inline-block font-medium text-slate-800 hover:underline"
                   >
-                    Contact us
+                    {copy.contact}
                   </Link>
                 </div>
               </article>

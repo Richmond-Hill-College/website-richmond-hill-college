@@ -2,8 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { RhcCourse } from "@/lib/rhc-global-bridge-courses";
+import { getLocaleFromPathname, withLocale } from "@/lib/i18n-routing";
 
 const iconClass = "size-5 shrink-0 text-slate-500";
 
@@ -61,9 +63,37 @@ type CourseFiltersProps = {
 };
 
 export function CourseFilters({ courses, initialCategory = "", renderItems }: CourseFiltersProps) {
+  const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>(initialCategory);
   const [duration, setDuration] = useState<string>("");
+  const copy =
+    locale === "fr"
+      ? {
+          searchLabel: "Rechercher des cours par nom ou categorie",
+          searchPlaceholder: "Rechercher des cours par nom ou categorie...",
+          filters: "Filtres",
+          category: "Categorie",
+          duration: "Duree",
+          allCategories: "Toutes les categories",
+          anyDuration: "Toute duree",
+          clearFilters: "Effacer les filtres",
+          noResults: "Aucun cours ne correspond a vos filtres. Essayez d'ajuster la recherche ou les filtres.",
+          viewDetails: "Voir les details ->",
+        }
+      : {
+          searchLabel: "Search courses by name or category",
+          searchPlaceholder: "Search courses by name or category...",
+          filters: "Filters",
+          category: "Category",
+          duration: "Duration",
+          allCategories: "All categories",
+          anyDuration: "Any duration",
+          clearFilters: "Clear filters",
+          noResults: "No courses match your filters. Try adjusting search or filters.",
+          viewDetails: "View details ->",
+        };
 
   const categories = useMemo(() => {
     const set = new Set(courses.map((c) => c.category).filter(Boolean));
@@ -102,7 +132,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
         {/* Search */}
         <div className="relative">
           <label htmlFor="course-search" className="sr-only">
-            Search courses by name or category
+            {copy.searchLabel}
           </label>
           <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
             <SearchIcon />
@@ -110,7 +140,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
           <input
             id="course-search"
             type="search"
-            placeholder="Search courses by name or category…"
+            placeholder={copy.searchPlaceholder}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full min-h-[44px] rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-slate-900 shadow-sm transition-[border-color,box-shadow] placeholder:text-slate-400 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200/80 tablet:min-h-[48px] tablet:py-3.5 tablet:pl-11"
@@ -122,14 +152,14 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
         <div className="flex flex-wrap items-center gap-3">
           <span className="flex items-center gap-2 text-sm font-medium text-slate-600">
             <FilterIcon />
-            <span>Filters</span>
+            <span>{copy.filters}</span>
           </span>
 
           <div className="flex flex-wrap items-center gap-2">
             <div className="flex min-h-[44px] items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-sm tablet:min-h-[48px] tablet:px-4">
               <CategoryIcon />
               <label htmlFor="filter-category" className="sr-only">
-                Category
+                {copy.category}
               </label>
               <select
                 id="filter-category"
@@ -137,7 +167,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
                 onChange={(e) => setCategory(e.target.value)}
                 className="min-h-[36px] min-w-[10rem] border-0 bg-transparent text-sm text-slate-700 focus:ring-0 tablet:min-w-[11rem] tablet:text-[15px]"
               >
-                <option value="">All categories</option>
+                <option value="">{copy.allCategories}</option>
                 {categories.map((cat) => (
                   <option key={cat} value={cat}>
                     {cat}
@@ -149,7 +179,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
             <div className="flex min-h-[44px] items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-sm tablet:min-h-[48px] tablet:px-4">
               <ClockIcon />
               <label htmlFor="filter-duration" className="sr-only">
-                Duration
+                {copy.duration}
               </label>
               <select
                 id="filter-duration"
@@ -157,7 +187,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
                 onChange={(e) => setDuration(e.target.value)}
                 className="min-h-[36px] min-w-[8rem] border-0 bg-transparent text-sm text-slate-700 focus:ring-0 tablet:min-w-[9rem] tablet:text-[15px]"
               >
-                <option value="">Any duration</option>
+                <option value="">{copy.anyDuration}</option>
                 {durations.map((d) => (
                   <option key={d} value={d}>
                     {d}
@@ -173,7 +203,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
                 className="flex min-h-[44px] items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-800 tablet:min-h-[48px] tablet:px-4"
               >
                 <ClearIcon />
-                Clear filters
+                {copy.clearFilters}
               </button>
             )}
           </div>
@@ -192,7 +222,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
         <div className="mt-8">
           {filtered.length === 0 ? (
             <div className="rounded-xl border border-slate-200 bg-slate-50/50 py-12 text-center text-slate-600">
-              No courses match your filters. Try adjusting search or filters.
+              {copy.noResults}
             </div>
           ) : (
             renderItems(filtered)
@@ -202,7 +232,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
         <ul className="mt-8 grid list-none gap-5 p-0 sm:grid-cols-2 tablet:gap-6 lg:grid-cols-3">
           {filtered.length === 0 ? (
             <li className="col-span-full rounded-xl border border-slate-200 bg-slate-50/50 py-12 text-center text-slate-600">
-              No courses match your filters. Try adjusting search or filters.
+              {copy.noResults}
             </li>
           ) : (
             filtered.map((course) => (
@@ -211,7 +241,11 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
                 className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md"
               >
                 <Link
-                  href={course.slug ? `/courses/${course.slug}` : course.link || RHC_COURSES_URL}
+                  href={
+                    course.slug
+                      ? withLocale(`/courses/${course.slug}`, locale)
+                      : course.link || RHC_COURSES_URL
+                  }
                   className="flex flex-col sm:flex-row sm:items-stretch"
                   aria-label={`View ${course.name} course details`}
                   {...(course.slug ? {} : { target: "_blank", rel: "noopener noreferrer" })}
@@ -232,7 +266,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
                       {course.duration && <span>{course.duration}</span>}
                     </div>
                     <span className="mt-2 inline-block text-sm font-medium text-slate-800">
-                      View details →
+                      {copy.viewDetails}
                     </span>
                   </div>
                 </Link>

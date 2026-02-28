@@ -1,4 +1,11 @@
 import type { Metadata } from "next";
+import {
+  DEFAULT_LOCALE,
+  getAlternateLocale,
+  localeToOpenGraph,
+  type Locale,
+  withLocale,
+} from "@/lib/i18n-routing";
 import { siteUrl } from "@/lib/site-url";
 
 /** Recommended OG image size for link previews. */
@@ -19,6 +26,8 @@ export type PageSeoOptions = {
   imageHeight?: number;
   /** Optional; set to false for noindex (e.g. thank-you pages). */
   index?: boolean;
+  /** Locale for canonical + hreflang tags. */
+  locale?: Locale;
 };
 
 /**
@@ -42,8 +51,13 @@ export function createPageMetadata({
   imageWidth = OG_WIDTH,
   imageHeight = OG_HEIGHT,
   index = true,
+  locale = DEFAULT_LOCALE,
 }: PageSeoOptions): Metadata {
-  const canonical = path ? `${siteUrl}/${path}` : siteUrl;
+  const normalizedPath = path ? `/${path}` : "/";
+  const canonicalPath = withLocale(normalizedPath, locale);
+  const canonical = `${siteUrl}${canonicalPath}`;
+  const alternateLocale = getAlternateLocale(locale);
+
   const openGraphImages = image
     ? [{ url: image, width: imageWidth, height: imageHeight, alt: title }]
     : undefined;
@@ -56,14 +70,22 @@ export function createPageMetadata({
       : {
           robots: { index: false, follow: true },
         }),
-    alternates: { canonical },
+    alternates: {
+      canonical,
+      languages: {
+        en: `${siteUrl}${withLocale(normalizedPath, "en")}`,
+        fr: `${siteUrl}${withLocale(normalizedPath, "fr")}`,
+        "x-default": `${siteUrl}${withLocale(normalizedPath, DEFAULT_LOCALE)}`,
+      },
+    },
     openGraph: {
       title,
       description,
       url: canonical,
       type: "website",
-      locale: "en_CA",
+      locale: localeToOpenGraph(locale),
       siteName: "Richmond Hill College",
+      alternateLocale: [localeToOpenGraph(alternateLocale)],
       ...(openGraphImages && { images: openGraphImages }),
     },
     twitter: {

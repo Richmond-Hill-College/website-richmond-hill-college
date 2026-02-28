@@ -1,50 +1,99 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useState, useCallback, useEffect, useRef } from "react";
+import {
+  getAlternateLocale,
+  getLocaleFromPathname,
+  stripLocalePrefix,
+  withLocale,
+} from "@/lib/i18n-routing";
 
 const LOGO_SRC = "/images/logo/rhc-logo.png";
-const LOGO_ALT = "Richmond Hill College – healthcare and technology management logo";
+const LOGO_ALT = {
+  en: "Richmond Hill College - healthcare and technology management logo",
+  fr: "Richmond Hill College - logo gestion de la sante et des technologies",
+};
 
 type NavLink = { href: string; label: string };
 type NavItem =
   | { type: "link"; href: string; label: string }
   | { type: "dropdown"; label: string; children: NavLink[] };
 
-const navItems: NavItem[] = [
-  { type: "link", href: "/", label: "Home" },
-  {
-    type: "dropdown",
-    label: "About",
-    children: [
-      { href: "/about-us", label: "About Us" },
-      { href: "/about-us/team", label: "Our Team" },
-      { href: "/message-from-the-president", label: "Message from the President" },
-    ],
-  },
-  {
-    type: "dropdown",
-    label: "Programs & Courses",
-    children: [
-      { href: "/programs", label: "Programs" },
-      { href: "/course-offerings", label: "Course Offerings" },
-      { href: "/bridging-programs", label: "Bridging Programs" },
-      { href: "/courses", label: "Courses" },
-      { href: "/courses/categories", label: "Course Categories" },
-      { href: "/products", label: "Products & Registration" },
-    ],
-  },
-  { type: "link", href: "/conferences", label: "Conferences" },
-  {
-    type: "dropdown",
-    label: "Help",
-    children: [
-      { href: "/faq", label: "FAQ" },
-      { href: "/contact", label: "Contact" },
-    ],
-  },
-  { type: "link", href: "/my-account", label: "Account" },
-];
+function getNavItems(locale: "en" | "fr"): NavItem[] {
+  if (locale === "fr") {
+    return [
+      { type: "link", href: "/", label: "Accueil" },
+      {
+        type: "dropdown",
+        label: "A propos",
+        children: [
+          { href: "/about-us", label: "A propos" },
+          { href: "/about-us/team", label: "Notre equipe" },
+          { href: "/message-from-the-president", label: "Message de la presidente" },
+        ],
+      },
+      {
+        type: "dropdown",
+        label: "Programmes et cours",
+        children: [
+          { href: "/programs", label: "Programmes" },
+          { href: "/course-offerings", label: "Offre de cours" },
+          { href: "/bridging-programs", label: "Programmes passerelles" },
+          { href: "/courses", label: "Cours" },
+          { href: "/courses/categories", label: "Categories de cours" },
+          { href: "/products", label: "Produits et inscriptions" },
+        ],
+      },
+      { type: "link", href: "/conferences", label: "Conferences" },
+      {
+        type: "dropdown",
+        label: "Aide",
+        children: [
+          { href: "/faq", label: "FAQ" },
+          { href: "/contact", label: "Contact" },
+        ],
+      },
+      { type: "link", href: "/my-account", label: "Compte" },
+    ];
+  }
+
+  return [
+    { type: "link", href: "/", label: "Home" },
+    {
+      type: "dropdown",
+      label: "About",
+      children: [
+        { href: "/about-us", label: "About Us" },
+        { href: "/about-us/team", label: "Our Team" },
+        { href: "/message-from-the-president", label: "Message from the President" },
+      ],
+    },
+    {
+      type: "dropdown",
+      label: "Programs & Courses",
+      children: [
+        { href: "/programs", label: "Programs" },
+        { href: "/course-offerings", label: "Course Offerings" },
+        { href: "/bridging-programs", label: "Bridging Programs" },
+        { href: "/courses", label: "Courses" },
+        { href: "/courses/categories", label: "Course Categories" },
+        { href: "/products", label: "Products & Registration" },
+      ],
+    },
+    { type: "link", href: "/conferences", label: "Conferences" },
+    {
+      type: "dropdown",
+      label: "Help",
+      children: [
+        { href: "/faq", label: "FAQ" },
+        { href: "/contact", label: "Contact" },
+      ],
+    },
+    { type: "link", href: "/my-account", label: "Account" },
+  ];
+}
 
 function ChevronDown({ open }: { open: boolean }) {
   return (
@@ -60,7 +109,15 @@ function ChevronDown({ open }: { open: boolean }) {
   );
 }
 
-function DesktopDropdown({ label, links }: { label: string; links: NavLink[] }) {
+function DesktopDropdown({
+  label,
+  links,
+  locale,
+}: {
+  label: string;
+  links: NavLink[];
+  locale: "en" | "fr";
+}) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -118,7 +175,7 @@ function DesktopDropdown({ label, links }: { label: string; links: NavLink[] }) 
         {links.map(({ href, label: linkLabel }) => (
           <Link
             key={href}
-            href={href}
+            href={withLocale(href, locale)}
             role="menuitem"
             className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
             onClick={() => setOpen(false)}
@@ -132,7 +189,15 @@ function DesktopDropdown({ label, links }: { label: string; links: NavLink[] }) 
   );
 }
 
-function MobileNavItems({ navItems: items, onLinkClick }: { navItems: NavItem[]; onLinkClick: () => void }) {
+function MobileNavItems({
+  navItems: items,
+  onLinkClick,
+  locale,
+}: {
+  navItems: NavItem[];
+  onLinkClick: () => void;
+  locale: "en" | "fr";
+}) {
   const [expanded, setExpanded] = useState<string | null>(null);
   return (
     <>
@@ -142,7 +207,7 @@ function MobileNavItems({ navItems: items, onLinkClick }: { navItems: NavItem[];
           return (
             <Link
               key={item.href}
-              href={item.href}
+              href={withLocale(item.href, locale)}
               onClick={onLinkClick}
               className={
                 isContact
@@ -182,7 +247,7 @@ function MobileNavItems({ navItems: items, onLinkClick }: { navItems: NavItem[];
               {item.children.map(({ href, label: linkLabel }) => (
                 <Link
                   key={href}
-                  href={href}
+                  href={withLocale(href, locale)}
                   onClick={onLinkClick}
                   className="block py-2.5 pl-4 text-[15px] text-slate-600 hover:text-slate-900"
                 >
@@ -223,6 +288,36 @@ function MenuIcon({ open }: { open: boolean }) {
 }
 
 export function Header() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const locale = getLocaleFromPathname(pathname);
+  const alternateLocale = getAlternateLocale(locale);
+  const strippedPath = stripLocalePrefix(pathname || "/");
+  const queryString = searchParams.toString();
+  const languageSwitchHref = `${withLocale(strippedPath, alternateLocale)}${
+    queryString ? `?${queryString}` : ""
+  }`;
+  const navItems = getNavItems(locale);
+
+  const copy =
+    locale === "fr"
+      ? {
+          homeAria: "Accueil Richmond Hill College",
+          contactCta: "Contact",
+          openMenu: "Ouvrir le menu",
+          closeMenu: "Fermer le menu",
+          mobileAria: "Navigation mobile",
+          langLabel: "English",
+        }
+      : {
+          homeAria: "Richmond Hill College home",
+          contactCta: "Contact",
+          openMenu: "Open menu",
+          closeMenu: "Close menu",
+          mobileAria: "Mobile navigation",
+          langLabel: "Francais",
+        };
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [logoError, setLogoError] = useState(false);
 
@@ -243,9 +338,9 @@ export function Header() {
     <header className="sticky top-0 z-50 overflow-visible border-b border-slate-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <div className="mx-auto flex h-12 max-w-7xl items-center justify-between gap-4 overflow-visible px-4 py-2 sm:h-16 sm:px-6 tablet:px-8 tablet:gap-6">
         <Link
-          href="/"
+          href={withLocale("/", locale)}
           className="flex h-8 min-w-[120px] shrink-0 items-center gap-2 sm:h-9 tablet:h-10 tablet:min-w-[140px]"
-          aria-label="Richmond Hill College home"
+          aria-label={copy.homeAria}
         >
           {logoError ? (
             <span className="text-lg font-bold text-rhc-primary-dark sm:text-xl">RHC</span>
@@ -253,7 +348,7 @@ export function Header() {
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={LOGO_SRC}
-              alt={LOGO_ALT}
+              alt={LOGO_ALT[locale]}
               width={140}
               height={70}
               className="h-8 w-auto sm:h-9 tablet:h-10"
@@ -268,27 +363,41 @@ export function Header() {
             item.type === "link" ? (
               <Link
                 key={item.href}
-                href={item.href}
+                href={withLocale(item.href, locale)}
                 className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 tablet:px-4 tablet:text-[15px]"
               >
                 {item.label}
               </Link>
             ) : (
-              <DesktopDropdown key={`dropdown-${index}`} label={item.label} links={item.children} />
+              <DesktopDropdown
+                key={`dropdown-${index}`}
+                label={item.label}
+                links={item.children}
+                locale={locale}
+              />
             )
           )}
         </nav>
 
         {/* Desktop CTA (lg+): matches hero CTA style */}
         <Link
-          href="/contact"
+          href={withLocale("/contact", locale)}
           className="hidden lg:inline-flex min-h-[40px] shrink-0 items-center justify-center rounded-lg px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white shadow-lg transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#192640] tablet:min-h-[44px] tablet:px-5 tablet:py-2.5 tablet:text-sm"
           style={{
             backgroundColor: "#f6520a",
             boxShadow: "0 4px 14px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.15)",
           }}
         >
-          Contact
+          {copy.contactCta}
+        </Link>
+
+        <Link
+          href={languageSwitchHref}
+          className="hidden lg:inline-flex min-h-[40px] shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-700 transition hover:bg-slate-100 tablet:min-h-[44px] tablet:px-4 tablet:text-sm"
+          hrefLang={alternateLocale}
+          lang={alternateLocale}
+        >
+          {copy.langLabel}
         </Link>
 
         {/* Mobile & tablet: hamburger button (hidden on lg+ desktop) */}
@@ -298,7 +407,7 @@ export function Header() {
           className="lg:hidden flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1"
           aria-expanded={menuOpen}
           aria-controls="mobile-nav"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-label={menuOpen ? copy.closeMenu : copy.openMenu}
         >
           <MenuIcon open={menuOpen} />
         </button>
@@ -309,7 +418,7 @@ export function Header() {
         id="mobile-nav"
         role="dialog"
         aria-modal="true"
-        aria-label="Mobile navigation"
+        aria-label={copy.mobileAria}
         className={
           "lg:hidden grid transition-[grid-template-rows] duration-200 ease-out " +
           (menuOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]")
@@ -322,8 +431,17 @@ export function Header() {
               (menuOpen ? "opacity-100" : "opacity-0")
             }
           >
-            <nav className="flex flex-col px-4 py-4" aria-label="Mobile navigation">
-            <MobileNavItems navItems={navItems} onLinkClick={closeMenu} />
+            <nav className="flex flex-col px-4 py-4" aria-label={copy.mobileAria}>
+            <MobileNavItems navItems={navItems} onLinkClick={closeMenu} locale={locale} />
+            <Link
+              href={languageSwitchHref}
+              onClick={closeMenu}
+              className="mt-4 inline-flex min-h-[44px] items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700"
+              hrefLang={alternateLocale}
+              lang={alternateLocale}
+            >
+              {copy.langLabel}
+            </Link>
             </nav>
           </div>
         </div>

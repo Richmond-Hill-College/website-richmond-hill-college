@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { AnnouncementBanner } from "@/components/AnnouncementBanner";
@@ -6,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { OrganizationJsonLd } from "@/components/JsonLd";
 import { siteUrl } from "@/lib/site-url";
+import { getRequestLocaleFromHeaders, withLocale } from "@/lib/i18n-routing";
 
 export const viewport = {
   width: "device-width",
@@ -31,11 +33,12 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_CA",
+    alternateLocale: ["fr_CA"],
     siteName: "Richmond Hill College",
     title: "Richmond Hill College | Healthcare and Technology Management",
     description:
       "Richmond Hill College of Healthcare and Technology Management offers online, hybrid, and in-person courses. Unlocking potential, building futures.",
-    url: siteUrl,
+    url: `${siteUrl}${withLocale("/", "en")}`,
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Richmond Hill College" }],
   },
   twitter: {
@@ -48,7 +51,14 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  alternates: { canonical: siteUrl },
+  alternates: {
+    canonical: `${siteUrl}${withLocale("/", "en")}`,
+    languages: {
+      en: `${siteUrl}${withLocale("/", "en")}`,
+      fr: `${siteUrl}${withLocale("/", "fr")}`,
+      "x-default": `${siteUrl}${withLocale("/", "en")}`,
+    },
+  },
 };
 
 export default function RootLayout({
@@ -56,10 +66,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = getRequestLocaleFromHeaders(headers());
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className="flex min-h-screen flex-col bg-slate-50 text-slate-900 antialiased">
-        <OrganizationJsonLd />
+        <OrganizationJsonLd locale={locale} />
         <div className="sticky top-0 z-50">
           <Header />
           <AnnouncementBanner />

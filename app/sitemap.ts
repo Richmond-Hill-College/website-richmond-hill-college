@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { siteUrl } from "@/lib/site-url";
 import { getAllProducts, getProductCategories } from "@/lib/products";
 import { staticRoutes } from "@/lib/sitemap-routes";
+import { withLocale } from "@/lib/i18n-routing";
 import {
   getCourseSlugs,
   getCourseCategories,
@@ -10,71 +11,71 @@ import { getFaqSlugs, getFaqCategories } from "@/lib/faq";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
-  const entries: MetadataRoute.Sitemap = staticRoutes.map(({ path, priority }) => ({
-    url: path ? `${siteUrl}/${path}` : siteUrl,
-    lastModified,
-    changeFrequency: "weekly" as const,
-    priority,
-  }));
+  const entries: MetadataRoute.Sitemap = [];
+
+  const pushLocalizedEntries = (
+    path: string,
+    priority: number,
+    changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"]
+  ) => {
+    const canonicalEn = `${siteUrl}${withLocale(path ? `/${path}` : "/", "en")}`;
+    const canonicalFr = `${siteUrl}${withLocale(path ? `/${path}` : "/", "fr")}`;
+    const alternates = {
+      languages: {
+        en: canonicalEn,
+        fr: canonicalFr,
+        "x-default": canonicalEn,
+      },
+    };
+
+    entries.push({
+      url: canonicalEn,
+      lastModified,
+      changeFrequency,
+      priority,
+      alternates,
+    });
+    entries.push({
+      url: canonicalFr,
+      lastModified,
+      changeFrequency,
+      priority,
+      alternates,
+    });
+  };
+
+  for (const route of staticRoutes) {
+    pushLocalizedEntries(route.path, route.priority, "weekly");
+  }
 
   const products = getAllProducts();
   for (const p of products) {
-    entries.push({
-      url: `${siteUrl}/product/${p.id}/${p.slug}`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.7,
-    });
+    pushLocalizedEntries(`product/${p.id}/${p.slug}`, 0.7, "weekly");
   }
 
   const productCategories = getProductCategories();
   for (const { category } of productCategories) {
-    entries.push({
-      url: `${siteUrl}/products/category/${category}`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.7,
-    });
+    pushLocalizedEntries(`products/category/${category}`, 0.7, "weekly");
   }
 
   const courseSlugs = await getCourseSlugs();
   for (const slug of courseSlugs) {
-    entries.push({
-      url: `${siteUrl}/courses/${slug}`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.75,
-    });
+    pushLocalizedEntries(`courses/${slug}`, 0.75, "weekly");
   }
 
   const courseCategories = await getCourseCategories();
   for (const cat of courseCategories) {
-    entries.push({
-      url: `${siteUrl}/courses/category/${cat.slug}`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.72,
-    });
+    pushLocalizedEntries(`courses/category/${cat.slug}`, 0.72, "weekly");
   }
 
   const faqSlugs = getFaqSlugs();
   for (const slug of faqSlugs) {
-    entries.push({
-      url: `${siteUrl}/faq/${slug}`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    });
+    pushLocalizedEntries(`faq/${slug}`, 0.7, "monthly");
   }
 
   const faqCategories = getFaqCategories();
   for (const cat of faqCategories) {
-    entries.push({
-      url: `${siteUrl}/faq/category/${cat.slug}`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.68,
-    });
+    pushLocalizedEntries(`faq/category/${cat.slug}`, 0.68, "monthly");
   }
 
   return entries;
