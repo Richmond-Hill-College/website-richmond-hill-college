@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Registration",
   description:
     "Register for Nursing and Healthcare 2025. Advancing Nursing and Healthcare Conference, Toronto, November 28–30, 2025.",
-};
+  path: "conferences/nursing-and-healthcare-2025/registration",
+});
 
 export default function RegistrationPage() {
   return (
@@ -27,7 +29,7 @@ export default function RegistrationPage() {
       </p>
       <Link
         href="/conferences/nursing-and-healthcare-2025"
-        className="mt-6 inline-block rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+        className="cta-primary mt-6 inline-block rounded-md px-4 py-2 text-sm font-medium"
       >
         View conference details
       </Link>

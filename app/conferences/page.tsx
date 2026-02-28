@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Conferences",
   description:
     "Conferences and events at Richmond Hill College. Scientific conferences, meetings, and workshops with national and international participants.",
-};
+  path: "conferences",
+});
 
 export default function ConferencesPage() {
   return (
@@ -66,7 +68,7 @@ export default function ConferencesPage() {
         </p>
         <Link
           href="/conferences/nursing-and-healthcare-2025/registration"
-          className="mt-4 inline-block rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+          className="cta-primary mt-4 inline-block rounded-md px-4 py-2 text-sm font-medium"
         >
           Register Now
         </Link>

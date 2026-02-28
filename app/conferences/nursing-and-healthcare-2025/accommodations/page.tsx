@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Accommodations",
   description:
     "Accommodations for Nursing and Healthcare 2025. Hotel and travel information for the Toronto conference.",
-};
+  path: "conferences/nursing-and-healthcare-2025/accommodations",
+});
 
 export default function AccommodationsPage() {
   return (

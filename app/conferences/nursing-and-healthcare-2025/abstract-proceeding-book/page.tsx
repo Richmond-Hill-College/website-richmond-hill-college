@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Abstract Proceeding Book",
   description:
     "Abstract proceeding book for Nursing and Healthcare 2025. Conference abstracts and proceedings.",
-};
+  path: "conferences/nursing-and-healthcare-2025/abstract-proceeding-book",
+});
 
 export default function AbstractProceedingBookPage() {
   return (

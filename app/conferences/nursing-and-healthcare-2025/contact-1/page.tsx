@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
 import { ContactBlock } from "@/components/ContactBlock";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Contact",
   description:
     "Contact the Nursing and Healthcare 2025 conference team. Questions about registration, abstracts, or logistics.",
-};
+  path: "conferences/nursing-and-healthcare-2025/contact-1",
+});
 
 export default function ConferenceContactPage() {
   return (

@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Nursing and Healthcare 2025",
   description:
     "Advancing Nursing and Healthcare Conference: A Global Dialogue. Toronto, Canada, November 28–30, 2025. Register, submit abstracts, and join healthcare professionals worldwide.",
-};
+  path: "conferences/nursing-and-healthcare-2025",
+});
 
 const navItems = [
   { href: "/conferences/nursing-and-healthcare-2025/conference-main-page", label: "Main Page" },
@@ -150,7 +152,7 @@ export default function NursingHealthcare2025Page() {
       <div className="mt-10 flex flex-wrap gap-4">
         <Link
           href="/conferences/nursing-and-healthcare-2025/registration"
-          className="rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+          className="cta-primary rounded-md px-4 py-2 text-sm font-medium"
         >
           Register Now
         </Link>

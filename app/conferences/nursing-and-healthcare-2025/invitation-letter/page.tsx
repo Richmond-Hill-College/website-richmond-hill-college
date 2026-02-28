@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Invitation Letter",
   description:
     "Request an invitation letter for Nursing and Healthcare 2025. Visa support for conference attendees.",
-};
+  path: "conferences/nursing-and-healthcare-2025/invitation-letter",
+});
 
 export default function InvitationLetterPage() {
   return (

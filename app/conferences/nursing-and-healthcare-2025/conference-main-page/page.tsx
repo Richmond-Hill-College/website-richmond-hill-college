@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Conference Main Page",
   description:
     "Nursing and Healthcare 2025 conference main page. Advancing Nursing and Healthcare: A Global Dialogue, Toronto, November 28–30, 2025.",
-};
+  path: "conferences/nursing-and-healthcare-2025/conference-main-page",
+});
 
 export default function ConferenceMainPage() {
   return (

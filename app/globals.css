@@ -2,12 +2,81 @@
 @tailwind components;
 @tailwind utilities;
 
+/* RHC Global Bridge theme (from rhcglobalbridge.com) */
 :root {
-  --foreground: #0f172a;
+  --foreground: #192640;
   --background: #f8fafc;
+  /* Brand */
+  --rhc-primary: #f6520a;
+  --rhc-primary-dark: #192640;
+  --rhc-accent: #ffb606;
+  --rhc-secondary: #442e66;
+  --rhc-muted: #64748b;
+  --rhc-dark-ui: #32373c;
+  /* Semantic */
+  --rhc-cta: var(--rhc-primary);
+  --rhc-cta-hover: #e04a09;
+  --rhc-header-footer: var(--rhc-primary-dark);
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
+}
+
+/* Primary CTA – RHC orange (always visible, not dependent on Tailwind) */
+.cta-primary,
+.btn-rhc-primary {
+  background-color: #f6520a !important;
+  color: #fff !important;
+}
+.cta-primary:hover,
+.btn-rhc-primary:hover {
+  background-color: #e04a09 !important;
+}
+.cta-primary:focus-visible,
+.btn-rhc-primary:focus-visible {
+  outline: 2px solid #f6520a;
+  outline-offset: 2px;
+}
+.cta-primary:disabled,
+.btn-rhc-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+/* Border/text variant for outline CTAs */
+.cta-primary-outline {
+  border: 2px solid #f6520a;
+  color: #f6520a;
+  background-color: transparent !important;
+}
+.cta-primary-outline:hover {
+  background-color: #f6520a !important;
+  color: #fff !important;
+}
+
+/* Dark CTA – navy (headers, secondary actions) */
+.btn-rhc-dark {
+  background-color: var(--rhc-primary-dark);
+  color: #fff;
+}
+.btn-rhc-dark:hover {
+  background-color: #233554;
+}
+
+/* Safe area for sticky mobile bottom nav (notched devices) */
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* Smooth scroll for anchor links */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Responsive page container: consistent padding across breakpoints */
+.page-container {
+  @apply mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 tablet:px-8 tablet:py-20 lg:px-8;
 }

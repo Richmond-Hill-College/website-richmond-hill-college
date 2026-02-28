@@ -2,19 +2,24 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ContactBlock } from "@/components/ContactBlock";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "About Us",
   description:
     "Richmond Hill College of Healthcare and Technology Management was founded to provide quick, targeted programs for working professionals and career changers. Learn about our mission and commitment to student success.",
-};
+  path: "about-us",
+  image: "/images/hero/about-hero.jpg",
+  imageWidth: 800,
+  imageHeight: 600,
+});
 
 export default function AboutUsPage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 tablet:px-8 tablet:py-20 lg:px-8">
+      <div className="grid gap-10 tablet:gap-14 lg:grid-cols-2 lg:gap-16">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">About Us</h1>
+          <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl tablet:text-4xl">About Us</h1>
           <p className="mt-4 text-lg text-slate-600">
             Richmond Hill College of Healthcare and Technology Management Inc. was founded with
             the goal of providing quick, targeted programs for working professionals and
@@ -32,7 +37,7 @@ export default function AboutUsPage() {
         <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-slate-200">
           <Image
             src="/images/hero/about-hero.jpg"
-            alt="Richmond Hill College"
+            alt="Richmond Hill College campus and community – healthcare and technology management education"
             fill
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 50vw"
@@ -40,8 +45,8 @@ export default function AboutUsPage() {
         </div>
       </div>
 
-      <section className="mt-16" aria-labelledby="mission-heading">
-        <h2 id="mission-heading" className="text-2xl font-bold text-slate-900">
+      <section className="mt-12 tablet:mt-16" aria-labelledby="mission-heading">
+        <h2 id="mission-heading" className="text-2xl font-bold text-slate-900 tablet:text-3xl">
           Mission Statement
         </h2>
         <ul className="mt-6 space-y-4 text-slate-600">
@@ -54,8 +59,8 @@ export default function AboutUsPage() {
         </ul>
       </section>
 
-      <section className="mt-12" aria-labelledby="offerings-heading">
-        <h2 id="offerings-heading" className="text-2xl font-bold text-slate-900">
+      <section className="mt-10 tablet:mt-12" aria-labelledby="offerings-heading">
+        <h2 id="offerings-heading" className="text-2xl font-bold text-slate-900 tablet:text-3xl">
           Educational Offerings
         </h2>
         <ul className="mt-6 space-y-4 text-slate-600">
@@ -72,8 +77,8 @@ export default function AboutUsPage() {
         </ul>
       </section>
 
-      <section className="mt-12" aria-labelledby="success-heading">
-        <h2 id="success-heading" className="text-2xl font-bold text-slate-900">
+      <section className="mt-10 tablet:mt-12" aria-labelledby="success-heading">
+        <h2 id="success-heading" className="text-2xl font-bold text-slate-900 tablet:text-3xl">
           Commitment to Student Success
         </h2>
         <ul className="mt-6 space-y-4 text-slate-600">
@@ -91,8 +96,8 @@ export default function AboutUsPage() {
         </ul>
       </section>
 
-      <section className="mt-12" aria-labelledby="community-heading">
-        <h2 id="community-heading" className="text-2xl font-bold text-slate-900">
+      <section className="mt-10 tablet:mt-12" aria-labelledby="community-heading">
+        <h2 id="community-heading" className="text-2xl font-bold text-slate-900 tablet:text-3xl">
           Community Focus
         </h2>
         <p className="mt-4 text-slate-600">
@@ -103,7 +108,7 @@ export default function AboutUsPage() {
         </p>
       </section>
 
-      <section className="mt-12 rounded-xl border border-slate-200 bg-slate-50 p-6">
+      <section className="mt-10 tablet:mt-12 rounded-xl border border-slate-200 bg-slate-50 p-6 tablet:p-8">
         <h2 className="text-xl font-bold text-slate-900">
           Ready to take the next step in your education?
         </h2>
@@ -113,7 +118,7 @@ export default function AboutUsPage() {
         </p>
         <Link
           href="/contact"
-          className="mt-4 inline-block rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+          className="cta-primary mt-4 inline-block rounded-md px-4 py-2 text-sm font-medium"
         >
           Contact Us
         </Link>

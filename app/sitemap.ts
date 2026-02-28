@@ -1,29 +1,14 @@
 import type { MetadataRoute } from "next";
 import { siteUrl } from "@/lib/site-url";
-import { getAllProducts } from "@/lib/products";
+import { getAllProducts, getProductCategories } from "@/lib/products";
+import { staticRoutes } from "@/lib/sitemap-routes";
+import {
+  getCourseSlugs,
+  getCourseCategories,
+} from "@/lib/rhc-global-bridge-courses";
+import { getFaqSlugs, getFaqCategories } from "@/lib/faq";
 
-const staticRoutes: { path: string; priority: number }[] = [
-  { path: "", priority: 0.9 },
-  { path: "about-us", priority: 0.8 },
-  { path: "programs", priority: 0.8 },
-  { path: "course-offerings", priority: 0.8 },
-  { path: "bridging-programs", priority: 0.8 },
-  { path: "contact", priority: 0.8 },
-  { path: "conferences", priority: 0.8 },
-  { path: "conferences/nursing-and-healthcare-2025", priority: 0.8 },
-  { path: "conferences/nursing-and-healthcare-2025/conference-main-page", priority: 0.8 },
-  { path: "conferences/nursing-and-healthcare-2025/registration", priority: 0.8 },
-  { path: "conferences/nursing-and-healthcare-2025/submit-abstract", priority: 0.8 },
-  { path: "conferences/nursing-and-healthcare-2025/invitation-letter", priority: 0.8 },
-  { path: "conferences/nursing-and-healthcare-2025/sponsorship", priority: 0.8 },
-  { path: "conferences/nursing-and-healthcare-2025/accommodations", priority: 0.8 },
-  { path: "conferences/nursing-and-healthcare-2025/program-table", priority: 0.8 },
-  { path: "conferences/nursing-and-healthcare-2025/abstract-proceeding-book", priority: 0.8 },
-  { path: "conferences/nursing-and-healthcare-2025/venue", priority: 0.8 },
-  { path: "conferences/nursing-and-healthcare-2025/contact-1", priority: 0.8 },
-];
-
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
   const entries: MetadataRoute.Sitemap = staticRoutes.map(({ path, priority }) => ({
     url: path ? `${siteUrl}/${path}` : siteUrl,
@@ -39,6 +24,56 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: "weekly",
       priority: 0.7,
+    });
+  }
+
+  const productCategories = getProductCategories();
+  for (const { category } of productCategories) {
+    entries.push({
+      url: `${siteUrl}/products/category/${category}`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    });
+  }
+
+  const courseSlugs = await getCourseSlugs();
+  for (const slug of courseSlugs) {
+    entries.push({
+      url: `${siteUrl}/courses/${slug}`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.75,
+    });
+  }
+
+  const courseCategories = await getCourseCategories();
+  for (const cat of courseCategories) {
+    entries.push({
+      url: `${siteUrl}/courses/category/${cat.slug}`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.72,
+    });
+  }
+
+  const faqSlugs = getFaqSlugs();
+  for (const slug of faqSlugs) {
+    entries.push({
+      url: `${siteUrl}/faq/${slug}`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    });
+  }
+
+  const faqCategories = getFaqCategories();
+  for (const cat of faqCategories) {
+    entries.push({
+      url: `${siteUrl}/faq/category/${cat.slug}`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.68,
     });
   }
 

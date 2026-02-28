@@ -24,7 +24,7 @@ export function ContactForm() {
           name="name"
           type="text"
           required
-          className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+          className="mt-1 block w-full min-h-[44px] rounded-md border border-slate-300 px-3 py-2 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500 tablet:py-2.5 tablet:min-h-[48px]"
         />
       </div>
       <div>
@@ -36,7 +36,7 @@ export function ContactForm() {
           name="email"
           type="email"
           required
-          className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+          className="mt-1 block w-full min-h-[44px] rounded-md border border-slate-300 px-3 py-2 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500 tablet:py-2.5 tablet:min-h-[48px]"
         />
       </div>
       <div>
@@ -47,7 +47,7 @@ export function ContactForm() {
           id="contact-phone"
           name="phone"
           type="tel"
-          className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+          className="mt-1 block w-full min-h-[44px] rounded-md border border-slate-300 px-3 py-2 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500 tablet:py-2.5 tablet:min-h-[48px]"
         />
       </div>
       <div>
@@ -59,7 +59,7 @@ export function ContactForm() {
           name="message"
           rows={4}
           required
-          className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+          className="mt-1 block w-full min-h-[120px] rounded-md border border-slate-300 px-3 py-2 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500 tablet:py-2.5 tablet:min-h-[140px]"
         />
       </div>
       <div className="flex items-center gap-2">
@@ -82,7 +82,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 disabled:opacity-50"
+        className="cta-primary min-h-[44px] rounded-md px-4 py-2 text-sm font-medium disabled:opacity-50 tablet:min-h-[48px] tablet:px-5 tablet:py-2.5"
       >
         {status === "sending" ? "Sending…" : "Submit form"}
       </button>
