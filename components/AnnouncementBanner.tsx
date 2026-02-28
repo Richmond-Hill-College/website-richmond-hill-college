@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 const STORAGE_KEY = "rhc-announcement-banner-dismissed";
 
 export function AnnouncementBanner() {
+  const pathname = usePathname();
   const [dismissed, setDismissed] = useState(true); // start hidden to avoid flash
   const [mounted, setMounted] = useState(false);
 
@@ -28,7 +30,7 @@ export function AnnouncementBanner() {
     }
   };
 
-  if (!mounted || dismissed) return null;
+  if (pathname !== "/" || !mounted || dismissed) return null;
 
   return (
     <div
