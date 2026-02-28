@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 const STORAGE_KEY = "rhc-announcement-banner-dismissed";
 
 export function AnnouncementBanner() {
+  const pathname = usePathname();
   const [dismissed, setDismissed] = useState(true); // start hidden to avoid flash
   const [mounted, setMounted] = useState(false);
 
@@ -28,7 +30,7 @@ export function AnnouncementBanner() {
     }
   };
 
-  if (!mounted || dismissed) return null;
+  if (pathname !== "/" || !mounted || dismissed) return null;
 
   return (
     <div
@@ -40,7 +42,16 @@ export function AnnouncementBanner() {
         <span className="inline-flex items-center gap-1 rounded bg-white/20 px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide sm:px-2">
           Limited spots
         </span>
-        <span>
+        <span className="sm:hidden">
+          Enrol now.{" "}
+          <Link
+            href="/programs"
+            className="underline decoration-white/80 underline-offset-2 transition-colors hover:decoration-white hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#f6520a]"
+          >
+            View programs
+          </Link>
+        </span>
+        <span className="hidden sm:inline">
           Enrol now for upcoming intakes — places fill quickly.{" "}
           <Link
             href="/programs"

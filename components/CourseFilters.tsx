@@ -64,6 +64,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>(initialCategory);
   const [duration, setDuration] = useState<string>("");
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(Boolean(initialCategory));
 
   const categories = useMemo(() => {
     const set = new Set(courses.map((c) => c.category).filter(Boolean));
@@ -88,6 +89,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
   }, [courses, search, category, duration]);
 
   const hasActiveFilters = Boolean(search || category || duration);
+  const activeAdvancedFilterCount = Number(Boolean(category)) + Number(Boolean(duration));
 
   const clearFilters = () => {
     setSearch("");
@@ -98,7 +100,25 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
   return (
     <>
       {/* Filter bar */}
-      <div className="mt-8 space-y-4">
+      <div className="mt-8 space-y-3 sm:space-y-4">
+        <div className="sm:hidden">
+          <button
+            type="button"
+            onClick={() => setMobileFiltersOpen((open) => !open)}
+            className="inline-flex min-h-[40px] items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50"
+            aria-expanded={mobileFiltersOpen}
+            aria-controls="courses-advanced-filters"
+          >
+            <FilterIcon />
+            {mobileFiltersOpen ? "Hide filters" : "Show filters"}
+            {activeAdvancedFilterCount > 0 && (
+              <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-xs text-slate-600">
+                {activeAdvancedFilterCount}
+              </span>
+            )}
+          </button>
+        </div>
+
         {/* Search */}
         <div className="relative">
           <label htmlFor="course-search" className="sr-only">
@@ -113,20 +133,23 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
             placeholder="Search courses by name or category…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full min-h-[44px] rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-slate-900 shadow-sm transition-[border-color,box-shadow] placeholder:text-slate-400 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200/80 tablet:min-h-[48px] tablet:py-3.5 tablet:pl-11"
+            className="w-full min-h-[42px] rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-slate-900 shadow-sm transition-[border-color,box-shadow] placeholder:text-slate-400 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200/80 sm:min-h-[44px] sm:py-3 tablet:min-h-[48px] tablet:py-3.5 tablet:pl-11"
             autoComplete="off"
           />
         </div>
 
         {/* Category & duration filters */}
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="flex items-center gap-2 text-sm font-medium text-slate-600">
+        <div
+          id="courses-advanced-filters"
+          className={`${mobileFiltersOpen ? "grid" : "hidden"} gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-3`}
+        >
+          <span className="hidden items-center gap-2 text-sm font-medium text-slate-600 sm:flex">
             <FilterIcon />
             <span>Filters</span>
           </span>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="flex min-h-[44px] items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-sm tablet:min-h-[48px] tablet:px-4">
+          <div className="grid gap-2 sm:flex sm:flex-wrap sm:items-center">
+            <div className="flex min-h-[40px] w-full items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-sm sm:min-h-[44px] sm:w-auto tablet:min-h-[48px] tablet:px-4">
               <CategoryIcon />
               <label htmlFor="filter-category" className="sr-only">
                 Category
@@ -135,7 +158,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
                 id="filter-category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="min-h-[36px] min-w-[10rem] border-0 bg-transparent text-sm text-slate-700 focus:ring-0 tablet:min-w-[11rem] tablet:text-[15px]"
+                className="min-h-[34px] min-w-0 flex-1 border-0 bg-transparent text-sm text-slate-700 focus:ring-0 sm:min-w-[10rem] sm:flex-none tablet:min-w-[11rem] tablet:text-[15px]"
               >
                 <option value="">All categories</option>
                 {categories.map((cat) => (
@@ -146,7 +169,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
               </select>
             </div>
 
-            <div className="flex min-h-[44px] items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-sm tablet:min-h-[48px] tablet:px-4">
+            <div className="flex min-h-[40px] w-full items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-sm sm:min-h-[44px] sm:w-auto tablet:min-h-[48px] tablet:px-4">
               <ClockIcon />
               <label htmlFor="filter-duration" className="sr-only">
                 Duration
@@ -155,7 +178,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
                 id="filter-duration"
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
-                className="min-h-[36px] min-w-[8rem] border-0 bg-transparent text-sm text-slate-700 focus:ring-0 tablet:min-w-[9rem] tablet:text-[15px]"
+                className="min-h-[34px] min-w-0 flex-1 border-0 bg-transparent text-sm text-slate-700 focus:ring-0 sm:min-w-[8rem] sm:flex-none tablet:min-w-[9rem] tablet:text-[15px]"
               >
                 <option value="">Any duration</option>
                 {durations.map((d) => (
@@ -170,7 +193,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
               <button
                 type="button"
                 onClick={clearFilters}
-                className="flex min-h-[44px] items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-800 tablet:min-h-[48px] tablet:px-4"
+                className="flex min-h-[40px] w-full items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-800 sm:min-h-[44px] sm:w-auto sm:justify-start tablet:min-h-[48px] tablet:px-4"
               >
                 <ClearIcon />
                 Clear filters
