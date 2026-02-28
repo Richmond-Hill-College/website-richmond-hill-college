@@ -67,25 +67,48 @@ export function LocalBusinessJsonLd({ locale = "en" }: { locale?: Locale }) {
   );
 }
 
-const faqItems = [
-  {
-    question: "What courses do you offer?",
-    answer:
-      "We offer online, hybrid, and in-person courses in healthcare and technology management.",
-  },
-  {
-    question: "Are the courses accredited?",
-    answer:
-      "Yes, our courses are accredited and recognized by industry professionals.",
-  },
-  {
-    question: "How can I enroll in a course?",
-    answer:
-      "To enroll in a course, simply fill out our online application form or contact our admissions team for assistance.",
-  },
-];
+function getFaqItems(locale: Locale) {
+  if (locale === "fr") {
+    return [
+      {
+        question: "Quels cours offrez-vous?",
+        answer:
+          "Nous offrons des cours en ligne, hybrides et en personne en gestion de la sante et des technologies.",
+      },
+      {
+        question: "Les cours sont-ils accredites?",
+        answer:
+          "Oui, nos cours sont accredites et reconnus par les professionnels du secteur.",
+      },
+      {
+        question: "Comment puis-je m'inscrire a un cours?",
+        answer:
+          "Pour vous inscrire, remplissez simplement notre formulaire en ligne ou contactez notre equipe des admissions.",
+      },
+    ];
+  }
 
-export function FAQJsonLd() {
+  return [
+    {
+      question: "What courses do you offer?",
+      answer:
+        "We offer online, hybrid, and in-person courses in healthcare and technology management.",
+    },
+    {
+      question: "Are the courses accredited?",
+      answer:
+        "Yes, our courses are accredited and recognized by industry professionals.",
+    },
+    {
+      question: "How can I enroll in a course?",
+      answer:
+        "To enroll in a course, simply fill out our online application form or contact our admissions team for assistance.",
+    },
+  ];
+}
+
+export function FAQJsonLd({ locale = "en" }: { locale?: Locale }) {
+  const faqItems = getFaqItems(locale);
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",

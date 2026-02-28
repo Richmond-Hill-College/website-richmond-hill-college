@@ -251,7 +251,7 @@ export default async function LocalizedCatchAllPage({ params, searchParams }: Pr
 
   switch (path) {
     case "":
-      return <HomePage />;
+      return <HomePage locale={rawLocale} />;
     case "about-us":
       return <AboutUsPage />;
     case "about-us/team":
