@@ -2,8 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import type { RhcCourse } from "@/lib/rhc-global-bridge-courses";
+import { getLocaleFromPathname, withLocale } from "@/lib/i18n-routing";
 
 const INTERVAL_MS = 5000;
 const FALLBACK_IMAGE = "/images/hero/hero-2.jpg";
@@ -13,7 +15,25 @@ type CourseSlideshowProps = {
 };
 
 export function CourseSlideshow({ courses }: CourseSlideshowProps) {
+  const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname);
   const [index, setIndex] = useState(0);
+  const copy =
+    locale === "fr"
+      ? {
+          heading: "Cours vedette",
+          empty: "Aucun cours a afficher.",
+          label: "Diaporama de cours",
+          viewCourse: "Voir le cours",
+          goToSlide: "Aller a la diapositive",
+        }
+      : {
+          heading: "Featured course",
+          empty: "No courses to display.",
+          label: "Course slideshow",
+          viewCourse: "View course",
+          goToSlide: "Go to slide",
+        };
 
   useEffect(() => {
     if (courses.length <= 1) return;
@@ -27,7 +47,7 @@ export function CourseSlideshow({ courses }: CourseSlideshowProps) {
     return (
       <div
         className="grid grid-cols-1 overflow-hidden rounded-2xl bg-slate-200 shadow-xl lg:grid-cols-[minmax(0,1fr)_minmax(260px,320px)]"
-        aria-label="Course slideshow"
+        aria-label={copy.label}
       >
         <div className="relative aspect-[4/3] lg:aspect-auto lg:min-h-[320px]">
           <Image
@@ -39,21 +59,21 @@ export function CourseSlideshow({ courses }: CourseSlideshowProps) {
           />
         </div>
         <div className="flex flex-col justify-center bg-slate-800 p-6 sm:p-8 lg:min-h-[320px]">
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">Featured course</p>
-          <p className="mt-2 text-slate-300">No courses to display.</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">{copy.heading}</p>
+          <p className="mt-2 text-slate-300">{copy.empty}</p>
         </div>
       </div>
     );
   }
 
   const course = courses[index];
-  const courseHref = course.slug ? `/courses/${course.slug}` : course.link;
+  const courseHref = course.slug ? withLocale(`/courses/${course.slug}`, locale) : course.link;
   const isExternal = !course.slug;
 
   return (
     <div
       className="grid grid-cols-1 overflow-hidden rounded-2xl shadow-xl lg:grid-cols-[minmax(0,1fr)_minmax(260px,320px)]"
-      aria-label="Course slideshow"
+      aria-label={copy.label}
     >
       {/* Half: image only, fills panel with no white space */}
       <div className="relative aspect-[4/3] bg-slate-900 lg:aspect-auto lg:min-h-[320px]">
@@ -80,18 +100,18 @@ export function CourseSlideshow({ courses }: CourseSlideshowProps) {
       {/* Half: UI panel – no overlay, no white space */}
       <div className="flex flex-col justify-center bg-slate-800 p-6 sm:p-8 lg:min-h-[320px]">
         <span className="text-xs font-semibold uppercase tracking-widest text-slate-400">
-          Featured course
+          {copy.heading}
         </span>
         <h3 className="mt-2 line-clamp-3 text-lg font-semibold leading-snug text-white sm:text-xl lg:text-xl">
           {course.name}
         </h3>
         <Link
-          href={courseHref}
+          href={courseHref || "#"}
           className="mt-4 inline-flex w-fit items-center rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-md transition hover:bg-white/95 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-slate-800"
           aria-label={`View ${course.name} course`}
           {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
         >
-          View course
+          {copy.viewCourse}
           <span className="ml-1.5 font-normal opacity-80" aria-hidden>→</span>
         </Link>
         {courses.length > 1 && (
@@ -102,7 +122,7 @@ export function CourseSlideshow({ courses }: CourseSlideshowProps) {
                 type="button"
                 onClick={() => setIndex(i)}
                 className="flex min-h-[36px] min-w-[36px] items-center justify-center rounded-full transition-colors hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-slate-800"
-                aria-label={`Go to slide ${i + 1}`}
+                aria-label={`${copy.goToSlide} ${i + 1}`}
               >
                 <span
                   className={`block rounded-full transition-all ${

@@ -1,40 +1,79 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
+import { getLocaleFromPathname, withLocale } from "@/lib/i18n-routing";
 
-const slides = [
-  {
-    src: "/images/hero/hero-1.jpg",
-    alt: "Your bridge to global business success – Richmond Hill College bridging programs for internationally educated professionals",
-    badge: "Our free career tools",
-    title: "Your Bridge to Global Business Success",
-    subtitle:
-      "Gain the skills and Canadian credentials needed to thrive in management, entrepreneurship, and leadership roles.",
-    cta: "Ready to get started",
-    href: "/bridging-programs",
-  },
-  {
-    src: "/images/hero/hero-2.jpg",
-    alt: "Pathways to healthcare careers in Canada – Richmond Hill College bridging programs",
-    badge: "Our free career tools",
-    title: "Pathways to Healthcare Careers in Canada",
-    subtitle:
-      "Build your future in Canada's growing healthcare sector through specialized bridging programs designed for internationally educated professionals.",
-    cta: "Ready to get started",
-    href: "/bridging-programs",
-  },
-  {
-    src: "/images/hero/hero-3.jpg",
-    alt: "Healthcare and technology management learning at Richmond Hill College",
-    badge: "Our free career tools",
-    title: "Unlocking Potential, Building Futures",
-    subtitle:
-      "Healthcare and technology management. Professional bridging programs aligned with Canadian standards.",
-    cta: "Explore programs",
-    href: "/programs",
-  },
-];
+function getSlides(locale: "en" | "fr") {
+  if (locale === "fr") {
+    return [
+      {
+        src: "/images/hero/hero-1.jpg",
+        alt: "Votre passerelle vers la reussite mondiale - programmes passerelles de Richmond Hill College",
+        badge: "Nos outils de carriere gratuits",
+        title: "Votre passerelle vers la reussite mondiale",
+        subtitle:
+          "Acquerez les competences et les titres canadiens necessaires pour reussir en gestion, en entrepreneuriat et en leadership.",
+        cta: "Pret a commencer",
+        href: "/bridging-programs",
+      },
+      {
+        src: "/images/hero/hero-2.jpg",
+        alt: "Parcours vers des carrieres en sante au Canada - programmes passerelles",
+        badge: "Nos outils de carriere gratuits",
+        title: "Parcours vers des carrieres en sante au Canada",
+        subtitle:
+          "Construisez votre avenir dans le secteur canadien de la sante grace a des programmes passerelles specialises.",
+        cta: "Pret a commencer",
+        href: "/bridging-programs",
+      },
+      {
+        src: "/images/hero/hero-3.jpg",
+        alt: "Formation en gestion de la sante et des technologies a Richmond Hill College",
+        badge: "Nos outils de carriere gratuits",
+        title: "Liberer le potentiel, construire l'avenir",
+        subtitle:
+          "Gestion de la sante et des technologies. Programmes passerelles professionnels alignes sur les normes canadiennes.",
+        cta: "Explorer les programmes",
+        href: "/programs",
+      },
+    ];
+  }
+
+  return [
+    {
+      src: "/images/hero/hero-1.jpg",
+      alt: "Your bridge to global business success - Richmond Hill College bridging programs for internationally educated professionals",
+      badge: "Our free career tools",
+      title: "Your Bridge to Global Business Success",
+      subtitle:
+        "Gain the skills and Canadian credentials needed to thrive in management, entrepreneurship, and leadership roles.",
+      cta: "Ready to get started",
+      href: "/bridging-programs",
+    },
+    {
+      src: "/images/hero/hero-2.jpg",
+      alt: "Pathways to healthcare careers in Canada - Richmond Hill College bridging programs",
+      badge: "Our free career tools",
+      title: "Pathways to Healthcare Careers in Canada",
+      subtitle:
+        "Build your future in Canada's growing healthcare sector through specialized bridging programs designed for internationally educated professionals.",
+      cta: "Ready to get started",
+      href: "/bridging-programs",
+    },
+    {
+      src: "/images/hero/hero-3.jpg",
+      alt: "Healthcare and technology management learning at Richmond Hill College",
+      badge: "Our free career tools",
+      title: "Unlocking Potential, Building Futures",
+      subtitle:
+        "Healthcare and technology management. Professional bridging programs aligned with Canadian standards.",
+      cta: "Explore programs",
+      href: "/programs",
+    },
+  ];
+}
 
 const INTERVAL_MS = 5000;
 
@@ -50,6 +89,9 @@ const PARALLAX = {
 } as const;
 
 export function HeroCarousel() {
+  const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname);
+  const slides = getSlides(locale);
   const [index, setIndex] = useState(0);
   const [parallaxY, setParallaxY] = useState(0);
   const [imageScale, setImageScale] = useState(1);
@@ -119,7 +161,7 @@ export function HeroCarousel() {
     <section
       ref={sectionRef}
       className="relative h-[min(75vh,28rem)] w-full overflow-hidden bg-rhc-primary-dark tablet:h-[min(78vh,38rem)] lg:h-[min(75vh,36rem)]"
-      aria-label="Hero carousel"
+      aria-label={locale === "fr" ? "Carrousel hero" : "Hero carousel"}
       style={reduceMotion ? undefined : { perspective: "1400px" }}
     >
       <div
@@ -181,7 +223,7 @@ export function HeroCarousel() {
           {slides[index].subtitle}
         </p>
         <Link
-          href={slides[index].href}
+          href={withLocale(slides[index].href, locale)}
           className="mt-6 inline-flex min-h-[48px] items-center justify-center rounded-lg px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white shadow-lg transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#192640] tablet:mt-8 tablet:min-h-[52px] tablet:px-8 tablet:py-3.5 tablet:text-[15px]"
           style={{
             backgroundColor: "#f6520a",
@@ -198,7 +240,7 @@ export function HeroCarousel() {
             type="button"
             onClick={() => setIndex(i)}
             className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full transition-colors tablet:min-h-[40px] tablet:min-w-[40px]"
-            aria-label={`Go to slide ${i + 1}`}
+            aria-label={locale === "fr" ? `Aller a la diapositive ${i + 1}` : `Go to slide ${i + 1}`}
           >
             <span
               className={`block rounded-full transition-colors ${

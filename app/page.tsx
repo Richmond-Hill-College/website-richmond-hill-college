@@ -9,56 +9,191 @@ import { ContactBlock } from "@/components/ContactBlock";
 import { FAQSection } from "@/components/FAQSection";
 import { ContactForm } from "@/components/ContactForm";
 import { getRhcCourses, RHC_GLOBAL_BRIDGE_COURSES_FALLBACK } from "@/lib/rhc-global-bridge-courses";
+import { type Locale, withLocale } from "@/lib/i18n-routing";
 
-const learningOptions = [
-  {
-    title: "Online Courses",
-    description: "Flexible online courses with expert instructors",
-    href: "/course-offerings",
-    icon: Laptop,
-  },
-  {
-    title: "Hybrid Courses",
-    description: "Blend of online and in-person learning for a holistic experience",
-    href: "/course-offerings",
-    icon: LayoutGrid,
-  },
-  {
-    title: "In-person Courses",
-    description: "Immersive in-person courses with hands-on training",
-    href: "/course-offerings",
-    icon: GraduationCap,
-  },
-];
+function getLearningOptions(locale: Locale) {
+  if (locale === "fr") {
+    return [
+      {
+        title: "Cours en ligne",
+        description: "Des cours en ligne flexibles animes par des experts",
+        href: "/course-offerings",
+        icon: Laptop,
+      },
+      {
+        title: "Cours hybrides",
+        description: "Un melange d'apprentissage en ligne et en personne",
+        href: "/course-offerings",
+        icon: LayoutGrid,
+      },
+      {
+        title: "Cours en personne",
+        description: "Des cours immersifs avec formation pratique",
+        href: "/course-offerings",
+        icon: GraduationCap,
+      },
+    ];
+  }
 
-const bridgingCategories = [
-  {
-    title: "Healthcare & Human Services",
-    description: "Pathways to healthcare careers in Canada for internationally educated professionals.",
-    href: "/bridging-programs",
-    image: "/images/hero/hero-2.jpg",
-    imageAlt: "Healthcare and nursing bridging programs at Richmond Hill College",
-  },
-  {
-    title: "Hospitality & Service",
-    description: "Master hospitality and culinary skills aligned with Canadian standards.",
-    href: "/bridging-programs",
-    image: "/images/programs/programs-1.jpg",
-    imageAlt: "Hospitality and culinary bridging programs at Richmond Hill College",
-  },
-  {
-    title: "IT, AI & Computer Science",
-    description: "Build your future in technology with Canadian-recognized credentials.",
-    href: "/bridging-programs",
-    image: "/images/programs/programs-2.jpeg",
-    imageAlt: "Technology and innovation bridging programs at Richmond Hill College",
-  },
-];
+  return [
+    {
+      title: "Online Courses",
+      description: "Flexible online courses with expert instructors",
+      href: "/course-offerings",
+      icon: Laptop,
+    },
+    {
+      title: "Hybrid Courses",
+      description: "Blend of online and in-person learning for a holistic experience",
+      href: "/course-offerings",
+      icon: LayoutGrid,
+    },
+    {
+      title: "In-person Courses",
+      description: "Immersive in-person courses with hands-on training",
+      href: "/course-offerings",
+      icon: GraduationCap,
+    },
+  ];
+}
+
+function getBridgingCategories(locale: Locale) {
+  if (locale === "fr") {
+    return [
+      {
+        title: "Sante et services humains",
+        description: "Des parcours vers des carrieres en sante au Canada pour les professionnels formes a l'etranger.",
+        href: "/bridging-programs",
+        image: "/images/hero/hero-2.jpg",
+        imageAlt: "Programmes passerelles en sante et en soins infirmiers a Richmond Hill College",
+      },
+      {
+        title: "Hotellerie et services",
+        description: "Maitrisez les competences en hotellerie et en cuisine selon les normes canadiennes.",
+        href: "/bridging-programs",
+        image: "/images/programs/programs-1.jpg",
+        imageAlt: "Programmes passerelles en hotellerie et en cuisine a Richmond Hill College",
+      },
+      {
+        title: "TI, IA et informatique",
+        description: "Construisez votre avenir en technologie avec des titres reconnus au Canada.",
+        href: "/bridging-programs",
+        image: "/images/programs/programs-2.jpeg",
+        imageAlt: "Programmes passerelles en technologie et innovation a Richmond Hill College",
+      },
+    ];
+  }
+
+  return [
+    {
+      title: "Healthcare & Human Services",
+      description: "Pathways to healthcare careers in Canada for internationally educated professionals.",
+      href: "/bridging-programs",
+      image: "/images/hero/hero-2.jpg",
+      imageAlt: "Healthcare and nursing bridging programs at Richmond Hill College",
+    },
+    {
+      title: "Hospitality & Service",
+      description: "Master hospitality and culinary skills aligned with Canadian standards.",
+      href: "/bridging-programs",
+      image: "/images/programs/programs-1.jpg",
+      imageAlt: "Hospitality and culinary bridging programs at Richmond Hill College",
+    },
+    {
+      title: "IT, AI & Computer Science",
+      description: "Build your future in technology with Canadian-recognized credentials.",
+      href: "/bridging-programs",
+      image: "/images/programs/programs-2.jpeg",
+      imageAlt: "Technology and innovation bridging programs at Richmond Hill College",
+    },
+  ];
+}
+
+function getHomeCopy(locale: Locale) {
+  if (locale === "fr") {
+    return {
+      welcomeTitle: "Bienvenue a Richmond Hill College",
+      welcomeBody:
+        "A Richmond Hill College of Healthcare and Technology Management, nous offrons une gamme de cours pour vous aider a reussir en gestion de la sante et des technologies. Nos programmes sont concus pour les professionnels actifs et les personnes en transition de carriere.",
+      aboutCta: "A propos",
+      toolsBadge: "Nos outils de carriere gratuits",
+      bridgingTitle: "Programmes passerelles",
+      bridgingBody:
+        "Des programmes passerelles professionnels alignes sur les normes canadiennes, concus pour les professionnels formes a l'etranger.",
+      explorePrograms: "Explorer les programmes",
+      allBridgingCta: "Voir tous les programmes passerelles",
+      professionalDevelopment: "Perfectionnement professionnel",
+      coursesTitle: "Nos cours",
+      coursesBody:
+        "Parcourez une selection de nos programmes passerelles et de nos cours. Consultez les details et inscrivez-vous sur RHC Global Bridge.",
+      viewDetails: "Voir les details ->",
+      allCoursesCta: "Voir tous les cours",
+      learningOptionsTitle: "Options d'apprentissage flexibles",
+      moreInfo: "Plus d'info",
+      onlineProgramTitle: "Programme passerelle RHC en ligne",
+      onlineProgramBody:
+        "Connectez-vous, inscrivez-vous ou explorez les cours et programmes sur RHC Global Bridge.",
+      accountCta: "Mon compte (connexion / inscription)",
+      allCoursesExternal: "Tous les cours sur RHCglobalBridge.com ->",
+      contactTitle: "Contactez-nous",
+      contactBody:
+        "Vous avez une question ou vous avez besoin d'aide? Contactez-nous avec le formulaire ci-dessous. Nous vous repondrons rapidement.",
+      aboutTitle: "A propos",
+      aboutBody:
+        "Richmond Hill College of Healthcare and Technology Management est dedie a l'autonomisation des personnes grace a une education de qualite en sante et en gestion des technologies.",
+      learnMore: "En savoir plus ->",
+      testimonial:
+        "Je suis vraiment reconnaissante des connaissances et des competences acquises a Richmond Hill College. Les cours sont pratiques et pertinents pour ma carriere.",
+    };
+  }
+
+  return {
+    welcomeTitle: "Welcome to Richmond Hill College",
+    welcomeBody:
+      "At Richmond Hill College of Healthcare and Technology Management we offer a range of courses to help you excel in healthcare and technology management. Our programs are designed to cater to working professionals and career changers, providing quick and targeted learning experiences to enhance student engagement and outcomes.",
+    aboutCta: "About us",
+    toolsBadge: "Our free career tools",
+    bridgingTitle: "Bridging Programs",
+    bridgingBody:
+      "Professional bridging programs aligned with Canadian standards, designed for internationally educated professionals.",
+    explorePrograms: "Explore programs",
+    allBridgingCta: "View all bridging programs",
+    professionalDevelopment: "Professional development",
+    coursesTitle: "Our courses",
+    coursesBody:
+      "Browse a selection of our bridging programs and courses. View details and register on RHC Global Bridge.",
+    viewDetails: "View details ->",
+    allCoursesCta: "View all courses",
+    learningOptionsTitle: "Flexible Learning Options",
+    moreInfo: "More info",
+    onlineProgramTitle: "Online RHC Bridging Program",
+    onlineProgramBody:
+      "Log in, register, or browse courses and programs on RHC Global Bridge.",
+    accountCta: "My Account (log in / register)",
+    allCoursesExternal: "All courses on RHCglobalBridge.com ->",
+    contactTitle: "Contact us",
+    contactBody:
+      "Have a question or need assistance? Feel free to reach out to us using the contact form below. We will get back to you soon.",
+    aboutTitle: "About us",
+    aboutBody:
+      "Richmond Hill College of Healthcare and Technology Management is dedicated to empowering individuals through quality education in healthcare and technology management. With a focus on practical learning and industry-relevant skills, we are committed to helping our students achieve their academic and professional goals.",
+    learnMore: "Learn more ->",
+    testimonial:
+      "I am truly grateful for the knowledge and skills I gained from Richmond Hill College. The courses are practical and relevant to my career, and the instructors are top-notch.",
+  };
+}
 
 const FEATURED_COURSES_COUNT = 6;
 const SLIDESHOW_COURSES_COUNT = 8;
 
-export default async function Home() {
+type HomeProps = {
+  locale?: Locale;
+};
+
+export default async function Home({ locale = "en" }: HomeProps = {}) {
+  const learningOptions = getLearningOptions(locale);
+  const bridgingCategories = getBridgingCategories(locale);
+  const copy = getHomeCopy(locale);
   const allCourses = await getRhcCourses().catch(
     () => RHC_GLOBAL_BRIDGE_COURSES_FALLBACK
   );
@@ -67,7 +202,7 @@ export default async function Home() {
 
   return (
     <>
-      <FAQJsonLd />
+      <FAQJsonLd locale={locale} />
       <HeroCarousel />
 
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 tablet:px-8 tablet:py-24 lg:px-8">
@@ -77,20 +212,16 @@ export default async function Home() {
               <span className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                 Richmond Hill College
               </span>
-              <SectionHeading title="Welcome to Richmond Hill College">
+              <SectionHeading title={copy.welcomeTitle}>
                 <p className="max-w-xl text-lg leading-relaxed text-slate-600">
-                  At Richmond Hill College of Healthcare and Technology Management we offer a
-                  range of courses to help you excel in healthcare and technology management.
-                  Our programs are designed to cater to working professionals and career
-                  changers, providing quick and targeted learning experiences to enhance
-                  student engagement and outcomes.
+                  {copy.welcomeBody}
                 </p>
               </SectionHeading>
               <Link
-                href="/about-us"
+                href={withLocale("/about-us", locale)}
                 className="cta-primary inline-flex items-center rounded-lg px-5 py-2.5 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#192640]"
               >
-                About us
+                {copy.aboutCta}
               </Link>
             </div>
             <CourseSlideshow courses={slideshowCourses} />
@@ -100,24 +231,23 @@ export default async function Home() {
         <section className="mb-16 tablet:mb-24" aria-labelledby="bridging-programs-heading">
           <div className="mb-10 text-center tablet:mb-12">
             <span className="text-xs font-semibold uppercase tracking-widest text-slate-500">
-              Our free career tools
+              {copy.toolsBadge}
             </span>
             <h2
               id="bridging-programs-heading"
               className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl tablet:text-3xl lg:text-4xl"
             >
-              Bridging Programs
+              {copy.bridgingTitle}
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600 tablet:mt-5 tablet:max-w-xl">
-              Professional bridging programs aligned with Canadian standards, designed for
-              internationally educated professionals.
+              {copy.bridgingBody}
             </p>
           </div>
           <div className="grid gap-6 tablet:gap-8 md:grid-cols-2 lg:grid-cols-3">
             {bridgingCategories.map((cat) => (
               <Link
                 key={cat.title}
-                href={cat.href}
+                href={withLocale(cat.href, locale)}
                 className="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-lg transition hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-offset-2"
               >
                 <div className="aspect-[4/3] overflow-hidden">
@@ -139,7 +269,7 @@ export default async function Home() {
                     {cat.description}
                   </p>
                   <span className="mt-3 inline-flex items-center text-sm font-medium text-white">
-                    Explore programs
+                    {copy.explorePrograms}
                     <span className="ml-1 transition group-hover:translate-x-1" aria-hidden>
                       →
                     </span>
@@ -150,10 +280,10 @@ export default async function Home() {
           </div>
           <div className="mt-10 text-center">
             <Link
-              href="/bridging-programs"
+              href={withLocale("/bridging-programs", locale)}
               className="cta-primary-outline inline-flex items-center rounded-lg px-6 py-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-rhc-primary focus:ring-offset-2"
             >
-              View all bridging programs
+              {copy.allBridgingCta}
             </Link>
           </div>
         </section>
@@ -161,17 +291,16 @@ export default async function Home() {
         <section className="mb-16 tablet:mb-24" aria-labelledby="courses-heading">
           <div className="mb-10 text-center tablet:mb-12">
             <span className="text-xs font-semibold uppercase tracking-widest text-slate-500">
-              Professional development
+              {copy.professionalDevelopment}
             </span>
             <h2
               id="courses-heading"
               className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl tablet:text-3xl lg:text-4xl"
             >
-              Our courses
+              {copy.coursesTitle}
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600 tablet:mt-5 tablet:max-w-xl">
-              Browse a selection of our bridging programs and courses. View details and
-              register on RHC Global Bridge.
+              {copy.coursesBody}
             </p>
           </div>
           <ul className="grid list-none gap-5 p-0 sm:grid-cols-2 tablet:gap-6 lg:grid-cols-3">
@@ -181,9 +310,13 @@ export default async function Home() {
                 className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md"
               >
                 <Link
-                  href={course.slug ? `/courses/${course.slug}` : course.link}
+                  href={course.slug ? withLocale(`/courses/${course.slug}`, locale) : course.link}
                   className="flex flex-col"
-                  aria-label={`View ${course.name} course details`}
+                  aria-label={
+                    locale === "fr"
+                      ? `Voir les details du cours ${course.name}`
+                      : `View ${course.name} course details`
+                  }
                   {...(course.slug ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                 >
                   <div className="relative aspect-[4/3] w-full flex-shrink-0 bg-slate-100">
@@ -209,7 +342,7 @@ export default async function Home() {
                       </p>
                     )}
                     <span className="mt-3 inline-block text-sm font-medium text-slate-800">
-                      View details →
+                      {copy.viewDetails}
                     </span>
                   </div>
                 </Link>
@@ -218,10 +351,10 @@ export default async function Home() {
           </ul>
           <div className="mt-10 text-center">
             <Link
-              href="/courses"
+              href={withLocale("/courses", locale)}
               className="cta-primary-outline inline-flex items-center rounded-lg px-6 py-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-rhc-primary focus:ring-offset-2"
             >
-              View all courses
+              {copy.allCoursesCta}
             </Link>
           </div>
         </section>
@@ -231,7 +364,7 @@ export default async function Home() {
             id="learning-options-heading"
             className="mb-6 text-2xl font-bold text-slate-900 sm:text-3xl tablet:mb-8 tablet:text-3xl"
           >
-            Flexible Learning Options
+            {copy.learningOptionsTitle}
           </h2>
           <div className="grid gap-6 tablet:gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {learningOptions.map((opt) => {
@@ -248,10 +381,10 @@ export default async function Home() {
                   <h3 className="mt-4 text-lg font-semibold text-slate-900">{opt.title}</h3>
                   <p className="mt-2 text-slate-600">{opt.description}</p>
                   <Link
-                    href={opt.href}
+                    href={withLocale(opt.href, locale)}
                     className="mt-4 inline-flex items-center text-sm font-medium text-slate-800 hover:underline"
                   >
-                    More info
+                    {copy.moreInfo}
                     <ChevronRight className="ml-1 h-4 w-4" aria-hidden />
                   </Link>
                 </article>
@@ -264,17 +397,17 @@ export default async function Home() {
           <div className="flex flex-col gap-6 tablet:gap-8 md:flex-row md:items-center md:justify-between">
             <div>
               <h2 className="text-xl font-bold text-slate-900 md:text-2xl">
-                Online RHC Bridging Program
+                {copy.onlineProgramTitle}
               </h2>
               <p className="mt-2 text-slate-600">
-                Log in, register, or browse courses and programs on RHC Global Bridge.
+                {copy.onlineProgramBody}
               </p>
               <div className="mt-4 flex flex-wrap items-center gap-3">
                 <Link
-                  href="/my-account"
+                  href={withLocale("/my-account", locale)}
                   className="cta-primary inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition"
                 >
-                  My Account (log in / register)
+                  {copy.accountCta}
                 </Link>
                 <a
                   href="https://www.rhcglobalbridge.com/courses/"
@@ -282,7 +415,7 @@ export default async function Home() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center text-sm font-medium text-slate-800 hover:underline"
                 >
-                  All courses on RHCglobalBridge.com →
+                  {copy.allCoursesExternal}
                 </a>
               </div>
             </div>
@@ -306,11 +439,10 @@ export default async function Home() {
 
         <section className="mb-16 tablet:mb-24" aria-labelledby="contact-heading">
           <h2 id="contact-heading" className="mb-5 text-2xl font-bold text-slate-900 sm:text-3xl tablet:mb-6 tablet:text-3xl">
-            Contact us
+            {copy.contactTitle}
           </h2>
           <p className="mb-5 max-w-2xl text-slate-600 tablet:mb-6">
-            Have a question or need assistance? Feel free to reach out to us using the contact
-            form below. We will get back to you soon.
+            {copy.contactBody}
           </p>
           <div className="grid gap-8 tablet:gap-10 lg:grid-cols-2">
             <ContactForm />
@@ -320,28 +452,21 @@ export default async function Home() {
 
         <section className="mb-12 tablet:mb-16" aria-labelledby="about-heading">
           <h2 id="about-heading" className="mb-4 text-2xl font-bold text-slate-900 sm:text-3xl tablet:text-3xl">
-            About us
+            {copy.aboutTitle}
           </h2>
           <p className="max-w-3xl text-slate-600">
-            Richmond Hill College of Healthcare and Technology Management is dedicated to
-            empowering individuals through quality education in healthcare and technology
-            management. With a focus on practical learning and industry-relevant skills, we are
-            committed to helping our students achieve their academic and professional goals.
+            {copy.aboutBody}
           </p>
           <Link
-            href="/contact"
+            href={withLocale("/contact", locale)}
             className="mt-4 inline-block font-medium text-slate-800 hover:underline"
           >
-            Learn more →
+            {copy.learnMore}
           </Link>
         </section>
 
         <blockquote className="rounded-2xl border border-slate-200 bg-slate-50/80 p-6 italic text-slate-600 shadow-sm tablet:p-8">
-          <p>
-            &ldquo;I am truly grateful for the knowledge and skills I gained from Richmond Hill
-            College. The courses are practical and relevant to my career, and the instructors
-            are top-notch.&rdquo;
-          </p>
+          <p>&ldquo;{copy.testimonial}&rdquo;</p>
           <footer className="mt-4 not-italic text-slate-500">— John Doe</footer>
         </blockquote>
       </div>

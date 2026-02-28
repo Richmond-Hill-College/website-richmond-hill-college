@@ -2,14 +2,27 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { getLocaleFromPathname, stripLocalePrefix, withLocale } from "@/lib/i18n-routing";
 
-const navItems = [
-  { href: "/", label: "Home", icon: HomeIcon },
-  { href: "/programs", label: "Programs", icon: ProgramsIcon },
-  { href: "/courses", label: "Courses", icon: CoursesIcon },
-  { href: "/conferences", label: "Conferences", icon: ConferencesIcon },
-  { href: "/contact", label: "Contact", icon: ContactIcon },
-];
+function getNavItems(locale: "en" | "fr") {
+  if (locale === "fr") {
+    return [
+      { href: "/", label: "Accueil", icon: HomeIcon },
+      { href: "/programs", label: "Programmes", icon: ProgramsIcon },
+      { href: "/courses", label: "Cours", icon: CoursesIcon },
+      { href: "/conferences", label: "Conferences", icon: ConferencesIcon },
+      { href: "/contact", label: "Contact", icon: ContactIcon },
+    ];
+  }
+
+  return [
+    { href: "/", label: "Home", icon: HomeIcon },
+    { href: "/programs", label: "Programs", icon: ProgramsIcon },
+    { href: "/courses", label: "Courses", icon: CoursesIcon },
+    { href: "/conferences", label: "Conferences", icon: ConferencesIcon },
+    { href: "/contact", label: "Contact", icon: ContactIcon },
+  ];
+}
 
 function HomeIcon({ active }: { active: boolean }) {
   return (
@@ -108,23 +121,26 @@ function ContactIcon({ active }: { active: boolean }) {
 
 export function MobileBottomNav() {
   const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname);
+  const navItems = getNavItems(locale);
+  const normalizedPathname = stripLocalePrefix(pathname || "/");
 
   return (
     <nav
       className="fixed bottom-0 left-0 right-0 z-40 md:hidden"
-      aria-label="Mobile bottom navigation"
+      aria-label={locale === "fr" ? "Navigation mobile inferieure" : "Mobile bottom navigation"}
     >
       <div className="safe-area-pb border-t border-slate-200 bg-white/95 shadow-[0_-4px_6px_-1px_rgba(15,23,42,0.05)] backdrop-blur supports-[backdrop-filter]:bg-white/90">
         <div className="mx-auto flex max-w-lg items-center justify-around px-2 pb-2 pt-2">
           {navItems.map(({ href, label, icon: Icon }) => {
             const isActive =
               href === "/"
-                ? pathname === "/"
-                : pathname === href || pathname.startsWith(href + "/");
+                ? normalizedPathname === "/"
+                : normalizedPathname === href || normalizedPathname.startsWith(href + "/");
             return (
               <Link
                 key={href}
-                href={href}
+                href={withLocale(href, locale)}
                 className="flex min-w-0 flex-1 flex-col items-center gap-0.5 px-1 py-1 transition-colors duration-150 ease-out focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-white rounded-lg"
                 aria-current={isActive ? "page" : undefined}
               >

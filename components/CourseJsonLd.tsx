@@ -1,5 +1,7 @@
+import { headers } from "next/headers";
 import { siteUrl } from "@/lib/site-url";
 import type { RhcCourse } from "@/lib/rhc-global-bridge-courses";
+import { getRequestLocaleFromHeaders, type Locale, withLocale } from "@/lib/i18n-routing";
 
 export type CourseJsonLdProps = {
   course: RhcCourse;
@@ -7,6 +9,8 @@ export type CourseJsonLdProps = {
   coursePageUrl: string;
   /** Optional full description for SEO (defaults to generated from name + category). */
   description?: string;
+  /** Optional locale override for localized course URL. */
+  locale?: Locale;
 };
 
 /**
@@ -17,7 +21,17 @@ export function CourseJsonLd({
   course,
   coursePageUrl,
   description,
+  locale,
 }: CourseJsonLdProps) {
+  const activeLocale = locale ?? getRequestLocaleFromHeaders(headers());
+  let localizedCoursePageUrl = coursePageUrl;
+  try {
+    const parsed = new URL(coursePageUrl, siteUrl);
+    localizedCoursePageUrl = `${siteUrl}${withLocale(parsed.pathname, activeLocale)}`;
+  } catch {
+    localizedCoursePageUrl = coursePageUrl;
+  }
+
   const name = course.name;
   const desc =
     description ??
@@ -28,7 +42,7 @@ export function CourseJsonLd({
     "@type": "Course",
     name,
     description: desc,
-    url: coursePageUrl,
+    url: localizedCoursePageUrl,
     image: course.image,
     sameAs: course.link,
     provider: {
@@ -59,7 +73,7 @@ export function CourseJsonLd({
     "@type": "EducationalOccupationalProgram",
     name,
     description: desc,
-    url: coursePageUrl,
+    url: localizedCoursePageUrl,
     image: course.image,
     programType: "professional development",
     provider: {
