@@ -94,10 +94,12 @@ export function HeroCarousel() {
         return;
       }
 
-      setParallaxY(rect.top * PARALLAX.textFactor);
+      // Keep hero content visually centered on initial load; only parallax after section reaches viewport top.
+      const topOffset = Math.min(0, rect.top);
+      setParallaxY(topOffset * PARALLAX.textFactor);
       setImageScale(1 + PARALLAX.maxScale * progress);
       setImageTilt(PARALLAX.maxTiltDeg * progress);
-      setImageTranslateY(rect.top * PARALLAX.imageFactor);
+      setImageTranslateY(topOffset * PARALLAX.imageFactor);
     };
 
     const onScrollOrResize = () => {
