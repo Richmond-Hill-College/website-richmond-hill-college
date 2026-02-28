@@ -8,6 +8,8 @@ const LP_BASE =
 const WP_BASE =
   "https://www.rhcglobalbridge.com/wp-json/wp/v2/lp_course";
 const PER_PAGE = 100;
+/** Timeout in ms so the app never hangs if the external API is slow or down. */
+const FETCH_TIMEOUT_MS = 12_000;
 
 export type RhcCourse = {
   id: number;
@@ -31,6 +33,17 @@ export function getCourseSlugFromLink(link: string): string {
   }
 }
 
+function fetchWithTimeout(
+  url: string,
+  options: RequestInit & { next?: { revalidate: number } }
+): Promise<Response> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  return fetch(url, { ...options, signal: controller.signal }).finally(() =>
+    clearTimeout(timeoutId)
+  );
+}
+
 async function fetchAllPages<T>(
   baseUrl: string,
   parse: (res: Response) => Promise<T[]>
@@ -41,7 +54,7 @@ async function fetchAllPages<T>(
   url.searchParams.set("per_page", String(PER_PAGE));
   while (true) {
     url.searchParams.set("page", String(page));
-    const res = await fetch(url.toString(), {
+    const res = await fetchWithTimeout(url.toString(), {
       next: { revalidate: 3600 },
     });
     if (!res.ok) break;
