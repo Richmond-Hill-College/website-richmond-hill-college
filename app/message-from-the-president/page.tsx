@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ContactBlock } from "@/components/ContactBlock";
 import { createPageMetadata } from "@/lib/seo";
@@ -8,6 +9,9 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "A welcome message from Dr. Soheila Hafezi, President of Richmond Hill College. Learn about our mission to empower internationally educated learners through Global Bridge Programs in Ontario, Canada.",
   path: "message-from-the-president",
+  image: "/images/leadership/soheila-hafezi-president.png",
+  imageWidth: 240,
+  imageHeight: 247,
 });
 
 export default function MessageFromThePresidentPage() {
@@ -23,10 +27,22 @@ export default function MessageFromThePresidentPage() {
       </header>
 
       <section className="mt-8 space-y-6" aria-labelledby="president-intro">
-        <div id="president-intro">
-          <p className="font-semibold text-slate-900">Dr. Soheila Hafezi</p>
-          <p className="text-slate-600">President, Richmond Hill College</p>
-          <p className="text-slate-600">Ontario, Canada</p>
+        <div className="grid gap-6 sm:grid-cols-[220px_1fr] sm:items-start">
+          <div className="relative mx-auto w-full max-w-[240px] overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-b from-[#9A85AD] to-[#f6c087] p-2 shadow-sm">
+            <Image
+              src="/images/leadership/soheila-hafezi-president.png"
+              alt="Portrait of Dr. Soheila Hafezi, President of Richmond Hill College"
+              width={240}
+              height={247}
+              className="h-auto w-full object-contain"
+              priority
+            />
+          </div>
+          <div id="president-intro">
+            <p className="font-semibold text-slate-900">Dr. Soheila Hafezi</p>
+            <p className="text-slate-600">President, Richmond Hill College</p>
+            <p className="text-slate-600">Ontario, Canada</p>
+          </div>
         </div>
 
         <hr className="border-slate-200" />

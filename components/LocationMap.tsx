@@ -35,7 +35,8 @@ export function LocationMap() {
 
       const pinWidth = 52;
       const pinHeight = 64;
-      const logoSize = 36;
+      const logoMaxWidth = 30;
+      const logoMaxHeight = 22;
 
       const markerHtml = `
         <div style="
@@ -58,7 +59,19 @@ export function LocationMap() {
             overflow:hidden;
             flex-shrink:0;
           ">
-            <img src="${logoUrl}" alt="" width="${logoSize}" height="${logoSize}" style="object-fit:contain;display:block" />
+            <img
+              src="${logoUrl}"
+              alt=""
+              style="
+                width:auto;
+                height:auto;
+                max-width:${logoMaxWidth}px;
+                max-height:${logoMaxHeight}px;
+                object-fit:contain;
+                object-position:center;
+                display:block;
+              "
+            />
           </div>
           <div style="
             width:0;

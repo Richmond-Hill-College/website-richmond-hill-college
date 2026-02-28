@@ -88,9 +88,6 @@ const PARALLAX = {
   smoothFactor: 0.14,
 } as const;
 
-const lerp = (current: number, target: number, factor: number) =>
-  current + (target - current) * factor;
-
 export function HeroCarousel() {
   const pathname = usePathname();
   const locale = getLocaleFromPathname(pathname);

@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { getLocaleFromPathname, withLocale } from "@/lib/i18n-routing";
+import { getLocaleFromPathname, stripLocalePrefix, withLocale } from "@/lib/i18n-routing";
 
 const STORAGE_KEY = "rhc-announcement-banner-dismissed";
 
 export function AnnouncementBanner() {
   const pathname = usePathname();
   const locale = getLocaleFromPathname(pathname);
+  const contentPath = stripLocalePrefix(pathname || "/");
   const [dismissed, setDismissed] = useState(true); // start hidden to avoid flash
   const [mounted, setMounted] = useState(false);
 
@@ -32,21 +33,23 @@ export function AnnouncementBanner() {
     }
   };
 
-  if (!mounted || dismissed) return null;
+  if (contentPath !== "/" || !mounted || dismissed) return null;
 
   const copy =
     locale === "fr"
       ? {
           aria: "Annonce",
           pill: "Places limitees",
-          body: "Inscrivez-vous maintenant pour les prochaines cohortes - les places se remplissent vite.",
+          shortBody: "Inscrivez-vous maintenant.",
+          longBody: "Inscrivez-vous maintenant pour les prochaines cohortes - les places se remplissent vite.",
           cta: "Voir les programmes",
           dismiss: "Fermer l'annonce",
         }
       : {
           aria: "Announcement",
           pill: "Limited spots",
-          body: "Enrol now for upcoming intakes - places fill quickly.",
+          shortBody: "Enrol now.",
+          longBody: "Enrol now for upcoming intakes - places fill quickly.",
           cta: "View programs",
           dismiss: "Dismiss announcement",
         };
@@ -61,8 +64,17 @@ export function AnnouncementBanner() {
         <span className="inline-flex items-center gap-1 rounded bg-white/20 px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide sm:px-2">
           {copy.pill}
         </span>
-        <span>
-          {copy.body}{" "}
+        <span className="sm:hidden">
+          {copy.shortBody}{" "}
+          <Link
+            href={withLocale("/programs", locale)}
+            className="underline decoration-white/80 underline-offset-2 transition-colors hover:decoration-white hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#f6520a]"
+          >
+            {copy.cta}
+          </Link>
+        </span>
+        <span className="hidden sm:inline">
+          {copy.longBody}{" "}
           <Link
             href={withLocale("/programs", locale)}
             className="underline decoration-white/80 underline-offset-2 transition-colors hover:decoration-white hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#f6520a]"

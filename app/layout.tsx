@@ -5,6 +5,7 @@ import { Header } from "@/components/Header";
 import { AnnouncementBanner } from "@/components/AnnouncementBanner";
 import { Footer } from "@/components/Footer";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
+import { ElfsightWidget } from "@/components/ElfsightWidget";
 import { OrganizationJsonLd } from "@/components/JsonLd";
 import { siteUrl } from "@/lib/site-url";
 import { getRequestLocaleFromHeaders, withLocale } from "@/lib/i18n-routing";
@@ -79,6 +80,7 @@ export default function RootLayout({
         <main className="flex-1 pb-20 tablet:pb-0">{children}</main>
         <Footer />
         <MobileBottomNav />
+        <ElfsightWidget />
       </body>
     </html>
   );
