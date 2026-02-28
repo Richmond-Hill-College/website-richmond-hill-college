@@ -26,7 +26,7 @@ function groupCoursesByCategory(courses: RhcCourse[]): Map<string, RhcCourse[]> 
     if (!map.has(cat)) map.set(cat, []);
     map.get(cat)!.push(c);
   }
-  for (const list of map.values()) list.sort((a, b) => a.name.localeCompare(b.name));
+  for (const list of Array.from(map.values())) list.sort((a, b) => a.name.localeCompare(b.name));
   return map;
 }
 
