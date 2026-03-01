@@ -106,8 +106,14 @@ function ContactIcon({ active }: { active: boolean }) {
   );
 }
 
+function prefixHref(prefix: string, href: string) {
+  const path = prefix + (href === "/" ? "" : href);
+  return path || "/";
+}
+
 export function MobileBottomNav() {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "/";
+  const localePrefix = pathname.startsWith("/fr") ? "/fr" : "";
 
   return (
     <nav
@@ -117,14 +123,15 @@ export function MobileBottomNav() {
       <div className="safe-area-pb border-t border-slate-200 bg-white/95 shadow-[0_-4px_6px_-1px_rgba(15,23,42,0.05)] backdrop-blur supports-[backdrop-filter]:bg-white/90">
         <div className="mx-auto flex max-w-lg items-center justify-around px-2 pb-2 pt-2">
           {navItems.map(({ href, label, icon: Icon }) => {
+            const itemHref = prefixHref(localePrefix, href);
             const isActive =
               href === "/"
-                ? pathname === "/"
-                : pathname === href || pathname.startsWith(href + "/");
+                ? pathname === "/" || pathname === "/fr"
+                : pathname === itemHref || pathname.startsWith(itemHref + "/");
             return (
               <Link
                 key={href}
-                href={href}
+                href={itemHref}
                 className="flex min-w-0 flex-1 flex-col items-center gap-0.5 px-1 py-1 transition-colors duration-150 ease-out focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-white rounded-lg"
                 aria-current={isActive ? "page" : undefined}
               >

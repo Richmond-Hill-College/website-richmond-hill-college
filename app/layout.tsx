@@ -8,6 +8,7 @@ import { CookiesBanner } from "@/components/CookiesBanner";
 import { WhatsAppChatWidget } from "@/components/WhatsAppChatWidget";
 import { OrganizationJsonLd } from "@/components/JsonLd";
 import { siteUrl } from "@/lib/site-url";
+import { FIRST_HERO_IMAGE } from "@/lib/hero";
 
 export const viewport = {
   width: "device-width",
@@ -35,13 +36,14 @@ export const metadata: Metadata = {
     description:
       "Richmond Hill College of Healthcare and Technology Management offers online, hybrid, and in-person courses. Unlocking potential, building futures.",
     url: siteUrl,
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Richmond Hill College" }],
+    images: [{ url: FIRST_HERO_IMAGE.src, width: 1200, height: 630, alt: FIRST_HERO_IMAGE.alt }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Richmond Hill College | Healthcare and Technology Management",
     description:
       "Richmond Hill College of Healthcare and Technology Management offers online, hybrid, and in-person courses. Unlocking potential, building futures.",
+    images: [FIRST_HERO_IMAGE.src],
   },
   robots: {
     index: true,

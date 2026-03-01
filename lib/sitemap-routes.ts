@@ -5,6 +5,7 @@
  */
 export const staticRoutes: { path: string; priority: number; label: string }[] = [
   { path: "", priority: 0.9, label: "Home" },
+  { path: "fr", priority: 0.85, label: "Home (FR)" },
   { path: "about-us", priority: 0.8, label: "About Us" },
   { path: "about-us/team", priority: 0.75, label: "Our Team" },
   { path: "message-from-the-president", priority: 0.8, label: "Message from the President" },

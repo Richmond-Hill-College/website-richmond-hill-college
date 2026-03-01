@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import { FIRST_HERO_IMAGE } from "@/lib/hero";
 
 const slides = [
   {
-    src: "https://primary.jwwb.nl/public/y/c/x/temp-dyefbwmwppidsbcuawqm/image-standard-0nj6vo.png?enable-io=true&enable=upscale&crop=1482%2C844%2Cx11%2Cy0%2Csafe&width=1020&height=581",
-    alt: "Your bridge to global business success – Richmond Hill College bridging programs for internationally educated professionals",
+    src: FIRST_HERO_IMAGE.src,
+    alt: FIRST_HERO_IMAGE.alt,
     badge: "Our free career tools",
     title: "Your Bridge to Global Business Success",
     subtitle:

@@ -59,10 +59,10 @@ export function LocationMap() {
             height:${pinWidth}px;
             min-width:${pinWidth}px;
             min-height:${pinWidth}px;
-            background:#fff;
-            border:2px solid #e2e8f0;
+            background:#f6520a;
+            border:2px solid rgba(255,255,255,0.9);
             border-radius:50%;
-            box-shadow:0 2px 6px rgba(0,0,0,0.12);
+            box-shadow:0 2px 8px rgba(246,82,10,0.4);
             display:flex;
             align-items:center;
             justify-content:center;
@@ -70,7 +70,7 @@ export function LocationMap() {
             flex-shrink:0;
             box-sizing:border-box;
           ">
-            <img src="${logoUrl}" alt="" width="${logoSize}" height="${logoSize}" style="object-fit:contain;display:block;max-width:${logoSize}px;max-height:${logoSize}px" />
+            <img src="${logoUrl}" alt="" width="${logoSize}" height="${logoSize}" style="object-fit:contain;display:block;max-width:${logoSize}px;max-height:${logoSize}px;filter:brightness(0) invert(1)" />
           </div>
           <div style="
             width:0;
@@ -78,8 +78,8 @@ export function LocationMap() {
             margin-top:-2px;
             border-left:${tailSize}px solid transparent;
             border-right:${tailSize}px solid transparent;
-            border-top:${tailSize}px solid #fff;
-            filter:drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+            border-top:${tailSize}px solid #f6520a;
+            filter:drop-shadow(0 1px 2px rgba(0,0,0,0.15));
           "></div>
         </div>
       `;

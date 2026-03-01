@@ -1,5 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+function prefixHref(prefix: string, href: string) {
+  const path = prefix + (href === "/" ? "" : href);
+  return path || "/";
+}
 
 const footerLinkGroups = [
   {
@@ -41,6 +49,9 @@ const footerLinkGroups = [
 ];
 
 export function Footer() {
+  const pathname = usePathname() ?? "/";
+  const localePrefix = pathname.startsWith("/fr") ? "/fr" : "";
+
   return (
     <footer
       className="relative border-t-4 border-[var(--rhc-primary)] bg-[var(--rhc-primary-dark)] text-slate-200"
@@ -59,7 +70,7 @@ export function Footer() {
         <div className="grid gap-10 tablet:gap-12 lg:grid-cols-12 lg:gap-x-10">
           {/* Brand block */}
           <div className="lg:col-span-5">
-            <Link href="/" className="inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rhc-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rhc-primary-dark)]">
+            <Link href={prefixHref(localePrefix, "/")} className="inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rhc-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rhc-primary-dark)]">
               <Image
                 src="/images/logo/rhc-global-bridge-logo.png"
                 alt="Richmond Hill College Global Bridge – healthcare and technology education"
@@ -88,7 +99,7 @@ export function Footer() {
                   {group.links.map(({ href, label }) => (
                     <li key={href}>
                       <Link
-                        href={href}
+                        href={prefixHref(localePrefix, href)}
                         className="inline-flex min-h-[44px] items-center text-sm text-slate-300 transition-colors hover:text-[var(--rhc-primary)] focus:outline-none focus-visible:text-[var(--rhc-primary)] tablet:min-h-[40px]"
                       >
                         {label}
@@ -136,13 +147,13 @@ export function Footer() {
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-sm">
             <Link
-              href="/privacy-policy"
+              href={prefixHref(localePrefix, "/privacy-policy")}
               className="text-slate-400 transition-colors hover:text-slate-200"
             >
               Privacy
             </Link>
             <Link
-              href="/terms-of-service"
+              href={prefixHref(localePrefix, "/terms-of-service")}
               className="text-slate-400 transition-colors hover:text-slate-200"
             >
               Terms

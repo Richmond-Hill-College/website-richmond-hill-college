@@ -191,7 +191,7 @@ export default async function Home() {
             {featuredCourses.map((course) => (
               <li
                 key={course.id}
-                className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md"
+                className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:border-slate-300"
               >
                 <Link
                   href={course.slug ? `/courses/${course.slug}` : course.link}
@@ -199,34 +199,35 @@ export default async function Home() {
                   aria-label={`View ${course.name} course details`}
                   {...(course.slug ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                 >
-                  <div className="relative aspect-[4/3] min-h-[180px] w-full flex-shrink-0 bg-slate-100 tablet:min-h-[200px]">
+                  <div className="relative aspect-[16/10] w-full flex-shrink-0 overflow-hidden bg-slate-100">
                     <Image
                       src={course.image || "/images/hero/hero-2.jpg"}
                       alt={`${course.name} – course at Richmond Hill College`}
                       fill
-                      className="object-cover"
+                      className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                   </div>
-                  <div className="flex flex-1 flex-col p-4">
-                    <h3 className="font-semibold text-slate-900 line-clamp-2">
+                  <div className="flex flex-1 flex-col p-5">
+                    <h3 className="font-semibold text-slate-900 line-clamp-2 group-hover:text-slate-700">
                       {course.name}
                     </h3>
-                    <div className="mt-1 flex flex-wrap items-center gap-2 text-sm">
-                      {course.category && <span className="text-slate-600">{course.category}</span>}
+                    <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-slate-600">
+                      {course.category && <span>{course.category}</span>}
                       {course.duration && (
-                        <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1.5 text-slate-700 ring-1 ring-slate-200/60">
+                        <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-slate-700 ring-1 ring-slate-200/60">
                           {course.duration}
                         </span>
                       )}
                       {course.price && (
-                        <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1.5 font-semibold text-slate-800 ring-1 ring-slate-200/60">
+                        <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 font-semibold text-slate-800 ring-1 ring-slate-200/60">
                           {course.price.includes("CAD") ? course.price : `${course.price} CAD`}
                         </span>
                       )}
                     </div>
-                    <span className="mt-3 inline-block text-sm font-medium text-slate-800">
-                      View details →
+                    <span className="mt-4 inline-flex items-center text-sm font-medium text-slate-800 group-hover:text-slate-600">
+                      View details
+                      <span className="ml-1 transition-transform group-hover:translate-x-0.5">→</span>
                     </span>
                   </div>
                 </Link>

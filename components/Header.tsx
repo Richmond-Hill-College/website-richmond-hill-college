@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useCallback, useEffect, useRef } from "react";
 
 const LOGO_SRC = "/images/logo/rhc-logo.png";
@@ -63,7 +64,20 @@ function ChevronDown({ open }: { open: boolean }) {
   );
 }
 
-function DesktopDropdown({ label, links }: { label: string; links: NavLink[] }) {
+function prefixHref(prefix: string, href: string) {
+  const path = prefix + (href === "/" ? "" : href);
+  return path || "/";
+}
+
+function DesktopDropdown({
+  label,
+  links,
+  localePrefix,
+}: {
+  label: string;
+  links: NavLink[];
+  localePrefix: string;
+}) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -132,7 +146,7 @@ function DesktopDropdown({ label, links }: { label: string; links: NavLink[] }) 
           {links.map(({ href, label: linkLabel }) => (
             <Link
               key={href}
-              href={href}
+              href={prefixHref(localePrefix, href)}
               role="menuitem"
               className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
               onClick={closeMenu}
@@ -146,7 +160,15 @@ function DesktopDropdown({ label, links }: { label: string; links: NavLink[] }) 
   );
 }
 
-function MobileNavItems({ navItems: items, onLinkClick }: { navItems: NavItem[]; onLinkClick: () => void }) {
+function MobileNavItems({
+  navItems: items,
+  onLinkClick,
+  localePrefix,
+}: {
+  navItems: NavItem[];
+  onLinkClick: () => void;
+  localePrefix: string;
+}) {
   const [expanded, setExpanded] = useState<string | null>(null);
   return (
     <>
@@ -156,7 +178,7 @@ function MobileNavItems({ navItems: items, onLinkClick }: { navItems: NavItem[];
           return (
             <Link
               key={item.href}
-              href={item.href}
+              href={prefixHref(localePrefix, item.href)}
               onClick={onLinkClick}
               className={
                 isContact
@@ -196,7 +218,7 @@ function MobileNavItems({ navItems: items, onLinkClick }: { navItems: NavItem[];
               {item.children.map(({ href, label: linkLabel }) => (
                 <Link
                   key={href}
-                  href={href}
+                  href={prefixHref(localePrefix, href)}
                   onClick={onLinkClick}
                   className={`block rounded-md px-4 py-2.5 text-[15px] text-slate-600 hover:text-slate-900 active:text-slate-900 ${mobilePressStateClass}`}
                 >
@@ -236,7 +258,59 @@ function MenuIcon({ open }: { open: boolean }) {
   );
 }
 
+function LanguageSwitch({ variant = "desktop" }: { variant?: "desktop" | "mobile" }) {
+  const pathname = usePathname() ?? "/";
+  const [clientPath, setClientPath] = useState<string | null>(null);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const w = window.location.pathname;
+    if (w && w !== "/" && (pathname === "/" || pathname === "")) setClientPath(w);
+    else setClientPath(null);
+  }, [pathname]);
+  const pathForFr = clientPath ?? pathname;
+  const isFrench = pathForFr.startsWith("/fr");
+  const enPath = isFrench ? (pathForFr.replace(/^\/fr\/?/, "/") || "/") : pathForFr;
+  const frPath = isFrench ? pathForFr : (pathForFr === "/" || pathForFr === "" ? "/fr" : `/fr${pathForFr}`);
+
+  const linkClass =
+    variant === "desktop"
+      ? "min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg px-2 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1"
+      : "flex items-center gap-2 rounded-md px-2 py-3 text-base font-medium border-b border-slate-100";
+
+  return (
+    <div
+      className={
+        variant === "desktop"
+          ? "hidden lg:flex items-center gap-0.5 rounded-lg border border-slate-200 bg-slate-50/80 p-0.5"
+          : "flex items-center gap-1 border-b border-slate-100 pb-3"
+      }
+      role="group"
+      aria-label="Language"
+    >
+      <Link
+        href={enPath}
+        className={`${linkClass} ${!isFrench ? "bg-white text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-900"} ${variant === "mobile" ? mobilePressStateClass : ""}`}
+        aria-current={!isFrench ? "page" : undefined}
+      >
+        EN
+      </Link>
+      <span className="text-slate-300 select-none" aria-hidden>
+        |
+      </span>
+      <Link
+        href={frPath}
+        className={`${linkClass} ${isFrench ? "bg-white text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-900"} ${variant === "mobile" ? mobilePressStateClass : ""}`}
+        aria-current={isFrench ? "page" : undefined}
+      >
+        FR
+      </Link>
+    </div>
+  );
+}
+
 export function Header() {
+  const pathname = usePathname() ?? "/";
+  const localePrefix = pathname.startsWith("/fr") ? "/fr" : "";
   const [menuOpen, setMenuOpen] = useState(false);
   const [logoError, setLogoError] = useState(false);
 
@@ -257,7 +331,7 @@ export function Header() {
     <header className="sticky top-0 z-50 overflow-visible border-b border-slate-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <div className="mx-auto flex h-12 max-w-7xl items-center justify-between gap-4 overflow-visible px-4 py-2 sm:h-16 sm:px-6 tablet:px-8 tablet:gap-6">
         <Link
-          href="/"
+          href={localePrefix || "/"}
           className="flex h-8 min-w-[120px] shrink-0 items-center gap-2 sm:h-9 tablet:h-10 tablet:min-w-[140px]"
           aria-label="Richmond Hill College home"
         >
@@ -282,20 +356,28 @@ export function Header() {
             item.type === "link" ? (
               <Link
                 key={item.href}
-                href={item.href}
+                href={prefixHref(localePrefix, item.href)}
                 className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 tablet:px-4 tablet:text-[15px]"
               >
                 {item.label}
               </Link>
             ) : (
-              <DesktopDropdown key={`dropdown-${index}`} label={item.label} links={item.children} />
+              <DesktopDropdown
+                key={`dropdown-${index}`}
+                label={item.label}
+                links={item.children}
+                localePrefix={localePrefix}
+              />
             )
           )}
         </nav>
 
+        {/* Language switch: EN | FR (desktop) */}
+        <LanguageSwitch variant="desktop" />
+
         {/* Desktop CTA (lg+): matches hero CTA style */}
         <Link
-          href="/contact"
+          href={localePrefix + "/contact"}
           className="hidden lg:inline-flex min-h-[40px] shrink-0 items-center justify-center rounded-lg px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white shadow-lg transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#192640] tablet:min-h-[44px] tablet:px-5 tablet:py-2.5 tablet:text-sm"
           style={{
             backgroundColor: "#f6520a",
@@ -336,7 +418,14 @@ export function Header() {
           }
         >
           <nav className="flex flex-col px-4 py-4" aria-label="Mobile navigation">
-            <MobileNavItems navItems={navItems} onLinkClick={closeMenu} />
+            <div className="mb-3">
+              <LanguageSwitch variant="mobile" />
+            </div>
+            <MobileNavItems
+              navItems={navItems}
+              onLinkClick={closeMenu}
+              localePrefix={localePrefix}
+            />
           </nav>
         </div>
       </div>
