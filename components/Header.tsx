@@ -46,6 +46,9 @@ const navItems: NavItem[] = [
   { type: "link", href: "/my-account", label: "Account" },
 ];
 
+const mobilePressStateClass =
+  "transition-[background-color,color,transform] duration-150 ease-out active:scale-[0.99] active:bg-slate-100";
+
 function ChevronDown({ open }: { open: boolean }) {
   return (
     <svg
@@ -157,8 +160,8 @@ function MobileNavItems({ navItems: items, onLinkClick }: { navItems: NavItem[];
               onClick={onLinkClick}
               className={
                 isContact
-                  ? "mt-2 rounded-lg px-6 py-3 min-h-[48px] inline-flex items-center justify-center text-sm font-semibold uppercase tracking-wider text-white shadow-lg transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#192640] border-b border-slate-100 pb-3"
-                  : "py-3 text-base font-medium text-slate-700 hover:text-slate-900 border-b border-slate-100"
+                  ? "mt-2 rounded-lg px-6 py-3 min-h-[48px] inline-flex items-center justify-center text-sm font-semibold uppercase tracking-wider text-white shadow-lg transition-[opacity,transform,box-shadow] duration-150 hover:opacity-95 active:scale-[0.99] active:opacity-90 active:shadow-md focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#192640] border-b border-slate-100 pb-3"
+                  : `block w-full rounded-md px-2 py-3 text-base font-medium text-slate-700 hover:text-slate-900 active:text-slate-900 border-b border-slate-100 ${mobilePressStateClass}`
               }
               style={
                 isContact
@@ -183,7 +186,7 @@ function MobileNavItems({ navItems: items, onLinkClick }: { navItems: NavItem[];
                 e.stopPropagation();
                 setExpanded(isOpen ? null : item.label);
               }}
-              className="flex w-full items-center justify-between py-3 text-left text-base font-medium text-slate-700 hover:text-slate-900"
+              className={`flex w-full items-center justify-between rounded-md px-2 py-3 text-left text-base font-medium text-slate-700 hover:text-slate-900 active:text-slate-900 ${mobilePressStateClass}`}
               aria-expanded={isOpen}
             >
               {item.label}
@@ -195,7 +198,7 @@ function MobileNavItems({ navItems: items, onLinkClick }: { navItems: NavItem[];
                   key={href}
                   href={href}
                   onClick={onLinkClick}
-                  className="block py-2.5 pl-4 text-[15px] text-slate-600 hover:text-slate-900"
+                  className={`block rounded-md px-4 py-2.5 text-[15px] text-slate-600 hover:text-slate-900 active:text-slate-900 ${mobilePressStateClass}`}
                 >
                   {linkLabel}
                 </Link>

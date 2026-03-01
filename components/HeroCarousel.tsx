@@ -52,9 +52,6 @@ const PARALLAX = {
   smoothFactor: 0.14,
 } as const;
 
-const lerp = (current: number, target: number, factor: number) =>
-  current + (target - current) * factor;
-
 export function HeroCarousel() {
   const [index, setIndex] = useState(0);
   const [parallaxY, setParallaxY] = useState(0);
