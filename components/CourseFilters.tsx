@@ -250,9 +250,22 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
                   </div>
                   <div className="flex flex-1 flex-col justify-center p-4">
                     <h2 className="font-semibold text-slate-900">{course.name}</h2>
-                    <div className="mt-1 flex flex-wrap gap-x-3 text-sm text-slate-600">
-                      {course.category && <span>{course.category}</span>}
-                      {course.duration && <span>{course.duration}</span>}
+                    <div className="mt-1 flex flex-wrap gap-2 text-sm">
+                      {course.category && (
+                        <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-slate-600">
+                          {course.category}
+                        </span>
+                      )}
+                      {course.duration && (
+                        <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-slate-600">
+                          {course.duration}
+                        </span>
+                      )}
+                      {course.price && (
+                        <span className="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-0.5 font-medium text-emerald-800">
+                          {course.price.includes("CAD") ? course.price : `${course.price} CAD`}
+                        </span>
+                      )}
                     </div>
                     <span className="mt-2 inline-block text-sm font-medium text-slate-800">
                       View details →
