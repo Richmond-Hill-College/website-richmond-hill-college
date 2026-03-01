@@ -242,16 +242,18 @@ export default async function MyAccountPage() {
                 </div>
                 <div className="flex flex-1 flex-col justify-center p-4 sm:p-5">
                   <h3 className="font-semibold text-slate-900">{course.name}</h3>
-                  <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-600">
+                  <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
                     {course.category && (
-                      <span>{course.category}</span>
+                      <span className="text-slate-600">{course.category}</span>
                     )}
                     {course.duration && (
-                      <span>{course.duration}</span>
+                      <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1.5 text-slate-700 ring-1 ring-slate-200/60">
+                        {course.duration}
+                      </span>
                     )}
                     {course.price && (
-                      <span className="font-medium text-slate-800">
-                        {course.price}
+                      <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-800 ring-1 ring-slate-200/60">
+                        {course.price.includes("CAD") ? course.price : `${course.price} CAD`}
                       </span>
                     )}
                   </div>

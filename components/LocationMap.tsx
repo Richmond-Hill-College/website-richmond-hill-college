@@ -6,7 +6,13 @@ import "leaflet/dist/leaflet.css";
 
 /** Richmond Hill College: 1 Sala Drive, Richmond Hill, Ontario, Canada */
 const CENTER: [number, number] = [43.8785, -79.435];
-const ZOOM = 16;
+const ZOOM = 14;
+const ADDRESS = "1 Sala Drive, Richmond Hill, ON";
+const ADDRESS_FULL = "1 Sala Drive, Richmond Hill, ON, Canada";
+
+const GOOGLE_MAPS_DIRECTIONS = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(ADDRESS_FULL)}`;
+const APPLE_MAPS_DIRECTIONS = `https://maps.apple.com/?daddr=${encodeURIComponent(ADDRESS_FULL)}`;
+const WAZE_DIRECTIONS = `https://waze.com/ul?ll=${CENTER[0]},${CENTER[1]}&navigate=yes`;
 
 export function LocationMap() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -24,8 +30,9 @@ export function LocationMap() {
         attributionControl: false,
       });
 
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+        maxZoom: 20,
+        subdomains: "abcd",
       }).addTo(map);
 
       const logoUrl =
@@ -33,9 +40,10 @@ export function LocationMap() {
           ? `${window.location.origin}/images/logo/rhc-logo.png`
           : "/images/logo/rhc-logo.png";
 
-      const pinWidth = 52;
-      const pinHeight = 64;
-      const logoSize = 36;
+      const pinWidth = 40;
+      const pinHeight = 50;
+      const logoSize = 28;
+      const tailSize = 10;
 
       const markerHtml = `
         <div style="
@@ -44,29 +52,33 @@ export function LocationMap() {
           align-items:center;
           width:${pinWidth}px;
           height:${pinHeight}px;
+          box-sizing:border-box;
         ">
           <div style="
             width:${pinWidth}px;
             height:${pinWidth}px;
+            min-width:${pinWidth}px;
+            min-height:${pinWidth}px;
             background:#fff;
             border:2px solid #e2e8f0;
             border-radius:50%;
-            box-shadow:0 2px 8px rgba(0,0,0,0.15);
+            box-shadow:0 2px 6px rgba(0,0,0,0.12);
             display:flex;
             align-items:center;
             justify-content:center;
             overflow:hidden;
             flex-shrink:0;
+            box-sizing:border-box;
           ">
-            <img src="${logoUrl}" alt="" width="${logoSize}" height="${logoSize}" style="object-fit:contain;display:block" />
+            <img src="${logoUrl}" alt="" width="${logoSize}" height="${logoSize}" style="object-fit:contain;display:block;max-width:${logoSize}px;max-height:${logoSize}px" />
           </div>
           <div style="
             width:0;
             height:0;
             margin-top:-2px;
-            border-left:14px solid transparent;
-            border-right:14px solid transparent;
-            border-top:14px solid #fff;
+            border-left:${tailSize}px solid transparent;
+            border-right:${tailSize}px solid transparent;
+            border-top:${tailSize}px solid #fff;
             filter:drop-shadow(0 1px 2px rgba(0,0,0,0.1));
           "></div>
         </div>
@@ -80,9 +92,21 @@ export function LocationMap() {
         popupAnchor: [0, -pinHeight],
       });
 
+      const popupContent = `
+        <div class="rhc-map-popup">
+          <p class="rhc-map-popup-address"><strong>Richmond Hill College</strong><br>${ADDRESS}</p>
+          <p class="rhc-map-popup-label">Get directions</p>
+          <div class="rhc-map-popup-links">
+            <a href="${GOOGLE_MAPS_DIRECTIONS}" target="_blank" rel="noopener noreferrer" class="rhc-map-popup-link">Google Maps</a>
+            <a href="${APPLE_MAPS_DIRECTIONS}" target="_blank" rel="noopener noreferrer" class="rhc-map-popup-link">Apple Maps</a>
+            <a href="${WAZE_DIRECTIONS}" target="_blank" rel="noopener noreferrer" class="rhc-map-popup-link">Waze</a>
+          </div>
+        </div>
+      `;
+
       L.marker(CENTER, { icon: pinIcon })
         .addTo(map)
-        .bindPopup("Richmond Hill College<br>1 Sala Drive, Richmond Hill, ON")
+        .bindPopup(popupContent, { maxWidth: 260, className: "rhc-map-popup-wrapper" })
         .openPopup();
 
       map.setView(CENTER, ZOOM);

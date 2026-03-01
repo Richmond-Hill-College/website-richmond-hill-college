@@ -34,19 +34,30 @@ export function AnnouncementBanner() {
     <div
       role="region"
       aria-label="Announcement"
-      className="relative z-40 flex w-full items-center justify-center gap-2 border-b border-orange-700/30 bg-[#f6520a] px-4 py-2.5 text-center text-sm font-medium text-white shadow-sm sm:py-3 sm:text-[15px]"
+      className="relative z-40 flex w-full items-center justify-center gap-2 border-b border-orange-700/30 bg-[#f6520a] px-3 py-2 text-center text-sm font-medium text-white shadow-sm sm:px-4 sm:py-3 sm:text-[15px]"
     >
-      <span className="flex flex-1 flex-wrap items-center justify-center gap-1.5 gap-y-1 sm:gap-2">
+      <span className="flex flex-1 flex-shrink-0 flex-wrap items-center justify-center gap-1.5 gap-y-1 sm:gap-2">
         <span className="inline-flex items-center gap-1 rounded bg-white/20 px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide sm:px-2">
           Limited spots
         </span>
-        <span>
-          Enrol now for upcoming intakes — places fill quickly.{" "}
+        {/* Mobile: short line to save vertical space */}
+        <span className="sm:hidden">
+          Enrol now.{" "}
           <Link
-            href="/programs"
+            href="/courses"
             className="underline decoration-white/80 underline-offset-2 transition-colors hover:decoration-white hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#f6520a]"
           >
-            View programs
+            View courses
+          </Link>
+        </span>
+        {/* sm+: full message */}
+        <span className="hidden sm:inline">
+          Enrol now for upcoming intakes.{" "}
+          <Link
+            href="/courses"
+            className="underline decoration-white/80 underline-offset-2 transition-colors hover:decoration-white hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#f6520a]"
+          >
+            View courses
           </Link>
         </span>
       </span>

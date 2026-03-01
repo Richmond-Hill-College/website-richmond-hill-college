@@ -53,12 +53,20 @@ export function CourseOfferingsWithFilters({ courses }: CourseOfferingsWithFilte
                       <h2 className="text-2xl font-bold text-slate-900 group-hover:text-slate-700">
                         {course.name}
                       </h2>
-                      <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-slate-600">
+                      <div className="mt-4 flex flex-wrap items-center gap-2 text-slate-600">
                         {course.category && (
                           <span className="font-medium text-slate-700">{course.category}</span>
                         )}
-                        {course.duration && <span>{course.duration}</span>}
-                        {course.price && <span>{course.price}</span>}
+                        {course.duration && (
+                          <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1.5 text-slate-700 ring-1 ring-slate-200/60">
+                            {course.duration}
+                          </span>
+                        )}
+                        {course.price && (
+                          <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-800 ring-1 ring-slate-200/60">
+                            {course.price.includes("CAD") ? course.price : `${course.price} CAD`}
+                          </span>
+                        )}
                       </div>
                       <p className="mt-3 text-slate-600">
                         Professional bridging and certificate programs aligned with Canadian

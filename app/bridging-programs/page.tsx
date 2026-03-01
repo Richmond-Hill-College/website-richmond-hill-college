@@ -87,8 +87,17 @@ export default async function BridgingProgramsPage() {
                         className="flex items-center justify-between gap-4 rounded-lg py-2 text-slate-800 hover:bg-slate-50 hover:text-slate-900"
                       >
                         <span className="font-medium">{course.name}</span>
-                        <span className="text-sm text-slate-500">
-                          {course.duration && `${course.duration} · `}{course.price}
+                        <span className="flex flex-wrap items-center gap-2 text-sm">
+                          {course.duration && (
+                            <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-slate-700 ring-1 ring-slate-200/60">
+                              {course.duration}
+                            </span>
+                          )}
+                          {course.price && (
+                            <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-800 ring-1 ring-slate-200/60">
+                              {course.price.includes("CAD") ? course.price : `${course.price} CAD`}
+                            </span>
+                          )}
                         </span>
                       </Link>
                     </li>

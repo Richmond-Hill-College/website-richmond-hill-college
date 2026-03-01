@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 
 const slides = [
   {
-    src: "/images/hero/hero-1.jpg",
+    src: "https://primary.jwwb.nl/public/y/c/x/temp-dyefbwmwppidsbcuawqm/image-standard-0nj6vo.png?enable-io=true&enable=upscale&crop=1482%2C844%2Cx11%2Cy0%2Csafe&width=1020&height=581",
     alt: "Your bridge to global business success – Richmond Hill College bridging programs for internationally educated professionals",
     badge: "Our free career tools",
     title: "Your Bridge to Global Business Success",
@@ -41,7 +41,10 @@ const INTERVAL_MS = 5000;
 /** Parallax config: scroll-controlled depth effect */
 const PARALLAX = {
   textFactor: 0.55,
-  imageFactor: 0.2,
+  /** Default upward offset so hero image sits higher in frame */
+  imageOffsetUp: 56,
+  /** Scroll multiplier: higher = image moves up more as you scroll */
+  imageFactor: 0.38,
   maxScale: 0.28,
   easeOutCubic: (t: number) => 1 - (1 - t) ** 3,
   maxTiltDeg: 3,
@@ -57,7 +60,7 @@ export function HeroCarousel() {
   const [parallaxY, setParallaxY] = useState(0);
   const [imageScale, setImageScale] = useState(1);
   const [imageTilt, setImageTilt] = useState(0);
-  const [imageTranslateY, setImageTranslateY] = useState(0);
+  const [imageTranslateY, setImageTranslateY] = useState(-PARALLAX.imageOffsetUp);
   const [reduceMotion, setReduceMotion] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const rafRef = useRef<number | null>(null);
@@ -90,14 +93,14 @@ export function HeroCarousel() {
         setParallaxY(0);
         setImageScale(1);
         setImageTilt(0);
-        setImageTranslateY(0);
+        setImageTranslateY(-PARALLAX.imageOffsetUp);
         return;
       }
 
       setParallaxY(rect.top * PARALLAX.textFactor);
       setImageScale(1 + PARALLAX.maxScale * progress);
       setImageTilt(PARALLAX.maxTiltDeg * progress);
-      setImageTranslateY(rect.top * PARALLAX.imageFactor);
+      setImageTranslateY(-PARALLAX.imageOffsetUp + rect.top * PARALLAX.imageFactor);
     };
 
     const onScrollOrResize = () => {
@@ -138,12 +141,21 @@ export function HeroCarousel() {
             aria-hidden={i !== index}
             style={
               reduceMotion
-                ? undefined
+                ? {
+                    maskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
+                    WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
+                    maskSize: "100% 100%",
+                    WebkitMaskSize: "100% 100%",
+                  }
                 : {
                     transform: `translate3d(0, ${imageTranslateY}px, 0) scale(${imageScale}) rotateX(${imageTilt}deg)`,
                     transformOrigin: "center center",
                     willChange: "transform",
                     backfaceVisibility: "hidden",
+                    maskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
+                    WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
+                    maskSize: "100% 100%",
+                    WebkitMaskSize: "100% 100%",
                   }
             }
           >
@@ -164,7 +176,7 @@ export function HeroCarousel() {
         aria-hidden
       />
       <div
-        className="absolute inset-0 z-20 flex flex-col items-center justify-center px-4 text-center text-white tablet:px-8"
+        className="absolute inset-0 z-20 flex flex-col items-center justify-start pt-6 text-center text-white tablet:pt-8 tablet:px-8 px-4"
         style={
           reduceMotion
             ? undefined

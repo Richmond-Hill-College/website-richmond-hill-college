@@ -51,7 +51,7 @@ export default async function CourseDetailPage({ params }: Props) {
       />
       <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
         <Link
-          href="/my-account"
+          href="/courses"
           className="mb-6 inline-block text-sm font-medium text-slate-600 hover:text-slate-900"
         >
           ← All courses
@@ -77,17 +77,25 @@ export default async function CourseDetailPage({ params }: Props) {
             <h1 className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl">
               {course.name}
             </h1>
-            <dl className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm text-slate-600">
+            <dl className="mt-4 flex flex-wrap gap-2 text-sm">
               {course.duration && (
                 <>
                   <dt className="sr-only">Duration</dt>
-                  <dd>{course.duration}</dd>
+                  <dd>
+                    <span className="inline-flex items-center rounded-full bg-slate-100 px-3.5 py-1.5 text-slate-700 ring-1 ring-slate-200/60">
+                      {course.duration}
+                    </span>
+                  </dd>
                 </>
               )}
               {course.price && (
                 <>
                   <dt className="sr-only">Price</dt>
-                  <dd className="font-semibold text-slate-800">{course.price}</dd>
+                  <dd>
+                    <span className="inline-flex items-center rounded-full bg-slate-100 px-3.5 py-1.5 font-semibold text-slate-800 ring-1 ring-slate-200/60">
+                      {course.price.includes("CAD") ? course.price : `${course.price} CAD`}
+                    </span>
+                  </dd>
                 </>
               )}
             </dl>

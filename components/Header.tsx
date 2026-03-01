@@ -62,30 +62,41 @@ function ChevronDown({ open }: { open: boolean }) {
 
 function DesktopDropdown({ label, links }: { label: string; links: NavLink[] }) {
   const [open, setOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const openMenu = useCallback(() => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    setOpen(true);
+  }, []);
+
+  const closeMenu = useCallback(() => setOpen(false), []);
+
+  const scheduleClose = useCallback(() => {
+    closeTimeoutRef.current = setTimeout(closeMenu, 150);
+  }, [closeMenu]);
 
   useEffect(() => {
     if (!open) return;
-    let cleanup: (() => void) | undefined;
-    const id = setTimeout(() => {
-      const handleClickOutside = (e: MouseEvent) => {
-        if (containerRef.current && !containerRef.current.contains(e.target as Node)) setOpen(false);
-      };
-      document.addEventListener("click", handleClickOutside);
-      cleanup = () => document.removeEventListener("click", handleClickOutside);
-    }, 0);
-    return () => {
-      clearTimeout(id);
-      cleanup?.();
+    const handleClickOutside = (e: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) closeMenu();
     };
-  }, [open]);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [open, closeMenu]);
+
+  const dropdownId = `dropdown-${label.replace(/\s+/g, "-")}`;
+  const triggerId = `dropdown-trigger-${label.replace(/\s+/g, "-")}`;
 
   return (
     <div
-      ref={containerRef}
-      className="relative overflow-visible"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      ref={wrapperRef}
+      className="relative"
+      onMouseEnter={openMenu}
+      onMouseLeave={scheduleClose}
     >
       <button
         type="button"
@@ -97,35 +108,35 @@ function DesktopDropdown({ label, links }: { label: string; links: NavLink[] }) 
         className="min-h-[44px] min-w-[44px] flex items-center justify-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 tablet:px-4 tablet:text-[15px]"
         aria-expanded={open}
         aria-haspopup="true"
-        aria-controls={`dropdown-${label.replace(/\s+/g, "-")}`}
-        id={`dropdown-trigger-${label.replace(/\s+/g, "-")}`}
+        aria-controls={dropdownId}
+        id={triggerId}
       >
         {label}
         <ChevronDown open={open} />
       </button>
-      {/* -mt-1 pt-1 bridges the gap so hover from button to panel stays inside container */}
       <div
-        id={`dropdown-${label.replace(/\s+/g, "-")}`}
+        id={dropdownId}
         role="menu"
         aria-orientation="vertical"
-        aria-labelledby={`dropdown-trigger-${label.replace(/\s+/g, "-")}`}
+        aria-labelledby={triggerId}
         className={
-          "absolute right-0 top-full z-[100] -mt-1 pt-1 min-w-[200px] transition-[opacity,visibility] duration-150 " +
+          "absolute right-0 top-full z-[100] min-w-[200px] pt-0.5 " +
+          "transition-[opacity,visibility] duration-150 " +
           (open ? "visible opacity-100" : "invisible pointer-events-none opacity-0")
         }
       >
         <div className="rounded-lg border border-slate-200 bg-white py-1 shadow-lg">
-        {links.map(({ href, label: linkLabel }) => (
-          <Link
-            key={href}
-            href={href}
-            role="menuitem"
-            className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
-            onClick={() => setOpen(false)}
-          >
-            {linkLabel}
-          </Link>
-        ))}
+          {links.map(({ href, label: linkLabel }) => (
+            <Link
+              key={href}
+              href={href}
+              role="menuitem"
+              className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
+              onClick={closeMenu}
+            >
+              {linkLabel}
+            </Link>
+          ))}
         </div>
       </div>
     </div>
@@ -304,28 +315,26 @@ export function Header() {
         </button>
       </div>
 
-      {/* Mobile & tablet menu panel — collapsed height when closed so header stays compact */}
+      {/* Mobile & tablet menu panel — max-height so expanded sub-pages are visible and scrollable */}
       <div
         id="mobile-nav"
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation"
         className={
-          "lg:hidden grid transition-[grid-template-rows] duration-200 ease-out " +
-          (menuOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]")
+          "lg:hidden overflow-hidden transition-[max-height] duration-200 ease-out " +
+          (menuOpen ? "max-h-[min(80vh,600px)]" : "max-h-0")
         }
       >
-        <div className="overflow-hidden">
-          <div
-            className={
-              "border-t border-slate-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/95 transition-opacity duration-200 " +
-              (menuOpen ? "opacity-100" : "opacity-0")
-            }
-          >
-            <nav className="flex flex-col px-4 py-4" aria-label="Mobile navigation">
+        <div
+          className={
+            "border-t border-slate-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/95 transition-opacity duration-200 overflow-y-auto " +
+            (menuOpen ? "opacity-100" : "opacity-0")
+          }
+        >
+          <nav className="flex flex-col px-4 py-4" aria-label="Mobile navigation">
             <MobileNavItems navItems={navItems} onLinkClick={closeMenu} />
-            </nav>
-          </div>
+          </nav>
         </div>
       </div>
     </header>

@@ -1,11 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async rewrites() {
-    return [
-      // Browsers and tools often request /favicon.ico by default; serve our dynamic icon.
-      { source: "/favicon.ico", destination: "/icon" },
-    ];
-  },
   images: {
     remotePatterns: [
       {

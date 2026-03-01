@@ -88,9 +88,17 @@ export default async function CourseCategoryPage({ params }: Props) {
               </div>
               <div className="flex flex-1 flex-col justify-center p-4">
                 <h2 className="font-semibold text-slate-900">{course.name}</h2>
-                <div className="mt-1 flex flex-wrap gap-x-3 text-sm text-slate-600">
-                  {course.duration && <span>{course.duration}</span>}
-                  {course.price && <span className="font-medium text-slate-800">{course.price}</span>}
+                <div className="mt-1 flex flex-wrap items-center gap-2 text-sm">
+                  {course.duration && (
+                    <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1.5 text-slate-700 ring-1 ring-slate-200/60">
+                      {course.duration}
+                    </span>
+                  )}
+                  {course.price && (
+                    <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-800 ring-1 ring-slate-200/60">
+                      {course.price.includes("CAD") ? course.price : `${course.price} CAD`}
+                    </span>
+                  )}
                 </div>
                 <span className="mt-2 inline-block text-sm font-medium text-slate-800">
                   View details →

@@ -26,6 +26,15 @@ const config: Config = {
           "dark-ui": "#32373c",
         },
       },
+      keyframes: {
+        "cookie-banner-in": {
+          "0%": { opacity: "0", transform: "translateY(100%)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        "cookie-banner-in": "cookie-banner-in 0.4s ease-out forwards",
+      },
     },
   },
   plugins: [],

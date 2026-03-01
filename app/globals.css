@@ -69,6 +69,30 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
+/* WhatsApp widget: above bottom nav on mobile (nav is md:hidden, so only below 768px) */
+@media (max-width: 767px) {
+  .whatsapp-widget-fab {
+    bottom: calc(5rem + env(safe-area-inset-bottom, 0)) !important;
+    right: calc(1rem + env(safe-area-inset-right, 0)) !important;
+  }
+  .whatsapp-widget-panel {
+    bottom: calc(8.5rem + env(safe-area-inset-bottom, 0)) !important;
+    left: 1rem !important;
+    right: 1rem !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+}
+@media (min-width: 768px) {
+  .whatsapp-widget-fab {
+    bottom: calc(1.5rem + env(safe-area-inset-bottom, 0)) !important;
+    right: calc(1.5rem + env(safe-area-inset-right, 0)) !important;
+  }
+  .whatsapp-widget-panel {
+    bottom: calc(5.5rem + env(safe-area-inset-bottom, 0)) !important;
+  }
+}
+
 /* Smooth scroll for anchor links */
 @media (prefers-reduced-motion: no-preference) {
   html {
@@ -81,8 +105,145 @@ body {
   @apply mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 tablet:px-8 tablet:py-20 lg:px-8;
 }
 
-/* Contact map: custom pin marker (logo inside pin shape) */
+/* Contact map: custom pin marker (logo inside pin shape) – lock size so pin doesn’t overscale; do not override transform (Leaflet uses it for position) */
 .rhc-location-marker {
   background: transparent !important;
   border: none !important;
+  width: 40px !important;
+  height: 50px !important;
+  overflow: visible !important;
+}
+.rhc-location-marker > div {
+  width: 40px !important;
+  height: 50px !important;
+  min-width: 40px !important;
+  min-height: 50px !important;
+  max-width: 40px !important;
+  max-height: 50px !important;
+}
+.rhc-location-marker img {
+  width: 28px !important;
+  height: 28px !important;
+  max-width: 28px !important;
+  max-height: 28px !important;
+  object-fit: contain !important;
+}
+
+/* Map popup: address + get directions (Google, Apple Maps, Waze) */
+.rhc-map-popup {
+  margin: 0;
+  min-width: 200px;
+}
+.rhc-map-popup-address {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: #334155;
+}
+.rhc-map-popup-address strong {
+  color: #0f172a;
+}
+.rhc-map-popup-label {
+  margin: 0 0 0.35rem 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+.rhc-map-popup-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.5rem;
+}
+.rhc-map-popup-link {
+  display: inline-block;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #192640;
+  background: #f1f5f9;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+.rhc-map-popup-link:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+/* ----- Scroll reveal (Apple-style section entrance) ----- */
+[data-scroll-reveal] {
+  --reveal-duration: 700ms;
+  --reveal-easing: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --reveal-offset-y: 28px;
+}
+
+[data-scroll-reveal]:not([data-revealed]) {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-offset-y), 0);
+}
+
+[data-scroll-reveal][data-revealed] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-scroll-reveal]:not([data-reduce-motion]) {
+    transition:
+      opacity var(--reveal-duration) var(--reveal-easing),
+      transform var(--reveal-duration) var(--reveal-easing);
+  }
+
+  /* Staggered children: delay each direct child */
+  [data-scroll-reveal][data-stagger-children] > * {
+    --stagger: 0;
+    opacity: 0;
+    transform: translate3d(0, var(--reveal-offset-y), 0);
+    transition:
+      opacity var(--reveal-duration) var(--reveal-easing),
+      transform var(--reveal-duration) var(--reveal-easing);
+    transition-delay: calc(var(--stagger) * var(--scroll-reveal-stagger-ms, 80) * 1ms);
+  }
+
+  [data-scroll-reveal][data-stagger-children][data-revealed] > * {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(1) { --stagger: 0; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(2) { --stagger: 1; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(3) { --stagger: 2; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(4) { --stagger: 3; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(5) { --stagger: 4; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(6) { --stagger: 5; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(7) { --stagger: 6; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(8) { --stagger: 7; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(9) { --stagger: 8; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(10) { --stagger: 9; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(11) { --stagger: 10; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(12) { --stagger: 11; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(13) { --stagger: 12; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(14) { --stagger: 13; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(15) { --stagger: 14; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(16) { --stagger: 15; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(17) { --stagger: 16; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(18) { --stagger: 17; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(19) { --stagger: 18; }
+  [data-scroll-reveal][data-stagger-children] > *:nth-child(20) { --stagger: 19; }
+}
+
+/* When stagger is on, the wrapper itself should not animate (children do) */
+[data-scroll-reveal][data-stagger-children] {
+  opacity: 1;
+  transform: none;
+}
+[data-scroll-reveal][data-stagger-children]:not([data-revealed]) > * {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-offset-y), 0);
+}
+[data-scroll-reveal][data-stagger-children][data-revealed] > * {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
 }

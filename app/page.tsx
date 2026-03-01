@@ -8,6 +8,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { ContactBlock } from "@/components/ContactBlock";
 import { FAQSection } from "@/components/FAQSection";
 import { ContactForm } from "@/components/ContactForm";
+import { ScrollReveal } from "@/components/ScrollReveal";
 import { getRhcCourses, RHC_GLOBAL_BRIDGE_COURSES_FALLBACK } from "@/lib/rhc-global-bridge-courses";
 
 const learningOptions = [
@@ -71,7 +72,7 @@ export default async function Home() {
       <HeroCarousel />
 
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 tablet:px-8 tablet:py-24 lg:px-8">
-        <section className="mb-16 tablet:mb-24">
+        <ScrollReveal as="section" className="mb-16 tablet:mb-24">
           <div className="grid gap-10 tablet:gap-14 lg:grid-cols-[0.8fr_1.7fr] lg:items-center">
             <div>
               <span className="text-xs font-semibold uppercase tracking-widest text-slate-500">
@@ -95,9 +96,15 @@ export default async function Home() {
             </div>
             <CourseSlideshow courses={slideshowCourses} />
           </div>
-        </section>
+        </ScrollReveal>
 
-        <section className="mb-16 tablet:mb-24" aria-labelledby="bridging-programs-heading">
+        <ScrollReveal
+          as="section"
+          className="mb-16 tablet:mb-24"
+          aria-labelledby="bridging-programs-heading"
+          staggerChildren
+          staggerMs={90}
+        >
           <div className="mb-10 text-center tablet:mb-12">
             <span className="text-xs font-semibold uppercase tracking-widest text-slate-500">
               Our free career tools
@@ -156,9 +163,15 @@ export default async function Home() {
               View all bridging programs
             </Link>
           </div>
-        </section>
+        </ScrollReveal>
 
-        <section className="mb-16 tablet:mb-24" aria-labelledby="courses-heading">
+        <ScrollReveal
+          as="section"
+          className="mb-16 tablet:mb-24"
+          aria-labelledby="courses-heading"
+          staggerChildren
+          staggerMs={70}
+        >
           <div className="mb-10 text-center tablet:mb-12">
             <span className="text-xs font-semibold uppercase tracking-widest text-slate-500">
               Professional development
@@ -186,7 +199,7 @@ export default async function Home() {
                   aria-label={`View ${course.name} course details`}
                   {...(course.slug ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                 >
-                  <div className="relative aspect-[4/3] w-full flex-shrink-0 bg-slate-100">
+                  <div className="relative aspect-[4/3] min-h-[180px] w-full flex-shrink-0 bg-slate-100 tablet:min-h-[200px]">
                     <Image
                       src={course.image || "/images/hero/hero-2.jpg"}
                       alt={`${course.name} – course at Richmond Hill College`}
@@ -199,15 +212,19 @@ export default async function Home() {
                     <h3 className="font-semibold text-slate-900 line-clamp-2">
                       {course.name}
                     </h3>
-                    <div className="mt-1 flex flex-wrap gap-x-3 text-sm text-slate-600">
-                      {course.category && <span>{course.category}</span>}
-                      {course.duration && <span>{course.duration}</span>}
+                    <div className="mt-1 flex flex-wrap items-center gap-2 text-sm">
+                      {course.category && <span className="text-slate-600">{course.category}</span>}
+                      {course.duration && (
+                        <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1.5 text-slate-700 ring-1 ring-slate-200/60">
+                          {course.duration}
+                        </span>
+                      )}
+                      {course.price && (
+                        <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1.5 font-semibold text-slate-800 ring-1 ring-slate-200/60">
+                          {course.price.includes("CAD") ? course.price : `${course.price} CAD`}
+                        </span>
+                      )}
                     </div>
-                    {course.price && (
-                      <p className="mt-1 text-sm font-medium text-slate-700">
-                        {course.price}
-                      </p>
-                    )}
                     <span className="mt-3 inline-block text-sm font-medium text-slate-800">
                       View details →
                     </span>
@@ -224,9 +241,9 @@ export default async function Home() {
               View all courses
             </Link>
           </div>
-        </section>
+        </ScrollReveal>
 
-        <section className="mb-16 tablet:mb-24" aria-labelledby="learning-options-heading">
+        <ScrollReveal as="section" className="mb-16 tablet:mb-24" aria-labelledby="learning-options-heading">
           <h2
             id="learning-options-heading"
             className="mb-6 text-2xl font-bold text-slate-900 sm:text-3xl tablet:mb-8 tablet:text-3xl"
@@ -258,9 +275,9 @@ export default async function Home() {
               );
             })}
           </div>
-        </section>
+        </ScrollReveal>
 
-        <section className="mb-16 tablet:mb-24 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-6 shadow-sm tablet:p-10">
+        <ScrollReveal as="section" className="mb-16 tablet:mb-24 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-6 shadow-sm tablet:p-10">
           <div className="flex flex-col gap-6 tablet:gap-8 md:flex-row md:items-center md:justify-between">
             <div>
               <h2 className="text-xl font-bold text-slate-900 md:text-2xl">
@@ -296,15 +313,15 @@ export default async function Home() {
               />
             </div>
           </div>
-        </section>
+        </ScrollReveal>
 
         <hr className="my-12 tablet:my-20 border-slate-200" />
 
-        <section className="mb-12 tablet:mb-20">
+        <ScrollReveal as="section" className="mb-12 tablet:mb-20">
           <FAQSection />
-        </section>
+        </ScrollReveal>
 
-        <section className="mb-16 tablet:mb-24" aria-labelledby="contact-heading">
+        <ScrollReveal as="section" className="mb-16 tablet:mb-24" aria-labelledby="contact-heading">
           <h2 id="contact-heading" className="mb-5 text-2xl font-bold text-slate-900 sm:text-3xl tablet:mb-6 tablet:text-3xl">
             Contact us
           </h2>
@@ -316,9 +333,9 @@ export default async function Home() {
             <ContactForm />
             <ContactBlock />
           </div>
-        </section>
+        </ScrollReveal>
 
-        <section className="mb-12 tablet:mb-16" aria-labelledby="about-heading">
+        <ScrollReveal as="section" className="mb-12 tablet:mb-16" aria-labelledby="about-heading">
           <h2 id="about-heading" className="mb-4 text-2xl font-bold text-slate-900 sm:text-3xl tablet:text-3xl">
             About us
           </h2>
@@ -334,16 +351,16 @@ export default async function Home() {
           >
             Learn more →
           </Link>
-        </section>
+        </ScrollReveal>
 
-        <blockquote className="rounded-2xl border border-slate-200 bg-slate-50/80 p-6 italic text-slate-600 shadow-sm tablet:p-8">
+        <ScrollReveal as="blockquote" className="rounded-2xl border border-slate-200 bg-slate-50/80 p-6 italic text-slate-600 shadow-sm tablet:p-8">
           <p>
             &ldquo;I am truly grateful for the knowledge and skills I gained from Richmond Hill
             College. The courses are practical and relevant to my career, and the instructors
             are top-notch.&rdquo;
           </p>
           <footer className="mt-4 not-italic text-slate-500">— John Doe</footer>
-        </blockquote>
+        </ScrollReveal>
       </div>
     </>
   );

@@ -4,7 +4,8 @@ import { Header } from "@/components/Header";
 import { AnnouncementBanner } from "@/components/AnnouncementBanner";
 import { Footer } from "@/components/Footer";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
-import { ElfsightWidget } from "@/components/ElfsightWidget";
+import { CookiesBanner } from "@/components/CookiesBanner";
+import { WhatsAppChatWidget } from "@/components/WhatsAppChatWidget";
 import { OrganizationJsonLd } from "@/components/JsonLd";
 import { siteUrl } from "@/lib/site-url";
 
@@ -23,10 +24,7 @@ export const metadata: Metadata = {
   description:
     "Richmond Hill College of Healthcare and Technology Management offers online, hybrid, and in-person courses. Unlocking potential, building futures.",
   icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon", type: "image/png", sizes: "32x32" },
-    ],
+    icon: [{ url: "/icon", type: "image/png", sizes: "32x32" }],
     apple: "/apple-icon",
   },
   openGraph: {
@@ -68,7 +66,8 @@ export default function RootLayout({
         <main className="flex-1 pb-20 tablet:pb-0">{children}</main>
         <Footer />
         <MobileBottomNav />
-        <ElfsightWidget />
+        <CookiesBanner />
+        <WhatsAppChatWidget />
       </body>
     </html>
   );
