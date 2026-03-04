@@ -58,7 +58,7 @@ export function LocalBusinessJsonLd() {
   );
 }
 
-const faqItems = [
+const faqItemsEn = [
   {
     question: "What courses do you offer?",
     answer:
@@ -76,10 +76,33 @@ const faqItems = [
   },
 ];
 
-export function FAQJsonLd() {
+const faqItemsFr = [
+  {
+    question: "Quels cours offrez-vous?",
+    answer:
+      "Nous offrons des cours en ligne, hybrides et en personne en gestion des soins de santé et de la technologie.",
+  },
+  {
+    question: "Les cours sont-ils accrédités?",
+    answer:
+      "Oui, nos cours sont accrédités et reconnus par les professionnels du milieu.",
+  },
+  {
+    question: "Comment puis-je m'inscrire à un cours?",
+    answer:
+      "Pour vous inscrire, remplissez notre formulaire en ligne ou communiquez avec notre équipe des admissions.",
+  },
+];
+
+type FAQJsonLdProps = { locale?: "en" | "fr" };
+
+export function FAQJsonLd({ locale = "en" }: FAQJsonLdProps) {
+  const faqItems = locale === "fr" ? faqItemsFr : faqItemsEn;
+  const inLanguage = locale === "fr" ? "fr-CA" : "en-CA";
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    inLanguage,
     mainEntity: faqItems.map((item) => ({
       "@type": "Question",
       name: item.question,

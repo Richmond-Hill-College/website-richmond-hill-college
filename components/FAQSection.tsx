@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-const faqs = [
+const faqsEn = [
   {
     q: "What courses do you offer?",
     a: "We offer online, hybrid, and in-person courses in healthcare and technology management.",
@@ -18,13 +18,34 @@ const faqs = [
   },
 ];
 
-export function FAQSection() {
+const faqsFr = [
+  {
+    q: "Quels cours offrez-vous?",
+    a: "Nous offrons des cours en ligne, hybrides et en personne en gestion des soins de santé et de la technologie.",
+  },
+  {
+    q: "Les cours sont-ils accrédités?",
+    a: "Oui, nos cours sont accrédités et reconnus par les professionnels du milieu.",
+  },
+  {
+    q: "Comment puis-je m'inscrire à un cours?",
+    a: "Pour vous inscrire, remplissez notre formulaire en ligne ou communiquez avec notre équipe des admissions.",
+  },
+];
+
+type FAQSectionProps = { locale?: "en" | "fr"; localePrefix?: string };
+
+export function FAQSection({ locale = "en", localePrefix = "" }: FAQSectionProps) {
+  const faqs = locale === "fr" ? faqsFr : faqsEn;
   const [open, setOpen] = useState<number | null>(0);
+  const heading = locale === "fr" ? "Questions fréquentes" : "Frequently Asked Questions";
+  const viewAll = locale === "fr" ? "Voir toutes les questions" : "View all FAQs";
+  const faqHref = localePrefix ? `${localePrefix}/faq` : "/faq";
 
   return (
     <section aria-labelledby="faq-heading">
       <h2 id="faq-heading" className="mb-5 text-2xl font-bold text-slate-900 sm:text-3xl tablet:mb-6 tablet:text-3xl">
-        Frequently Asked Questions
+        {heading}
       </h2>
       <ul className="space-y-2 tablet:space-y-3">
         {faqs.map((faq, i) => (
@@ -48,10 +69,10 @@ export function FAQSection() {
       </ul>
       <p className="mt-4 text-sm text-slate-600">
         <Link
-          href="/faq"
+          href={faqHref}
           className="font-medium text-slate-800 underline decoration-slate-300 underline-offset-2 hover:decoration-slate-600"
         >
-          View all FAQs →
+          {viewAll} →
         </Link>
       </p>
     </section>

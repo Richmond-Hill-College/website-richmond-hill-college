@@ -10,6 +10,8 @@ export type FaqEntry = {
   category?: string;
 };
 
+export type FaqLocale = "en" | "fr";
+
 export const FAQ_ENTRIES: FaqEntry[] = [
   {
     slug: "how-do-i-apply",
@@ -83,31 +85,127 @@ export const FAQ_ENTRIES: FaqEntry[] = [
   },
 ];
 
-/** All slugs for static generation and sitemap. */
-export function getFaqSlugs(): string[] {
-  return FAQ_ENTRIES.map((e) => e.slug);
+/** French FAQ: unique questions and answers for /fr/faq (multilingual SEO). */
+export const FAQ_ENTRIES_FR: FaqEntry[] = [
+  {
+    slug: "comment-postuler-au-college",
+    question: "Comment postuler au Collège Richmond Hill ?",
+    category: "Admissions",
+    answer:
+      "Vous pouvez postuler en visitant notre page Programmes ou Offre de cours, en choisissant votre programme ou cours, puis en suivant le lien d'inscription vers RHC Global Bridge où les demandes et les paiements sont traités. Pour les programmes de transition et les programmes de carrière certifiés, remplissez la demande en ligne sur la page du cours. Pour toute question ou aide avec le processus, contactez-nous via notre page Contact ou appelez sans frais le +1 855 (328) 6065.",
+  },
+  {
+    slug: "sinscrire-aux-cours",
+    question: "Comment s'inscrire aux cours au Collège Richmond Hill ?",
+    category: "Inscription",
+    answer:
+      "L'inscription aux cours se fait via RHC Global Bridge. Rendez-vous sur la page Cours ou Offre de cours de notre site, choisissez le cours souhaité et cliquez pour accéder au portail d'inscription et de paiement RHC Global Bridge. Vous pouvez aussi accéder à votre compte et à vos cours inscrits via la page Mon compte. Pour une aide étape par étape, contactez notre bureau.",
+  },
+  {
+    slug: "frais-de-scolarite-et-modes-de-paiement",
+    question: "Quels sont les frais de scolarité et les modes de paiement ?",
+    category: "Frais et paiement",
+    answer:
+      "Les frais varient selon le programme et le cours. Les montants exacts et les options de paiement sont indiqués sur chaque page de cours ou de produit sur RHC Global Bridge lorsque vous sélectionnez un programme. Le paiement est traité de manière sécurisée via RHC Global Bridge. Pour un détail des frais ou des modalités de paiement, contactez-nous.",
+  },
+  {
+    slug: "dates-limites-de-demande",
+    question: "Quelles sont les dates limites pour postuler ?",
+    category: "Admissions",
+    answer:
+      "Les dates limites d'admission et d'inscription dépendent du programme ou du cours et de la session. Consultez la page du cours ou de la conférence sur notre site et sur RHC Global Bridge pour les dates en vigueur. Pour les conférences comme Soins infirmiers et santé 2025, les dates d'inscription, de soumission de résumés et tarifs préférentiels figurent sur les pages de la conférence. Contactez-nous pour les dernières dates selon votre programme.",
+  },
+  {
+    slug: "conditions-dadmission",
+    question: "Quelles sont les conditions d'admission ?",
+    category: "Admissions",
+    answer:
+      "Les exigences varient selon le programme. Les programmes de transition et les programmes de carrière certifiés exigent généralement une formation ou une expérience pertinente ; les détails sont sur chaque page de cours sur RHC Global Bridge. Pour les conférences, les exigences sont indiquées sur le site de la conférence. Pour une évaluation personnalisée de votre admissibilité, contactez notre bureau avec votre parcours et le programme visé.",
+  },
+  {
+    slug: "sinscrire-a-un-programme-de-transition",
+    question: "Comment s'inscrire à un programme de transition ?",
+    category: "Inscription",
+    answer:
+      "Consultez notre page Programmes de transition pour explorer les options, puis accédez au cours concerné via la page Cours ou Offre de cours. Utilisez le lien vers RHC Global Bridge pour finaliser l'inscription et le paiement. Les programmes de transition s'adressent aux professionnels formés à l'étranger et sont alignés sur les normes canadiennes. Pour de l'aide au choix ou à l'inscription, contactez-nous.",
+  },
+  {
+    slug: "ou-payer-les-cours",
+    question: "Où payer les cours ?",
+    category: "Frais et paiement",
+    answer:
+      "Tous les paiements de cours et de programmes se font via la plateforme RHC Global Bridge. Après avoir choisi un cours sur notre site, vous serez redirigé vers RHC Global Bridge pour compléter l'inscription et le paiement. N'envoyez pas de paiement par courriel ou par la poste ; utilisez uniquement le flux de paiement officiel RHC Global Bridge. Pour tout problème de paiement, contactez notre bureau.",
+  },
+  {
+    slug: "lettre-invitation-conference",
+    question: "Comment obtenir une lettre d'invitation pour une conférence ?",
+    category: "Conférences",
+    answer:
+      "Les participants inscrits peuvent demander une lettre d'invitation depuis la page Lettre d'invitation de la conférence (p. ex. pour Soins infirmiers et santé 2025, consultez le site de la conférence et la section Lettre d'invitation). En général, l'inscription doit être complétée au préalable. Si vous avez besoin d'une lettre avant de payer, contactez-nous avec vos coordonnées.",
+  },
+  {
+    slug: "soumettre-un-resume-pour-la-conference",
+    question: "Comment soumettre un résumé pour la conférence ?",
+    category: "Conférences",
+    answer:
+      "La soumission des résumés se fait via la page Soumettre un résumé de la conférence. Pour Soins infirmiers et santé 2025, allez dans la section conférence de notre site et ouvrez la page Soumettre un résumé pour les consignes et le formulaire. Respectez le format et la date limite indiqués. Pour toute question, contactez l'équipe via la page Contact de la conférence.",
+  },
+  {
+    slug: "politique-de-remboursement",
+    question: "Quelle est la politique de remboursement ?",
+    category: "Frais et paiement",
+    answer:
+      "Les politiques de remboursement dépendent du programme ou du produit. Les conditions de remboursement des cours et des conférences sont généralement indiquées sur la page RHC Global Bridge ou de la conférence au moment de l'inscription. Pour un résumé écrit de la politique applicable à votre achat, contactez-nous avec les détails de votre inscription ou commande.",
+  },
+];
+
+function getEntries(locale: FaqLocale): FaqEntry[] {
+  return locale === "fr" ? FAQ_ENTRIES_FR : FAQ_ENTRIES;
 }
 
-/** Get a single FAQ by slug, or undefined. */
-export function getFaqBySlug(slug: string): FaqEntry | undefined {
-  return FAQ_ENTRIES.find((e) => e.slug === slug);
+/** All slugs for static generation and sitemap (locale-specific). */
+export function getFaqSlugs(locale: FaqLocale = "en"): string[] {
+  return getEntries(locale).map((e) => e.slug);
 }
 
-/** Get all FAQs, optionally grouped by category. */
-export function getAllFaqs(groupByCategory = false): FaqEntry[] | Record<string, FaqEntry[]> {
-  if (!groupByCategory) return [...FAQ_ENTRIES];
+/** Get a single FAQ by slug, or undefined (locale-specific). */
+export function getFaqBySlug(slug: string, locale: FaqLocale = "en"): FaqEntry | undefined {
+  return getEntries(locale).find((e) => e.slug === slug);
+}
+
+/** Get all FAQs, optionally grouped by category (locale-specific). */
+export function getAllFaqs(
+  groupByCategory = false,
+  locale: FaqLocale = "en"
+): FaqEntry[] | Record<string, FaqEntry[]> {
+  const entries = getEntries(locale);
+  if (!groupByCategory) return [...entries];
   const byCategory: Record<string, FaqEntry[]> = {};
-  for (const entry of FAQ_ENTRIES) {
-    const key = entry.category ?? "General";
+  for (const entry of entries) {
+    const key = entry.category ?? (locale === "fr" ? "Général" : "General");
     if (!byCategory[key]) byCategory[key] = [];
     byCategory[key].push(entry);
   }
   return byCategory;
 }
 
+/** Normalize accented chars for URL-safe slugs (e.g. "Conférences" → "conferences"). */
+function normalizeAccents(s: string): string {
+  const map: Record<string, string> = {
+    "à": "a", "á": "a", "â": "a", "ä": "a", "æ": "ae", "ç": "c", "è": "e", "é": "e", "ê": "e", "ë": "e",
+    "ì": "i", "í": "i", "î": "i", "ï": "i", "ñ": "n", "ò": "o", "ó": "o", "ô": "o", "ö": "o", "ù": "u",
+    "ú": "u", "û": "u", "ü": "u", "ý": "y", "ÿ": "y",
+  };
+  return s
+    .toLowerCase()
+    .split("")
+    .map((c) => map[c] ?? c)
+    .join("");
+}
+
 /** URL-safe slug from FAQ category name (e.g. "Fees & Payment" → "fees-payment"). */
 export function getFaqCategorySlug(categoryName: string): string {
-  return categoryName
+  return normalizeAccents(categoryName)
     .trim()
     .toLowerCase()
     .replace(/\s*&\s*/g, "-and-")
@@ -118,10 +216,14 @@ export function getFaqCategorySlug(categoryName: string): string {
 }
 
 /** All FAQ categories with slug and count (for /faq/category/[slug] and sitemap). */
-export function getFaqCategories(): { name: string; slug: string; count: number }[] {
+export function getFaqCategories(
+  locale: FaqLocale = "en"
+): { name: string; slug: string; count: number }[] {
+  const entries = getEntries(locale);
+  const defaultCat = locale === "fr" ? "Général" : "General";
   const byName = new Map<string, number>();
-  for (const e of FAQ_ENTRIES) {
-    const name = e.category?.trim() ?? "General";
+  for (const e of entries) {
+    const name = e.category?.trim() ?? defaultCat;
     byName.set(name, (byName.get(name) ?? 0) + 1);
   }
   return Array.from(byName.entries())
@@ -135,9 +237,11 @@ export function getFaqCategories(): { name: string; slug: string; count: number 
 }
 
 /** FAQs in a given category slug (for /faq/category/[slug]). */
-export function getFaqsByCategorySlug(slug: string): FaqEntry[] {
-  const categories = new Set(FAQ_ENTRIES.map((e) => e.category?.trim() ?? "General"));
+export function getFaqsByCategorySlug(slug: string, locale: FaqLocale = "en"): FaqEntry[] {
+  const entries = getEntries(locale);
+  const defaultCat = locale === "fr" ? "Général" : "General";
+  const categories = new Set(entries.map((e) => e.category?.trim() ?? defaultCat));
   const categoryName = Array.from(categories).find((name) => getFaqCategorySlug(name) === slug);
   if (!categoryName) return [];
-  return FAQ_ENTRIES.filter((e) => (e.category?.trim() ?? "General") === categoryName);
+  return entries.filter((e) => (e.category?.trim() ?? defaultCat) === categoryName);
 }

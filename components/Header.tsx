@@ -7,44 +7,47 @@ import { useState, useCallback, useEffect, useRef } from "react";
 const LOGO_SRC = "/images/logo/rhc-logo.png";
 const LOGO_ALT = "Richmond Hill College – healthcare and technology management logo";
 
-type NavLink = { href: string; label: string };
+type NavLink = { href: string; label: string; labelFr?: string };
 type NavItem =
-  | { type: "link"; href: string; label: string }
-  | { type: "dropdown"; label: string; children: NavLink[] };
+  | { type: "link"; href: string; label: string; labelFr?: string }
+  | { type: "dropdown"; label: string; labelFr?: string; children: NavLink[] };
 
 const navItems: NavItem[] = [
-  { type: "link", href: "/", label: "Home" },
+  { type: "link", href: "/", label: "Home", labelFr: "Accueil" },
   {
     type: "dropdown",
     label: "About",
+    labelFr: "À propos",
     children: [
-      { href: "/about-us", label: "About Us" },
-      { href: "/about-us/team", label: "Our Team" },
-      { href: "/message-from-the-president", label: "Message from the President" },
+      { href: "/about-us", label: "About Us", labelFr: "À propos" },
+      { href: "/about-us/team", label: "Our Team", labelFr: "Notre équipe" },
+      { href: "/message-from-the-president", label: "Message from the President", labelFr: "Message de la présidente" },
     ],
   },
   {
     type: "dropdown",
     label: "Programs & Courses",
+    labelFr: "Programmes et cours",
     children: [
-      { href: "/programs", label: "Programs" },
-      { href: "/course-offerings", label: "Course Offerings" },
-      { href: "/bridging-programs", label: "Bridging Programs" },
-      { href: "/courses", label: "Courses" },
-      { href: "/courses/categories", label: "Course Categories" },
-      { href: "/products", label: "Products & Registration" },
+      { href: "/programs", label: "Programs", labelFr: "Programmes" },
+      { href: "/course-offerings", label: "Course Offerings", labelFr: "Offre de cours" },
+      { href: "/bridging-programs", label: "Bridging Programs", labelFr: "Programmes de transition" },
+      { href: "/courses", label: "Courses", labelFr: "Cours" },
+      { href: "/courses/categories", label: "Course Categories", labelFr: "Catégories de cours" },
+      { href: "/products", label: "Products & Registration", labelFr: "Produits et inscription" },
     ],
   },
-  { type: "link", href: "/conferences", label: "Conferences" },
+  { type: "link", href: "/conferences", label: "Conferences", labelFr: "Conférences" },
   {
     type: "dropdown",
     label: "Help",
+    labelFr: "Aide",
     children: [
-      { href: "/faq", label: "FAQ" },
-      { href: "/contact", label: "Contact" },
+      { href: "/faq", label: "FAQ", labelFr: "FAQ" },
+      { href: "/contact", label: "Contact", labelFr: "Contact" },
     ],
   },
-  { type: "link", href: "/my-account", label: "Account" },
+  { type: "link", href: "/my-account", label: "Account", labelFr: "Mon compte" },
 ];
 
 const mobilePressStateClass =
@@ -122,7 +125,7 @@ function DesktopDropdown({
           e.stopPropagation();
           setOpen((o) => !o);
         }}
-        className="min-h-[44px] min-w-[44px] flex items-center justify-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 tablet:px-4 tablet:text-[15px]"
+        className="min-h-[40px] min-w-[36px] flex items-center justify-center gap-0.5 rounded-lg px-2.5 py-2 text-[13px] font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 xl:px-3 xl:text-sm"
         aria-expanded={open}
         aria-haspopup="true"
         aria-controls={dropdownId}
@@ -170,9 +173,13 @@ function MobileNavItems({
   localePrefix: string;
 }) {
   const [expanded, setExpanded] = useState<string | null>(null);
+  const isFr = localePrefix === "/fr";
+  const label = (item: NavItem) => (isFr ? (item.labelFr ?? item.label) : item.label);
+  const linkLabel = (link: NavLink) => (isFr ? (link.labelFr ?? link.label) : link.label);
   return (
     <>
       {items.map((item) => {
+        const itemLabel = label(item);
         if (item.type === "link") {
           const isContact = item.href === "/contact";
           return (
@@ -194,35 +201,35 @@ function MobileNavItems({
                   : undefined
               }
             >
-              {item.label}
+              {itemLabel}
             </Link>
           );
         }
-        const isOpen = expanded === item.label;
+        const isOpen = expanded === itemLabel;
         return (
-          <div key={`mobile-${item.label}`} className="border-b border-slate-100">
+          <div key={`mobile-${itemLabel}`} className="border-b border-slate-100">
             <button
               type="button"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                setExpanded(isOpen ? null : item.label);
+                setExpanded(isOpen ? null : itemLabel);
               }}
               className={`flex w-full items-center justify-between rounded-md px-2 py-3 text-left text-base font-medium text-slate-700 hover:text-slate-900 active:text-slate-900 ${mobilePressStateClass}`}
               aria-expanded={isOpen}
             >
-              {item.label}
+              {itemLabel}
               <ChevronDown open={isOpen} />
             </button>
             <div className={isOpen ? "block" : "hidden"}>
-              {item.children.map(({ href, label: linkLabel }) => (
+              {item.children.map((link) => (
                 <Link
-                  key={href}
-                  href={prefixHref(localePrefix, href)}
+                  key={link.href}
+                  href={prefixHref(localePrefix, link.href)}
                   onClick={onLinkClick}
                   className={`block rounded-md px-4 py-2.5 text-[15px] text-slate-600 hover:text-slate-900 active:text-slate-900 ${mobilePressStateClass}`}
                 >
-                  {linkLabel}
+                  {linkLabel(link)}
                 </Link>
               ))}
             </div>
@@ -350,26 +357,29 @@ export function Header() {
           )}
         </Link>
 
-        {/* Desktop nav only (lg+); tablet and phone use hamburger */}
-        <nav className="hidden lg:flex lg:flex-wrap lg:items-center lg:justify-end lg:gap-1 overflow-visible lg:gap-4" aria-label="Main navigation">
-          {navItems.map((item, index) =>
-            item.type === "link" ? (
+        {/* Desktop nav only (lg+); single row, no wrap; min-w-0 so it can shrink in flex */}
+        <nav className="hidden lg:flex lg:flex-nowrap lg:items-center lg:justify-end lg:gap-2 xl:gap-3 min-w-0 overflow-visible" aria-label="Main navigation">
+          {navItems.map((item, index) => {
+            const isFr = localePrefix === "/fr";
+            const label = (item.type === "link" ? (item.labelFr ?? item.label) : (item.labelFr ?? item.label)) as string;
+            const children = item.type === "dropdown" ? item.children.map((link) => ({ ...link, label: (isFr ? link.labelFr ?? link.label : link.label) })) : [];
+            return item.type === "link" ? (
               <Link
                 key={item.href}
                 href={prefixHref(localePrefix, item.href)}
-                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 tablet:px-4 tablet:text-[15px]"
+                className="min-h-[40px] min-w-[36px] flex items-center justify-center rounded-lg px-2.5 py-2 text-[13px] font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 xl:px-3 xl:text-sm"
               >
-                {item.label}
+                {label}
               </Link>
             ) : (
               <DesktopDropdown
                 key={`dropdown-${index}`}
-                label={item.label}
-                links={item.children}
+                label={label}
+                links={children}
                 localePrefix={localePrefix}
               />
-            )
-          )}
+            );
+          })}
         </nav>
 
         {/* Language switch: EN | FR (desktop) */}
@@ -394,7 +404,15 @@ export function Header() {
           className="lg:hidden flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1"
           aria-expanded={menuOpen}
           aria-controls="mobile-nav"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-label={
+            localePrefix === "/fr"
+              ? menuOpen
+                ? "Fermer le menu"
+                : "Ouvrir le menu"
+              : menuOpen
+                ? "Close menu"
+                : "Open menu"
+          }
         >
           <MenuIcon open={menuOpen} />
         </button>

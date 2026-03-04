@@ -4,5 +4,5 @@
  */
 export const FIRST_HERO_IMAGE = {
   src: "https://primary.jwwb.nl/public/y/c/x/temp-dyefbwmwppidsbcuawqm/image-standard-0nj6vo.png?enable-io=true&enable=upscale&crop=1482%2C844%2Cx11%2Cy0%2Csafe&width=1020&height=581",
-  alt: "Your bridge to global business success – Richmond Hill College bridging programs for internationally educated professionals",
+  alt: "Your bridge to Canadian credentials – Richmond Hill College bridging programs for internationally educated professionals and career changers",
 } as const;

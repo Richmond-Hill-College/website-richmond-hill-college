@@ -1,5 +1,5 @@
 import { siteUrl } from "@/lib/site-url";
-import type { FaqEntry } from "@/lib/faq";
+import type { FaqEntry, FaqLocale } from "@/lib/faq";
 
 /** FAQPage schema for the /faq index. */
 export function FaqPageJsonLd({ entries }: { entries: FaqEntry[] }) {
@@ -25,16 +25,21 @@ export function FaqQuestionJsonLd({
   question,
   answer,
   slug,
+  locale = "en",
 }: {
   question: string;
   answer: string;
   slug: string;
+  locale?: FaqLocale;
 }) {
+  const path = locale === "fr" ? `fr/faq/${slug}` : `faq/${slug}`;
+  const inLanguage = locale === "fr" ? "fr-CA" : "en-CA";
   const schema = {
     "@context": "https://schema.org",
     "@type": "Question",
     name: question,
-    url: `${siteUrl}/faq/${slug}`,
+    url: `${siteUrl}/${path}`,
+    inLanguage,
     acceptedAnswer: { "@type": "Answer", text: answer },
   };
   return (

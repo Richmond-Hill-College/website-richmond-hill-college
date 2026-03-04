@@ -31,9 +31,14 @@ const config: Config = {
           "0%": { opacity: "0", transform: "translateY(100%)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        "language-splash-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
       },
       animation: {
         "cookie-banner-in": "cookie-banner-in 0.4s ease-out forwards",
+        "language-splash-in": "language-splash-in 0.35s ease-out forwards",
       },
     },
   },

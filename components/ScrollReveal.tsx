@@ -11,12 +11,14 @@ import {
 /** Apple-style scroll reveal: fade + subtle Y. Intentional, smooth, respects reduced motion. */
 const REVEAL = {
   /** Start animating when section is this far from viewport (earlier = smoother) */
-  rootMargin: "0px 0px -8% 0px",
-  threshold: 0.08,
+  rootMargin: "0px 0px -5% 0px",
+  threshold: 0.05,
   /** CSS transition duration (ms) – keep in sync with globals.css */
   durationMs: 700,
   /** Easing: Apple-like ease-out (quick start, soft landing) */
   easing: "cubic-bezier(0.25, 0.1, 0.25, 1)",
+  /** Treat as "in view" on load if top is above this fraction of viewport (reveal first screenful) */
+  inViewTopRatio: 1.2,
 } as const;
 
 export type ScrollRevealProps = {
@@ -60,6 +62,11 @@ export function ScrollReveal({
     const el = ref.current;
     if (!el) return;
 
+    const options: IntersectionObserverInit = {
+      rootMargin: REVEAL.rootMargin,
+      threshold: REVEAL.threshold,
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -68,14 +75,35 @@ export function ScrollReveal({
           }
         }
       },
-      {
-        rootMargin: REVEAL.rootMargin,
-        threshold: REVEAL.threshold,
-      }
+      options
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+
+    // Reveal immediately if already in viewport (fixes content not showing on load e.g. French homepage).
+    // Run after layout (double rAF) and with fallbacks so sections below hero always show.
+    const checkInView = () => {
+      const rect = el.getBoundingClientRect();
+      const rootHeight = window.innerHeight;
+      const topThreshold = rootHeight * REVEAL.inViewTopRatio;
+      const alreadyInView =
+        rect.top < topThreshold && rect.bottom > rootHeight * 0.05;
+      if (alreadyInView) setRevealed(true);
+    };
+    let raf2Id: number | null = null;
+    const raf1Id = requestAnimationFrame(() => {
+      raf2Id = requestAnimationFrame(() => checkInView());
+    });
+    const t1 = window.setTimeout(checkInView, 150);
+    const t2 = window.setTimeout(checkInView, 450);
+
+    return () => {
+      cancelAnimationFrame(raf1Id);
+      if (raf2Id !== null) cancelAnimationFrame(raf2Id);
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+      observer.disconnect();
+    };
   }, [reduceMotion]);
 
   const style =

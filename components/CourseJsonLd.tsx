@@ -1,5 +1,6 @@
 import { siteUrl } from "@/lib/site-url";
 import type { RhcCourse } from "@/lib/rhc-global-bridge-courses";
+import { DEFAULT_COURSE_IMAGE } from "@/lib/rhc-global-bridge-courses";
 
 export type CourseJsonLdProps = {
   course: RhcCourse;
@@ -7,6 +8,8 @@ export type CourseJsonLdProps = {
   coursePageUrl: string;
   /** Optional full description for SEO (defaults to generated from name + category). */
   description?: string;
+  /** Language of the course page for schema.org inLanguage. */
+  locale?: "en" | "fr";
 };
 
 /**
@@ -17,19 +20,23 @@ export function CourseJsonLd({
   course,
   coursePageUrl,
   description,
+  locale = "en",
 }: CourseJsonLdProps) {
   const name = course.name;
   const desc =
     description ??
     `Professional bridging program: ${name}. ${course.category ? `Category: ${course.category}. ` : ""}${course.duration ? `Duration: ${course.duration}. ` : ""}Register on RHC Global Bridge.`;
 
+  const imageUrl = course.image || DEFAULT_COURSE_IMAGE;
+  const inLanguage = locale === "fr" ? "fr-CA" : "en-CA";
   const courseSchema = {
     "@context": "https://schema.org",
     "@type": "Course",
     name,
     description: desc,
     url: coursePageUrl,
-    image: course.image,
+    image: imageUrl,
+    inLanguage,
     sameAs: course.link,
     provider: {
       "@type": "Organization",
@@ -60,7 +67,8 @@ export function CourseJsonLd({
     name,
     description: desc,
     url: coursePageUrl,
-    image: course.image,
+    image: imageUrl,
+    inLanguage,
     programType: "professional development",
     provider: {
       "@type": "Organization",

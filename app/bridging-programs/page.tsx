@@ -7,6 +7,7 @@ import {
   RHC_GLOBAL_BRIDGE_COURSES_FALLBACK,
   type RhcCourse,
 } from "@/lib/rhc-global-bridge-courses";
+import { BridgingProgramsSearch } from "@/components/BridgingProgramsSearch";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Bridging Programs",
@@ -65,55 +66,12 @@ export default async function BridgingProgramsPage() {
         </div>
       </div>
 
-      <section className="mt-12" aria-labelledby="categories-heading">
-        <h2 id="categories-heading" className="text-xl font-bold text-slate-900">
-          Our bridging programs by category
-        </h2>
-        <p className="mt-2 text-slate-600">
-          Each category lists current courses you can take. Select a course to view details and register on RHC Global Bridge.
-        </p>
-        <div className="mt-6 space-y-10">
-          {categoryOrder.map((cat) => {
-            const list = byCategory.get(cat)!;
-            return (
-              <div key={cat} className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-                <h3 className="text-lg font-bold text-slate-900">{cat}</h3>
-                <ul className="mt-4 list-none space-y-2 p-0">
-                  {list.map((course) => (
-                    <li key={course.id}>
-                      <Link
-                        href={course.slug ? `/courses/${course.slug}` : course.link}
-                        {...(!course.slug && { target: "_blank", rel: "noopener noreferrer" })}
-                        className="flex items-center justify-between gap-4 rounded-lg py-2 text-slate-800 hover:bg-slate-50 hover:text-slate-900"
-                      >
-                        <span className="font-medium">{course.name}</span>
-                        <span className="flex flex-wrap items-center gap-2 text-sm">
-                          {course.duration && (
-                            <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-slate-700 ring-1 ring-slate-200/60">
-                              {course.duration}
-                            </span>
-                          )}
-                          {course.price && (
-                            <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-800 ring-1 ring-slate-200/60">
-                              {course.price.includes("CAD") ? course.price : `${course.price} CAD`}
-                            </span>
-                          )}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href={`/courses?category=${encodeURIComponent(cat)}`}
-                  className="mt-3 inline-block text-sm font-medium text-slate-600 hover:text-slate-800"
-                >
-                  View all in this category on Courses →
-                </Link>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      <BridgingProgramsSearch
+        categoriesWithCourses={categoryOrder.map((cat) => ({
+          category: cat,
+          courses: byCategory.get(cat)!,
+        }))}
+      />
 
       <section className="mt-12" aria-labelledby="what-are-heading">
         <h2 id="what-are-heading" className="text-2xl font-bold text-slate-900">

@@ -4,11 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
-  { href: "/", label: "Home", icon: HomeIcon },
-  { href: "/programs", label: "Programs", icon: ProgramsIcon },
-  { href: "/courses", label: "Courses", icon: CoursesIcon },
-  { href: "/conferences", label: "Conferences", icon: ConferencesIcon },
-  { href: "/contact", label: "Contact", icon: ContactIcon },
+  { href: "/", label: "Home", labelFr: "Accueil", icon: HomeIcon },
+  { href: "/programs", label: "Programs", labelFr: "Programmes", icon: ProgramsIcon },
+  { href: "/courses", label: "Courses", labelFr: "Cours", icon: CoursesIcon },
+  { href: "/conferences", label: "Conferences", labelFr: "Conférences", icon: ConferencesIcon },
+  { href: "/contact", label: "Contact", labelFr: "Contact", icon: ContactIcon },
 ];
 
 function HomeIcon({ active }: { active: boolean }) {
@@ -114,15 +114,17 @@ function prefixHref(prefix: string, href: string) {
 export function MobileBottomNav() {
   const pathname = usePathname() ?? "/";
   const localePrefix = pathname.startsWith("/fr") ? "/fr" : "";
+  const isFr = localePrefix === "/fr";
 
   return (
     <nav
       className="fixed bottom-0 left-0 right-0 z-40 md:hidden"
-      aria-label="Mobile bottom navigation"
+      aria-label={isFr ? "Navigation mobile" : "Mobile bottom navigation"}
     >
       <div className="safe-area-pb border-t border-slate-200 bg-white/95 shadow-[0_-4px_6px_-1px_rgba(15,23,42,0.05)] backdrop-blur supports-[backdrop-filter]:bg-white/90">
         <div className="mx-auto flex max-w-lg items-center justify-around px-2 pb-2 pt-2">
-          {navItems.map(({ href, label, icon: Icon }) => {
+          {navItems.map(({ href, label, labelFr, icon: Icon }) => {
+            const displayLabel = isFr ? (labelFr ?? label) : label;
             const itemHref = prefixHref(localePrefix, href);
             const isActive =
               href === "/"
@@ -150,7 +152,7 @@ export function MobileBottomNav() {
                     (isActive ? "text-rhc-primary" : "text-slate-500")
                   }
                 >
-                  {label}
+                  {displayLabel}
                 </span>
               </Link>
             );

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { AnnouncementBanner } from "@/components/AnnouncementBanner";
@@ -7,6 +8,8 @@ import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { CookiesBanner } from "@/components/CookiesBanner";
 import { WhatsAppChatWidget } from "@/components/WhatsAppChatWidget";
 import { OrganizationJsonLd } from "@/components/JsonLd";
+import { LangAttribute } from "@/components/LangAttribute";
+import { LanguageSplash } from "@/components/LanguageSplash";
 import { siteUrl } from "@/lib/site-url";
 import { FIRST_HERO_IMAGE } from "@/lib/hero";
 
@@ -49,7 +52,10 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  alternates: { canonical: siteUrl },
+  alternates: {
+    canonical: siteUrl,
+    languages: { en: siteUrl, fr: `${siteUrl}/fr`, "x-default": siteUrl },
+  },
 };
 
 export default function RootLayout({
@@ -57,9 +63,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let lang: "en" | "fr" = "en";
+  try {
+    const pathname = headers().get("x-pathname") ?? "";
+    if (pathname.startsWith("/fr")) lang = "fr";
+  } catch {
+    // During static generation or when middleware didn't run, default to en.
+  }
   return (
-    <html lang="en">
-      <body className="flex min-h-screen flex-col bg-slate-50 text-slate-900 antialiased">
+    <html lang={lang} suppressHydrationWarning>
+      <body className="flex min-h-screen flex-col bg-slate-50 text-slate-900 antialiased" suppressHydrationWarning>
+        <LangAttribute />
+        <LanguageSplash />
         <OrganizationJsonLd />
         <div className="sticky top-0 z-50">
           <Header />

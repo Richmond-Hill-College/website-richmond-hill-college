@@ -2,8 +2,35 @@
 
 import { useState } from "react";
 
-export function ContactForm() {
+const copyEn = {
+  labelName: "Full Name",
+  labelEmail: "Email address",
+  labelPhone: "Mobile Number",
+  labelMessage: "Message",
+  sendCopy: "Send me a copy",
+  thankYou: "Thank you. We will get back to you soon.",
+  error: "Something went wrong. Please try again.",
+  sending: "Sending…",
+  submit: "Submit form",
+};
+
+const copyFr = {
+  labelName: "Nom complet",
+  labelEmail: "Courriel",
+  labelPhone: "Numéro de téléphone",
+  labelMessage: "Message",
+  sendCopy: "M'envoyer une copie",
+  thankYou: "Merci. Nous vous répondrons sous peu.",
+  error: "Une erreur s'est produite. Veuillez réessayer.",
+  sending: "Envoi en cours…",
+  submit: "Envoyer le formulaire",
+};
+
+type ContactFormProps = { locale?: "en" | "fr" };
+
+export function ContactForm({ locale = "en" }: ContactFormProps) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const t = locale === "fr" ? copyFr : copyEn;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -17,7 +44,7 @@ export function ContactForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="contact-name" className="block text-sm font-medium text-slate-700">
-          Full Name <span className="text-red-500">*</span>
+          {t.labelName} <span className="text-red-500">*</span>
         </label>
         <input
           id="contact-name"
@@ -29,7 +56,7 @@ export function ContactForm() {
       </div>
       <div>
         <label htmlFor="contact-email" className="block text-sm font-medium text-slate-700">
-          Email address <span className="text-red-500">*</span>
+          {t.labelEmail} <span className="text-red-500">*</span>
         </label>
         <input
           id="contact-email"
@@ -41,7 +68,7 @@ export function ContactForm() {
       </div>
       <div>
         <label htmlFor="contact-phone" className="block text-sm font-medium text-slate-700">
-          Mobile Number
+          {t.labelPhone}
         </label>
         <input
           id="contact-phone"
@@ -52,7 +79,7 @@ export function ContactForm() {
       </div>
       <div>
         <label htmlFor="contact-message" className="block text-sm font-medium text-slate-700">
-          Message <span className="text-red-500">*</span>
+          {t.labelMessage} <span className="text-red-500">*</span>
         </label>
         <textarea
           id="contact-message"
@@ -70,21 +97,21 @@ export function ContactForm() {
           className="h-4 w-4 rounded border-slate-300 text-slate-600 focus:ring-slate-500"
         />
         <label htmlFor="contact-copy" className="text-sm text-slate-600">
-          Send me a copy
+          {t.sendCopy}
         </label>
       </div>
       {status === "sent" && (
-        <p className="text-sm text-green-600">Thank you. We will get back to you soon.</p>
+        <p className="text-sm text-green-600">{t.thankYou}</p>
       )}
       {status === "error" && (
-        <p className="text-sm text-red-600">Something went wrong. Please try again.</p>
+        <p className="text-sm text-red-600">{t.error}</p>
       )}
       <button
         type="submit"
         disabled={status === "sending"}
         className="cta-primary min-h-[44px] rounded-md px-4 py-2 text-sm font-medium disabled:opacity-50 tablet:min-h-[48px] tablet:px-5 tablet:py-2.5"
       >
-        {status === "sending" ? "Sending…" : "Submit form"}
+        {status === "sending" ? t.sending : t.submit}
       </button>
     </form>
   );

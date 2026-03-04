@@ -55,6 +55,8 @@ export function LocationMap() {
           box-sizing:border-box;
         ">
           <div style="
+            position:absolute;
+            top:-36px;
             width:${pinWidth}px;
             height:${pinWidth}px;
             min-width:${pinWidth}px;

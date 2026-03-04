@@ -3,6 +3,8 @@
  * Fetches ALL pages from LearnPress + WP REST APIs, merges by id, one image per course (no repeats).
  */
 
+import { getCourseSlugFr } from "@/lib/course-slug-fr";
+
 const LP_BASE =
   "https://www.rhcglobalbridge.com/wp-json/learnpress/v1/courses";
 const WP_BASE =
@@ -15,6 +17,8 @@ export type RhcCourse = {
   id: number;
   name: string;
   slug: string;
+  /** French URL slug for /fr/courses/[slug]. Use when building French course links. */
+  slugFr: string;
   image: string;
   link: string;
   duration: string;
@@ -69,53 +73,73 @@ async function fetchAllPages<T>(
   return out;
 }
 
+/** Default course image when API returns none. Used by course detail and category pages. */
+export const DEFAULT_COURSE_IMAGE =
+  "https://www.rhcglobalbridge.com/wp-content/uploads/2025/09/sliderimage-3.jpg";
+
 /**
  * Fetches all courses from all pages of rhcglobalbridge.com (LearnPress + WP REST).
  * Dedupes by id, skips placeholder "Lorem ipsum" courses, ensures one image per course.
+ * On any error (network, timeout, parse) or if fetch takes >15s, returns fallback so pages always load.
  */
-export async function getRhcCourses(): Promise<RhcCourse[]> {
+const GET_COURSES_TIMEOUT_MS = 15_000;
+
+async function getRhcCoursesUnsafe(): Promise<RhcCourse[]> {
   const [lpList, wpList] = await Promise.all([
-    fetchAllPages(LP_BASE, (r) => r.json()),
-    fetchAllPages(WP_BASE, (r) => r.json()),
-  ]);
+      fetchAllPages(LP_BASE, (r) => r.json()),
+      fetchAllPages(WP_BASE, (r) => r.json()),
+    ]);
 
-  const wpById = new Map<number, { link: string }>();
-  for (const c of wpList as { id: number; link: string }[]) {
-    wpById.set(c.id, { link: c.link });
+    const wpById = new Map<number, { link: string }>();
+    for (const c of wpList as { id: number; link: string }[]) {
+      wpById.set(c.id, { link: c.link });
+    }
+
+    const seenIds = new Set<number>();
+    const courses: RhcCourse[] = [];
+
+    for (const c of lpList as Array<{
+      id: number;
+      name: string;
+      image: string;
+      duration?: string;
+      categories?: Array<{ name: string }>;
+      price_rendered?: string;
+    }>) {
+      if (seenIds.has(c.id)) continue;
+      if (!c.name || c.name.includes("Lorem ipsum")) continue;
+      const wp = wpById.get(c.id);
+      if (!wp) continue;
+      seenIds.add(c.id);
+      const link = wp.link;
+      const slug = getCourseSlugFromLink(link);
+      courses.push({
+        id: c.id,
+        name: c.name.replace(/&#038;/g, "&").replace(/&amp;/g, "&").trim(),
+        slug,
+        slugFr: getCourseSlugFr(slug),
+        image: c.image ?? "",
+        link,
+        duration: (c.duration ?? "").trim(),
+        category: (c.categories?.[0]?.name ?? "")
+          .replace(/&amp;/g, "&")
+          .trim(),
+        price: (c.price_rendered ?? "").trim(),
+      });
+    }
+
+    return courses;
+}
+
+export async function getRhcCourses(): Promise<RhcCourse[]> {
+  try {
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error("getRhcCourses timeout")), GET_COURSES_TIMEOUT_MS)
+    );
+    return await Promise.race([getRhcCoursesUnsafe(), timeoutPromise]);
+  } catch {
+    return RHC_GLOBAL_BRIDGE_COURSES_FALLBACK;
   }
-
-  const seenIds = new Set<number>();
-  const courses: RhcCourse[] = [];
-
-  for (const c of lpList as Array<{
-    id: number;
-    name: string;
-    image: string;
-    duration?: string;
-    categories?: Array<{ name: string }>;
-    price_rendered?: string;
-  }>) {
-    if (seenIds.has(c.id)) continue;
-    if (!c.name || c.name.includes("Lorem ipsum")) continue;
-    const wp = wpById.get(c.id);
-    if (!wp) continue;
-    seenIds.add(c.id);
-    const link = wp.link;
-    courses.push({
-      id: c.id,
-      name: c.name.replace(/&#038;/g, "&").replace(/&amp;/g, "&").trim(),
-      slug: getCourseSlugFromLink(link),
-      image: c.image ?? "",
-      link,
-      duration: (c.duration ?? "").trim(),
-      category: (c.categories?.[0]?.name ?? "")
-        .replace(/&amp;/g, "&")
-        .trim(),
-      price: (c.price_rendered ?? "").trim(),
-    });
-  }
-
-  return courses;
 }
 
 /** Get a single course by URL slug (for internal /courses/[slug] pages). */
@@ -124,10 +148,22 @@ export async function getCourseBySlug(slug: string): Promise<RhcCourse | null> {
   return list.find((c) => c.slug === slug) ?? null;
 }
 
-/** All course slugs for generateStaticParams and sitemap. */
+/** All course slugs for generateStaticParams and sitemap (English routes). */
 export async function getCourseSlugs(): Promise<string[]> {
   const list = await getRhcCourses().catch(() => RHC_GLOBAL_BRIDGE_COURSES_FALLBACK);
   return list.map((c) => c.slug).filter(Boolean);
+}
+
+/** All French course slugs for /fr/courses/[slug] generateStaticParams and sitemap. */
+export async function getCourseSlugsFr(): Promise<string[]> {
+  const list = await getRhcCourses().catch(() => RHC_GLOBAL_BRIDGE_COURSES_FALLBACK);
+  return list.map((c) => c.slugFr).filter(Boolean);
+}
+
+/** Get a single course by French URL slug (for /fr/courses/[slug] pages). */
+export async function getCourseBySlugFr(slugFr: string): Promise<RhcCourse | null> {
+  const list = await getRhcCourses().catch(() => RHC_GLOBAL_BRIDGE_COURSES_FALLBACK);
+  return list.find((c) => c.slugFr === slugFr) ?? null;
 }
 
 /** URL-safe slug from course category name (e.g. "6- Beauty, Aesthetics & Cosmetology" → "6-beauty-aesthetics-and-cosmetology"). */
@@ -181,16 +217,20 @@ const fallbackWithSlug = (
   duration: string,
   category: string,
   price: string
-): RhcCourse => ({
-  id,
-  name,
-  slug: getCourseSlugFromLink(link),
-  image,
-  link,
-  duration,
-  category,
-  price,
-});
+): RhcCourse => {
+  const slug = getCourseSlugFromLink(link);
+  return {
+    id,
+    name,
+    slug,
+    slugFr: getCourseSlugFr(slug),
+    image,
+    link,
+    duration,
+    category,
+    price,
+  };
+};
 
 export const RHC_GLOBAL_BRIDGE_COURSES_FALLBACK: RhcCourse[] = [
   fallbackWithSlug(
@@ -237,5 +277,14 @@ export const RHC_GLOBAL_BRIDGE_COURSES_FALLBACK: RhcCourse[] = [
     "40 Hours",
     "2- Animal Care & Pet Industries",
     "$1,990.00"
+  ),
+  fallbackWithSlug(
+    7000,
+    "Applied Cybersecurity & Secure Data Systems Program",
+    "https://www.rhcglobalbridge.com/wp-content/uploads/2025/09/cybersecurity-data-systems-bridging-rhc.jpg",
+    "https://www.rhcglobalbridge.com/courses/cybersecurity-data-systems-level-1-bridging-program/",
+    "40 Hours",
+    "5- Information Technology, AI & Computer Science",
+    "$1,290.00"
   ),
 ];

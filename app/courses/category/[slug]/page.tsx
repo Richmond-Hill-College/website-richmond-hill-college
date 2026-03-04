@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import {
   getCourseCategories,
   getCoursesByCategorySlug,
+  DEFAULT_COURSE_IMAGE,
 } from "@/lib/rhc-global-bridge-courses";
 import { createPageMetadata } from "@/lib/seo";
 
@@ -79,7 +80,7 @@ export default async function CourseCategoryPage({ params }: Props) {
             >
               <div className="relative w-full flex-shrink-0 bg-slate-100 aspect-[16/10] overflow-hidden">
                 <Image
-                  src={course.image}
+                  src={course.image || DEFAULT_COURSE_IMAGE}
                   alt={`${course.name} – ${cat.name} course at Richmond Hill College`}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"

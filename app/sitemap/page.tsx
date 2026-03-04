@@ -36,7 +36,7 @@ export default async function SitemapPage() {
       </p>
 
       <section className="mt-10">
-        <h2 className="text-lg font-semibold text-slate-800">Main pages</h2>
+        <h2 className="text-lg font-semibold text-slate-800">English</h2>
         <ul className="mt-3 list-inside list-disc space-y-2 text-slate-700">
           {staticRoutes.map(({ path, label }) => (
             <li key={path || "home"}>
@@ -45,6 +45,27 @@ export default async function SitemapPage() {
                 className="text-slate-800 underline decoration-slate-300 underline-offset-2 hover:decoration-slate-600"
               >
                 {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="text-lg font-semibold text-slate-800">Français</h2>
+        <p className="mt-1 text-sm text-slate-600">
+          <Link href="/fr/sitemap" className="text-slate-600 underline hover:text-slate-800">
+            Voir le plan du site en français
+          </Link>
+        </p>
+        <ul className="mt-3 list-inside list-disc space-y-2 text-slate-700">
+          {staticRoutes.map(({ path, labelFr }) => (
+            <li key={path ? `fr-${path}` : "fr-home"}>
+              <Link
+                href={path ? `/fr/${path}` : "/fr"}
+                className="text-slate-800 underline decoration-slate-300 underline-offset-2 hover:decoration-slate-600"
+              >
+                {labelFr}
               </Link>
             </li>
           ))}

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import type { RhcCourse } from "@/lib/rhc-global-bridge-courses";
 
 const iconClass = "size-5 shrink-0 text-slate-500";
@@ -48,11 +48,15 @@ function ClearIcon() {
 }
 
 const RHC_COURSES_URL = "https://www.rhcglobalbridge.com/courses/";
+const DEFAULT_COURSE_IMAGE =
+  "https://www.rhcglobalbridge.com/wp-content/uploads/2025/09/sliderimage-3.jpg";
 
 type CourseFiltersProps = {
   courses: RhcCourse[];
   /** Initial category from URL (e.g. ?category=...) for deep links from Programs. */
   initialCategory?: string;
+  /** e.g. "/fr" for French so course links point to /fr/courses/... */
+  localePrefix?: string;
   /**
    * When provided, the filter bar is shown but this function renders the course list
    * instead of the default grid (e.g. for course-offerings article layout).
@@ -60,11 +64,51 @@ type CourseFiltersProps = {
   renderItems?: (filtered: RhcCourse[]) => React.ReactNode;
 };
 
-export function CourseFilters({ courses, initialCategory = "", renderItems }: CourseFiltersProps) {
+const copyEn = {
+  showFilters: "Show filters",
+  hideFilters: "Hide filters",
+  searchLabel: "Search courses by name or category",
+  searchPlaceholder: "Search courses by name or category…",
+  filters: "Filters",
+  category: "Category",
+  allCategories: "All categories",
+  duration: "Duration",
+  anyDuration: "Any duration",
+  clearFilters: "Clear filters",
+  courseCount: (n: number) => `${n} course${n !== 1 ? "s" : ""}`,
+  courseCountFiltered: (a: number, b: number) => `${a} of ${b} course${b !== 1 ? "s" : ""}`,
+  noMatch: "No courses match your filters. Try adjusting search or filters.",
+  viewDetails: "View details",
+  viewCourseDetails: (name: string) => `View ${name} course details`,
+  courseImageAlt: (name: string) => `${name} – course at Richmond Hill College`,
+};
+
+const copyFr = {
+  showFilters: "Afficher les filtres",
+  hideFilters: "Masquer les filtres",
+  searchLabel: "Rechercher par nom ou catégorie de cours",
+  searchPlaceholder: "Rechercher par nom ou catégorie de cours…",
+  filters: "Filtres",
+  category: "Catégorie",
+  allCategories: "Toutes les catégories",
+  anyDuration: "Toute durée",
+  duration: "Durée",
+  clearFilters: "Réinitialiser les filtres",
+  courseCount: (n: number) => `${n} cours`,
+  courseCountFiltered: (a: number, b: number) => `${a} sur ${b} cours`,
+  noMatch: "Aucun cours ne correspond à vos critères. Modifiez la recherche ou les filtres.",
+  viewDetails: "Voir les détails",
+  viewCourseDetails: (name: string) => `Voir les détails du cours ${name}`,
+  courseImageAlt: (name: string) => `${name} – cours au Collège Richmond Hill`,
+};
+
+export function CourseFilters({ courses, initialCategory = "", localePrefix = "", renderItems }: CourseFiltersProps) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>(initialCategory);
   const [duration, setDuration] = useState<string>("");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(Boolean(initialCategory));
+  const isFr = localePrefix === "/fr";
+  const t = isFr ? copyFr : copyEn;
 
   const categories = useMemo(() => {
     const set = new Set(courses.map((c) => c.category).filter(Boolean));
@@ -75,6 +119,11 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
     const set = new Set(courses.map((c) => c.duration).filter(Boolean));
     return Array.from(set).sort((a, b) => a.localeCompare(b));
   }, [courses]);
+
+  // Defer filter values so list updates don't block input (fixes INP: event handlers blocking UI)
+  const deferredSearch = useDeferredValue(search);
+  const deferredCategory = useDeferredValue(category);
+  const deferredDuration = useDeferredValue(duration);
 
   const filtered = useMemo(() => {
     return courses.filter((course) => {
@@ -87,6 +136,19 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
       return matchSearch && matchCategory && matchDuration;
     });
   }, [courses, search, category, duration]);
+
+  // List is driven by deferred values so heavy grid re-renders don't block the main thread
+  const filteredForList = useMemo(() => {
+    return courses.filter((course) => {
+      const matchSearch =
+        !deferredSearch ||
+        course.name.toLowerCase().includes(deferredSearch.toLowerCase()) ||
+        (course.category && course.category.toLowerCase().includes(deferredSearch.toLowerCase()));
+      const matchCategory = !deferredCategory || course.category === deferredCategory;
+      const matchDuration = !deferredDuration || course.duration === deferredDuration;
+      return matchSearch && matchCategory && matchDuration;
+    });
+  }, [courses, deferredSearch, deferredCategory, deferredDuration]);
 
   const hasActiveFilters = Boolean(search || category || duration);
   const activeAdvancedFilterCount = Number(Boolean(category)) + Number(Boolean(duration));
@@ -110,7 +172,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
             aria-controls="courses-advanced-filters"
           >
             <FilterIcon />
-            {mobileFiltersOpen ? "Hide filters" : "Show filters"}
+            {mobileFiltersOpen ? t.hideFilters : t.showFilters}
             {activeAdvancedFilterCount > 0 && (
               <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-xs text-slate-600">
                 {activeAdvancedFilterCount}
@@ -122,7 +184,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
         {/* Search */}
         <div className="relative">
           <label htmlFor="course-search" className="sr-only">
-            Search courses by name or category
+            {t.searchLabel}
           </label>
           <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
             <SearchIcon />
@@ -130,7 +192,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
           <input
             id="course-search"
             type="search"
-            placeholder="Search courses by name or category…"
+            placeholder={t.searchPlaceholder}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full min-h-[42px] rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-slate-900 shadow-sm transition-[border-color,box-shadow] placeholder:text-slate-400 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200/80 sm:min-h-[44px] sm:py-3 tablet:min-h-[48px] tablet:py-3.5 tablet:pl-11"
@@ -145,14 +207,14 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
         >
           <span className="hidden items-center gap-2 text-sm font-medium text-slate-600 sm:flex">
             <FilterIcon />
-            <span>Filters</span>
+            <span>{t.filters}</span>
           </span>
 
           <div className="grid gap-2 sm:flex sm:flex-wrap sm:items-center">
             <div className="flex min-h-[40px] w-full items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-sm sm:min-h-[44px] sm:w-auto tablet:min-h-[48px] tablet:px-4">
               <CategoryIcon />
               <label htmlFor="filter-category" className="sr-only">
-                Category
+                {t.category}
               </label>
               <select
                 id="filter-category"
@@ -160,7 +222,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
                 onChange={(e) => setCategory(e.target.value)}
                 className="min-h-[34px] min-w-0 flex-1 border-0 bg-transparent text-sm text-slate-700 focus:ring-0 sm:min-w-[10rem] sm:flex-none tablet:min-w-[11rem] tablet:text-[15px]"
               >
-                <option value="">All categories</option>
+                <option value="">{t.allCategories}</option>
                 {categories.map((cat) => (
                   <option key={cat} value={cat}>
                     {cat}
@@ -172,7 +234,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
             <div className="flex min-h-[40px] w-full items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-sm sm:min-h-[44px] sm:w-auto tablet:min-h-[48px] tablet:px-4">
               <ClockIcon />
               <label htmlFor="filter-duration" className="sr-only">
-                Duration
+                {t.duration}
               </label>
               <select
                 id="filter-duration"
@@ -180,7 +242,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
                 onChange={(e) => setDuration(e.target.value)}
                 className="min-h-[34px] min-w-0 flex-1 border-0 bg-transparent text-sm text-slate-700 focus:ring-0 sm:min-w-[8rem] sm:flex-none tablet:min-w-[9rem] tablet:text-[15px]"
               >
-                <option value="">Any duration</option>
+                <option value="">{t.anyDuration}</option>
                 {durations.map((d) => (
                   <option key={d} value={d}>
                     {d}
@@ -196,7 +258,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
                 className="flex min-h-[40px] w-full items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-800 sm:min-h-[44px] sm:w-auto sm:justify-start tablet:min-h-[48px] tablet:px-4"
               >
                 <ClearIcon />
-                Clear filters
+                {t.clearFilters}
               </button>
             )}
           </div>
@@ -205,44 +267,44 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
         {/* Result count */}
         <p className="text-sm text-slate-500">
           {filtered.length === courses.length
-            ? `${courses.length} course${courses.length !== 1 ? "s" : ""}`
-            : `${filtered.length} of ${courses.length} course${courses.length !== 1 ? "s" : ""}`}
+            ? t.courseCount(courses.length)
+            : t.courseCountFiltered(filtered.length, courses.length)}
         </p>
       </div>
 
-      {/* Course list: custom render (e.g. article layout) or default grid */}
+      {/* Course list: custom render (e.g. article layout) or default grid. Uses deferred filter so list updates don't block INP. */}
       {renderItems ? (
         <div className="mt-8">
-          {filtered.length === 0 ? (
+          {filteredForList.length === 0 ? (
             <div className="rounded-xl border border-slate-200 bg-slate-50/50 py-12 text-center text-slate-600">
-              No courses match your filters. Try adjusting search or filters.
+              {t.noMatch}
             </div>
           ) : (
-            renderItems(filtered)
+            renderItems(filteredForList)
           )}
         </div>
       ) : (
-        <ul className="mt-8 grid list-none gap-5 p-0 sm:grid-cols-2 tablet:gap-6 lg:grid-cols-3">
-          {filtered.length === 0 ? (
+        <ul className="mt-8 grid list-none gap-5 p-0 sm:grid-cols-2 tablet:gap-6 lg:grid-cols-3" aria-busy={filtered.length !== filteredForList.length}>
+          {filteredForList.length === 0 ? (
             <li className="col-span-full rounded-xl border border-slate-200 bg-slate-50/50 py-12 text-center text-slate-600">
-              No courses match your filters. Try adjusting search or filters.
+              {t.noMatch}
             </li>
           ) : (
-            filtered.map((course) => (
+            filteredForList.map((course) => (
               <li
                 key={course.id}
                 className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:border-slate-300"
               >
                 <Link
-                  href={course.slug ? `/courses/${course.slug}` : course.link || RHC_COURSES_URL}
+                  href={course.slug ? `${localePrefix}/courses/${localePrefix === "/fr" ? course.slugFr : course.slug}` : course.link || RHC_COURSES_URL}
                   className="flex flex-col"
-                  aria-label={`View ${course.name} course details`}
+                  aria-label={t.viewCourseDetails(course.name)}
                   {...(course.slug ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                 >
                   <div className="relative w-full flex-shrink-0 bg-slate-100 aspect-[16/10] overflow-hidden">
                     <Image
-                      src={course.image}
-                      alt={`${course.name} – course at Richmond Hill College`}
+                      src={course.image || DEFAULT_COURSE_IMAGE}
+                      alt={t.courseImageAlt(course.name)}
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -266,7 +328,7 @@ export function CourseFilters({ courses, initialCategory = "", renderItems }: Co
                       )}
                     </div>
                     <span className="mt-4 inline-flex items-center text-sm font-medium text-slate-800 group-hover:text-slate-600">
-                      View details
+                      {t.viewDetails}
                       <span className="ml-1 transition-transform group-hover:translate-x-0.5">→</span>
                     </span>
                   </div>

@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getCourseBySlug, getCourseSlugs } from "@/lib/rhc-global-bridge-courses";
+import { getCourseBySlug, getCourseSlugs, DEFAULT_COURSE_IMAGE } from "@/lib/rhc-global-bridge-courses";
+import { getCourseInstructor } from "@/lib/course-instructors";
 import { createPageMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-url";
 import { CourseJsonLd } from "@/components/CourseJsonLd";
+import { CourseInstructorBlock } from "@/components/CourseInstructorBlock";
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ slug: string }> | { slug: string } };
 
 export async function generateStaticParams() {
   const slugs = await getCourseSlugs();
@@ -15,7 +17,9 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const resolved = await Promise.resolve(params);
+  const slug = resolved?.slug;
+  if (!slug) return { title: "Course Not Found" };
   const course = await getCourseBySlug(slug);
   if (!course) return { title: "Course Not Found" };
 
@@ -29,14 +33,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: course.name,
     description: description.slice(0, 160),
     path,
-    image: course.image,
+    alternatePaths: { fr: `courses/${course.slugFr}` },
+    image: course.image || DEFAULT_COURSE_IMAGE,
     imageWidth: 1200,
     imageHeight: 630,
   });
 }
 
 export default async function CourseDetailPage({ params }: Props) {
-  const { slug } = await params;
+  const resolved = await Promise.resolve(params);
+  const slug = resolved?.slug;
+  if (!slug) notFound();
   const course = await getCourseBySlug(slug);
   if (!course) notFound();
 
@@ -60,7 +67,7 @@ export default async function CourseDetailPage({ params }: Props) {
         <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
           <div className="relative aspect-[16/9] w-full bg-slate-100">
             <Image
-              src={course.image}
+              src={course.image || DEFAULT_COURSE_IMAGE}
               alt={`${course.name} – course at Richmond Hill College`}
               fill
               className="object-cover"
@@ -99,6 +106,9 @@ export default async function CourseDetailPage({ params }: Props) {
                 </>
               )}
             </dl>
+            {getCourseInstructor(course.slug) && (
+              <CourseInstructorBlock instructor={getCourseInstructor(course.slug)!} />
+            )}
             <p className="mt-6 text-slate-600">
               This professional bridging program is designed for internationally
               educated professionals and aligns with Canadian workplace

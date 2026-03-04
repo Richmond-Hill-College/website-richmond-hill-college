@@ -1,39 +1,74 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { FIRST_HERO_IMAGE } from "@/lib/hero";
 
-const slides = [
+const slidesEn = [
   {
     src: FIRST_HERO_IMAGE.src,
     alt: FIRST_HERO_IMAGE.alt,
     badge: "Our free career tools",
-    title: "Your Bridge to Global Business Success",
+    title: "Your Bridge to Canadian Credentials",
     subtitle:
-      "Gain the skills and Canadian credentials needed to thrive in management, entrepreneurship, and leadership roles.",
-    cta: "Ready to get started",
+      "Gain the skills and credentials you need to thrive in Canada—whether you're internationally educated or changing careers. Healthcare, technology, and professional pathways aligned with Canadian standards.",
+    cta: "Explore bridging programs",
     href: "/bridging-programs",
   },
   {
     src: "/images/hero/hero-2.jpg",
     alt: "Pathways to healthcare careers in Canada – Richmond Hill College bridging programs",
-    badge: "Our free career tools",
+    badge: "Healthcare & human services",
     title: "Pathways to Healthcare Careers in Canada",
     subtitle:
-      "Build your future in Canada's growing healthcare sector through specialized bridging programs designed for internationally educated professionals.",
-    cta: "Ready to get started",
+      "Bridging programs designed for internationally educated professionals. Build your future in Canada's healthcare sector with Canadian-recognized credentials.",
+    cta: "View healthcare programs",
     href: "/bridging-programs",
   },
   {
     src: "/images/hero/hero-3.jpg",
     alt: "Healthcare and technology management learning at Richmond Hill College",
-    badge: "Our free career tools",
-    title: "Unlocking Potential, Building Futures",
+    badge: "Programs & courses",
+    title: "Healthcare & Technology Management, Built for You",
     subtitle:
-      "Healthcare and technology management. Professional bridging programs aligned with Canadian standards.",
+      "From bridging programs to professional development—online, hybrid, and in-person. All aligned with Canadian standards for working professionals and career changers.",
     cta: "Explore programs",
     href: "/programs",
+  },
+];
+
+/** Canadian French hero copy – natural, institutional tone (vous) */
+const slidesFr = [
+  {
+    src: FIRST_HERO_IMAGE.src,
+    alt: FIRST_HERO_IMAGE.alt,
+    badge: "Outils gratuits pour votre carrière",
+    title: "Votre passerelle vers les titres canadiens",
+    subtitle:
+      "Acquérez les compétences et les titres dont vous avez besoin pour réussir au Canada—que vous soyez formé à l'étranger ou en réorientation. Santé, technologie et parcours professionnels alignés sur les normes canadiennes.",
+    cta: "Explorer les programmes de transition",
+    href: "/fr/bridging-programs",
+  },
+  {
+    src: "/images/hero/hero-2.jpg",
+    alt: "Parcours vers les carrières en santé au Canada – programmes de transition du Collège Richmond Hill",
+    badge: "Santé et services à la personne",
+    title: "Parcours vers les carrières en santé au Canada",
+    subtitle:
+      "Programmes de transition conçus pour les professionnels formés à l'étranger. Bâtissez votre avenir dans le secteur de la santé au Canada avec des titres reconnus au Canada.",
+    cta: "Voir les programmes en santé",
+    href: "/fr/bridging-programs",
+  },
+  {
+    src: "/images/hero/hero-3.jpg",
+    alt: "Formation en gestion des soins de santé et de la technologie au Collège Richmond Hill",
+    badge: "Programmes et cours",
+    title: "Gestion des soins de santé et de la technologie, pour vous",
+    subtitle:
+      "Des programmes de transition au perfectionnement professionnel—en ligne, hybrides et en présentiel. Le tout aligné sur les normes canadiennes pour les professionnels en exercice et les personnes en réorientation.",
+    cta: "Explorer les programmes",
+    href: "/fr/programs",
   },
 ];
 
@@ -53,7 +88,10 @@ const PARALLAX = {
   smoothFactor: 0.14,
 } as const;
 
-export function HeroCarousel() {
+type HeroCarouselProps = { locale?: "en" | "fr" };
+
+export function HeroCarousel({ locale = "en" }: HeroCarouselProps) {
+  const slides = locale === "fr" ? slidesFr : slidesEn;
   const [index, setIndex] = useState(0);
   const [parallaxY, setParallaxY] = useState(0);
   const [imageScale, setImageScale] = useState(1);
@@ -76,7 +114,7 @@ export function HeroCarousel() {
       setIndex((i) => (i + 1) % slides.length);
     }, INTERVAL_MS);
     return () => clearInterval(id);
-  }, []);
+  }, [slides.length]);
 
   useEffect(() => {
     const update = () => {
@@ -157,12 +195,13 @@ export function HeroCarousel() {
                   }
             }
           >
-            <img
+            <Image
               src={slide.src}
               alt={slide.alt}
-              className="absolute inset-0 h-full w-full object-cover object-center"
-              loading={i === 0 ? "eager" : "lazy"}
-              fetchPriority={i === 0 ? "high" : undefined}
+              fill
+              className="object-cover object-center"
+              sizes="100vw"
+              priority={i === 0}
             />
           </div>
         ))}
@@ -211,7 +250,7 @@ export function HeroCarousel() {
             type="button"
             onClick={() => setIndex(i)}
             className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full transition-colors tablet:min-h-[40px] tablet:min-w-[40px]"
-            aria-label={`Go to slide ${i + 1}`}
+            aria-label={locale === "fr" ? `Aller au diaporama ${i + 1}` : `Go to slide ${i + 1}`}
           >
             <span
               className={`block rounded-full transition-colors ${

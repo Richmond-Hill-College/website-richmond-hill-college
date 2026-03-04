@@ -11,16 +11,46 @@ const DEFAULT_IMAGE =
 
 type CourseOfferingsWithFiltersProps = {
   courses: RhcCourse[];
+  /** e.g. "/fr" for French pages so course links point to /fr/courses/... */
+  localePrefix?: string;
 };
 
-export function CourseOfferingsWithFilters({ courses }: CourseOfferingsWithFiltersProps) {
+const copyEn = {
+  ariaExternal: (name: string) => `View ${name} on RHC Global Bridge (opens in new tab)`,
+  ariaDetails: (name: string) => `View ${name} course details`,
+  imageAlt: (name: string) => `${name} – bridging course at Richmond Hill College`,
+  description:
+    "Professional bridging and certificate programs aligned with Canadian standards. View full details and register on RHC Global Bridge.",
+  viewDetails: "View course details →",
+  viewOnBridge: "View course on RHC Global Bridge →",
+  registerBridge: "Register on RHC Global Bridge (opens in new tab)",
+  contactUs: "Contact us",
+};
+
+const copyFr = {
+  ariaExternal: (name: string) => `Voir ${name} sur RHC Global Bridge (ouvre dans un nouvel onglet)`,
+  ariaDetails: (name: string) => `Voir les détails du cours ${name}`,
+  imageAlt: (name: string) => `${name} – programme de transition au Collège Richmond Hill`,
+  description:
+    "Programmes de transition et de certificat alignés sur les normes canadiennes. Consultez les détails et inscrivez-vous sur RHC Global Bridge.",
+  viewDetails: "Voir les détails du cours →",
+  viewOnBridge: "Voir le cours sur RHC Global Bridge →",
+  registerBridge: "S'inscrire sur RHC Global Bridge (nouvel onglet)",
+  contactUs: "Nous contacter",
+};
+
+export function CourseOfferingsWithFilters({ courses, localePrefix = "" }: CourseOfferingsWithFiltersProps) {
+  const isFr = localePrefix === "/fr";
+  const t = isFr ? copyFr : copyEn;
   return (
     <CourseFilters
       courses={courses}
+      localePrefix={localePrefix}
       renderItems={(filtered) => (
         <div className="space-y-16">
           {filtered.map((course) => {
-            const internalUrl = course.slug ? `/courses/${course.slug}` : null;
+            const courseSlug = localePrefix === "/fr" ? course.slugFr : course.slug;
+            const internalUrl = course.slug ? `${localePrefix}/courses/${courseSlug}` : null;
             const courseDetailsUrl = internalUrl ?? course.link ?? RHC_COURSES_URL;
             const isExternal = !internalUrl;
             return (
@@ -33,17 +63,13 @@ export function CourseOfferingsWithFilters({ courses }: CourseOfferingsWithFilte
                   href={courseDetailsUrl}
                   {...(isExternal && { target: "_blank", rel: "noopener noreferrer" })}
                   className="group block rounded-xl transition-shadow hover:shadow-md focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2"
-                  aria-label={
-                    isExternal
-                      ? `View ${course.name} on RHC Global Bridge (opens in new tab)`
-                      : `View ${course.name} course details`
-                  }
+                  aria-label={isExternal ? t.ariaExternal(course.name) : t.ariaDetails(course.name)}
                 >
                   <div className="flex flex-col gap-6 sm:flex-row sm:gap-8">
                     <div className="relative h-52 w-full flex-shrink-0 overflow-hidden rounded-xl bg-slate-100 sm:h-56 sm:w-80">
                       <Image
                         src={course.image || DEFAULT_IMAGE}
-                        alt={`${course.name} – bridging course at Richmond Hill College`}
+                        alt={t.imageAlt(course.name)}
                         fill
                         className="object-cover transition-transform group-hover:scale-[1.02]"
                         sizes="(max-width: 640px) 100vw, 320px"
@@ -69,13 +95,10 @@ export function CourseOfferingsWithFilters({ courses }: CourseOfferingsWithFilte
                         )}
                       </div>
                       <p className="mt-3 text-slate-600">
-                        Professional bridging and certificate programs aligned with Canadian
-                        standards. View full details and register on RHC Global Bridge.
+                        {t.description}
                       </p>
                       <span className="mt-4 inline-block text-sm font-medium text-slate-800 group-hover:underline">
-                        {internalUrl
-                          ? "View course details →"
-                          : "View course on RHC Global Bridge →"}
+                        {internalUrl ? t.viewDetails : t.viewOnBridge}
                       </span>
                     </div>
                   </div>
@@ -88,14 +111,14 @@ export function CourseOfferingsWithFilters({ courses }: CourseOfferingsWithFilte
                       rel="noopener noreferrer"
                       className="inline-block text-sm font-medium text-slate-600 hover:underline"
                     >
-                      Register on RHC Global Bridge (opens in new tab)
+                      {t.registerBridge}
                     </a>
                   )}
                   <Link
-                    href="/contact"
+                    href={localePrefix ? `${localePrefix}/contact` : "/contact"}
                     className="inline-block font-medium text-slate-800 hover:underline"
                   >
-                    Contact us
+                    {t.contactUs}
                   </Link>
                 </div>
               </article>

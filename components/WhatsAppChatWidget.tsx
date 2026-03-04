@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { X, Send } from "lucide-react";
 
 const WHATSAPP_GREEN = "#25D366";
@@ -27,6 +29,8 @@ function WhatsAppIcon({ className }: { className?: string }) {
  * Matches the floating FAB + chat panel design with header, message area, and input.
  */
 export function WhatsAppChatWidget() {
+  const pathname = usePathname() ?? "/";
+  const isFr = pathname.startsWith("/fr");
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -39,11 +43,12 @@ export function WhatsAppChatWidget() {
   }, [isOpen]);
 
   const toggle = useCallback(() => setIsOpen((o) => !o), []);
+  const defaultMessage = isFr ? "Bonjour, j'ai une question." : "Hi, I have a question.";
   const openWhatsApp = useCallback(() => {
-    const text = encodeURIComponent(message || "Hi, I have a question.");
+    const text = encodeURIComponent(message || defaultMessage);
     const url = `https://api.whatsapp.com/send/?phone=${WHATSAPP_PHONE}&text=${text}&type=phone_number&app_absent=0`;
     window.open(url, "_blank", "noopener,noreferrer");
-  }, [message]);
+  }, [message, defaultMessage]);
 
   return (
     <>
@@ -67,13 +72,13 @@ export function WhatsAppChatWidget() {
             className="flex shrink-0 items-center gap-3 px-4 py-3 text-white"
             style={{ background: WHATSAPP_HEADER_GREEN }}
           >
-            <div className="relative shrink-0">
-              <img
+            <div className="relative h-12 w-12 shrink-0">
+              <Image
                 src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=96&h=96&fit=crop&crop=face"
                 alt=""
                 width={48}
                 height={48}
-                className="h-12 w-12 rounded-full object-cover ring-2 ring-white/30"
+                className="rounded-full object-cover ring-2 ring-white/30"
               />
               <span
                 className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#075E54]"
@@ -83,13 +88,13 @@ export function WhatsAppChatWidget() {
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate font-semibold">Jane Doe</p>
-              <p className="text-xs text-white/90">Online</p>
+              <p className="text-xs text-white/90">{isFr ? "En ligne" : "Online"}</p>
             </div>
             <button
               type="button"
               onClick={toggle}
               className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white/90 transition hover:bg-white/15 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/50"
-              aria-label="Close chat"
+              aria-label={isFr ? "Fermer la discussion" : "Close chat"}
             >
               <X className="h-5 w-5" strokeWidth={2.5} />
             </button>
@@ -122,9 +127,9 @@ export function WhatsAppChatWidget() {
                   }}
                 />
                 <p className="relative text-slate-800 text-[15px] leading-snug">
-                  Hi there 👋
+                  {isFr ? "Bonjour 👋" : "Hi there 👋"}
                   <br />
-                  How can I help you?
+                  {isFr ? "Comment puis-je vous aider ?" : "How can I help you?"}
                 </p>
               </div>
             </div>
@@ -138,16 +143,16 @@ export function WhatsAppChatWidget() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && openWhatsApp()}
-              placeholder="Enter Your Message..."
+              placeholder={isFr ? "Entrez votre message..." : "Enter Your Message..."}
               className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-              aria-label="Message"
+              aria-label={isFr ? "Message" : "Message"}
             />
             <button
               type="button"
               onClick={openWhatsApp}
               className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-white transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
               style={{ background: WHATSAPP_GREEN }}
-              aria-label="Send message"
+              aria-label={isFr ? "Envoyer le message" : "Send message"}
             >
               <Send className="h-5 w-5" strokeWidth={2.5} />
             </button>
@@ -163,7 +168,7 @@ export function WhatsAppChatWidget() {
         style={{
           background: WHATSAPP_GREEN,
         }}
-        aria-label={isOpen ? "Close chat" : "Open chat"}
+        aria-label={isOpen ? (isFr ? "Fermer la discussion" : "Close chat") : (isFr ? "Ouvrir la discussion" : "Open chat")}
       >
         <WhatsAppIcon className="h-7 w-7 tablet:h-8 tablet:w-8" />
         <span

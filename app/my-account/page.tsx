@@ -5,6 +5,7 @@ import { createPageMetadata } from "@/lib/seo";
 import {
   getRhcCourses,
   RHC_GLOBAL_BRIDGE_COURSES_FALLBACK,
+  DEFAULT_COURSE_IMAGE,
   type RhcCourse,
 } from "@/lib/rhc-global-bridge-courses";
 
@@ -233,7 +234,7 @@ export default async function MyAccountPage() {
               >
                 <div className="relative h-48 w-full flex-shrink-0 bg-slate-100 sm:h-40 sm:w-56">
                   <Image
-                    src={course.image}
+                    src={course.image || DEFAULT_COURSE_IMAGE}
                     alt={`${course.name} – course at Richmond Hill College`}
                     fill
                     className="object-cover"
