@@ -93,15 +93,17 @@ export function LanguageSplash() {
       />
       <div className="relative z-10 flex w-full max-w-md flex-col items-center gap-10 text-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="relative h-14 w-32 tablet:h-16 tablet:w-36">
-            <Image
-              src={LOGO_SRC}
-              alt={LOGO_ALT}
-              fill
-              className="object-contain object-center"
-              priority
-              sizes="144px"
-            />
+          <div className="flex items-center justify-center rounded-xl bg-white px-5 py-3 shadow-lg tablet:rounded-2xl tablet:px-6 tablet:py-4">
+            <div className="relative h-12 w-28 tablet:h-14 tablet:w-32">
+              <Image
+                src={LOGO_SRC}
+                alt={LOGO_ALT}
+                fill
+                className="object-contain object-center"
+                priority
+                sizes="144px"
+              />
+            </div>
           </div>
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-white/80">
             Choose your language / Choisissez votre langue

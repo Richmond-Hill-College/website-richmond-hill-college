@@ -1,0 +1,1 @@
+Open the codebase in an unused cursor browser port locally so I can interact with it and you can too
