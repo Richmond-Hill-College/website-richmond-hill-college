@@ -156,8 +156,9 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
           <p className="text-center text-sm text-slate-400">
-            &copy; {new Date().getFullYear()} Richmond Hill College of
-            Healthcare and Technology Management
+            {isFr
+              ? `© ${new Date().getFullYear()} College Richmond Hill de gestion des soins de sante et de la technologie`
+              : `© ${new Date().getFullYear()} Richmond Hill College of Healthcare and Technology Management`}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-sm">
             <Link

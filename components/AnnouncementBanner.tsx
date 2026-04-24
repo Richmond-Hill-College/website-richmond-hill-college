@@ -7,7 +7,8 @@ import { usePathname } from "next/navigation";
 const STORAGE_KEY = "rhc-announcement-banner-dismissed";
 
 export function AnnouncementBanner() {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "/";
+  const isFr = pathname.startsWith("/fr");
   const [dismissed, setDismissed] = useState(true); // start hidden to avoid flash
   const [mounted, setMounted] = useState(false);
 
@@ -30,7 +31,9 @@ export function AnnouncementBanner() {
     }
   };
 
-  if (pathname !== "/" || !mounted || dismissed) return null;
+  const isHome = pathname === "/" || pathname === "/fr" || pathname === "/fr/";
+
+  if (!isHome || !mounted || dismissed) return null;
 
   return (
     <div
@@ -40,25 +43,25 @@ export function AnnouncementBanner() {
     >
       <span className="flex flex-1 flex-shrink-0 flex-wrap items-center justify-center gap-1.5 gap-y-1 sm:gap-2">
         <span className="inline-flex items-center gap-1 rounded bg-white/20 px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide sm:px-2">
-          Limited spots
+          {isFr ? "Places limitees" : "Limited spots"}
         </span>
         {/* Mobile: short line to save vertical space */}
         <span className="sm:hidden">
-          Enrol now.{" "}
+          {isFr ? "Inscrivez-vous maintenant. " : "Enrol now. "}
           <Link
-            href="/courses"
+            href={isFr ? "/fr/courses" : "/courses"}
             className="underline decoration-white/80 underline-offset-2 transition-colors hover:decoration-white hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#f6520a]"
           >
-            View courses
+            {isFr ? "Voir les cours" : "View courses"}
           </Link>
         </span>
         <span className="hidden sm:inline">
-          Enrol now for upcoming intakes — places fill quickly.{" "}
+          {isFr ? "Inscrivez-vous maintenant pour les prochaines cohortes - les places partent vite. " : "Enrol now for upcoming intakes - places fill quickly. "}
           <Link
-            href="/courses"
+            href={isFr ? "/fr/courses" : "/courses"}
             className="underline decoration-white/80 underline-offset-2 transition-colors hover:decoration-white hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#f6520a]"
           >
-            View courses
+            {isFr ? "Voir les cours" : "View courses"}
           </Link>
         </span>
       </span>
@@ -66,7 +69,7 @@ export function AnnouncementBanner() {
         type="button"
         onClick={handleDismiss}
         className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1.5 text-white/90 transition-colors hover:bg-white/20 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#f6520a] sm:right-3"
-        aria-label="Dismiss announcement"
+        aria-label={isFr ? "Fermer l'annonce" : "Dismiss announcement"}
       >
         <svg className="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

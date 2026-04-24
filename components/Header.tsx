@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useCallback, useEffect, useRef } from "react";
+import { LOCALE_COOKIE_MAX_AGE, LOCALE_COOKIE_NAME } from "@/lib/locale-cookie";
 
 const LOGO_SRC = "/images/logo/rhc-logo.png";
 const LOGO_ALT = "Richmond Hill College – healthcare and technology management logo";
@@ -284,6 +285,31 @@ function LanguageSwitch({ variant = "desktop" }: { variant?: "desktop" | "mobile
       ? "min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg px-2 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1"
       : "flex items-center gap-2 rounded-md px-2 py-3 text-base font-medium border-b border-slate-100";
 
+  // Language switch must set the preference cookie BEFORE navigating, otherwise
+  // middleware.ts sees the old cookie and redirects the user back to the
+  // previous locale (the user experiences this as "the toggle doesn't work").
+  // A hard navigation (window.location.href) is used so:
+  //   1. The new cookie is sent with the request (middleware honors it).
+  //   2. Any prefetched RSC data from the previous locale is discarded.
+  //   3. Server components (Footer, banners, etc.) render with correct locale.
+  const handleLangClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      // Let the browser handle modifier-key clicks (open in new tab, etc.)
+      if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      e.preventDefault();
+      try {
+        const locale = href.startsWith("/fr") ? "fr" : "en";
+        document.cookie = `${LOCALE_COOKIE_NAME}=${locale}; path=/; max-age=${LOCALE_COOKIE_MAX_AGE}; SameSite=Lax`;
+        localStorage.setItem(LOCALE_COOKIE_NAME, locale);
+      } catch {
+        // ignore storage/cookie errors (private mode, etc.)
+      }
+      // Hard navigation — survives middleware redirect + prefetch cache.
+      window.location.href = href;
+    },
+    []
+  );
+
   return (
     <div
       className={
@@ -296,6 +322,8 @@ function LanguageSwitch({ variant = "desktop" }: { variant?: "desktop" | "mobile
     >
       <Link
         href={enPath}
+        prefetch={false}
+        onClick={(e) => handleLangClick(e, enPath)}
         className={`${linkClass} ${!isFrench ? "bg-white text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-900"} ${variant === "mobile" ? mobilePressStateClass : ""}`}
         aria-current={!isFrench ? "page" : undefined}
       >
@@ -306,6 +334,8 @@ function LanguageSwitch({ variant = "desktop" }: { variant?: "desktop" | "mobile
       </span>
       <Link
         href={frPath}
+        prefetch={false}
+        onClick={(e) => handleLangClick(e, frPath)}
         className={`${linkClass} ${isFrench ? "bg-white text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-900"} ${variant === "mobile" ? mobilePressStateClass : ""}`}
         aria-current={isFrench ? "page" : undefined}
       >
@@ -318,6 +348,7 @@ function LanguageSwitch({ variant = "desktop" }: { variant?: "desktop" | "mobile
 export function Header() {
   const pathname = usePathname() ?? "/";
   const localePrefix = pathname.startsWith("/fr") ? "/fr" : "";
+  const isFr = localePrefix === "/fr";
   const [menuOpen, setMenuOpen] = useState(false);
   const [logoError, setLogoError] = useState(false);
 
@@ -340,7 +371,7 @@ export function Header() {
         <Link
           href={localePrefix || "/"}
           className="flex h-8 min-w-[120px] shrink-0 items-center gap-2 sm:h-9 tablet:h-10 tablet:min-w-[140px]"
-          aria-label="Richmond Hill College home"
+          aria-label={isFr ? "Accueil Richmond Hill College" : "Richmond Hill College home"}
         >
           {logoError ? (
             <span className="text-lg font-bold text-rhc-primary-dark sm:text-xl">RHC</span>
@@ -360,8 +391,7 @@ export function Header() {
         {/* Desktop nav only (lg+); single row, no wrap; min-w-0 so it can shrink in flex */}
         <nav className="hidden lg:flex lg:flex-nowrap lg:items-center lg:justify-end lg:gap-2 xl:gap-3 min-w-0 overflow-visible" aria-label="Main navigation">
           {navItems.map((item, index) => {
-            const isFr = localePrefix === "/fr";
-            const label = (item.type === "link" ? (item.labelFr ?? item.label) : (item.labelFr ?? item.label)) as string;
+            const label = (isFr ? item.labelFr : item.label) ?? item.label;
             const children = item.type === "dropdown" ? item.children.map((link) => ({ ...link, label: (isFr ? link.labelFr ?? link.label : link.label) })) : [];
             return item.type === "link" ? (
               <Link
@@ -394,7 +424,7 @@ export function Header() {
             boxShadow: "0 4px 14px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.15)",
           }}
         >
-          Contact
+          {isFr ? "Contact" : "Contact"}
         </Link>
 
         {/* Mobile & tablet: hamburger button (hidden on lg+ desktop) */}
