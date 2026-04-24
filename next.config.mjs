@@ -24,6 +24,16 @@ const nextConfig = {
       },
     ],
   },
+  // English uses no locale prefix; French uses /fr. External links sometimes
+  // include an /en prefix (legacy or hand-authored). Redirect those so users
+  // and crawlers land on the canonical English URL instead of a 404.
+  async redirects() {
+    return [
+      { source: "/en", destination: "/", permanent: true },
+      { source: "/en/", destination: "/", permanent: true },
+      { source: "/en/:path*", destination: "/:path*", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;
