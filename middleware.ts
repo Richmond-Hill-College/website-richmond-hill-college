@@ -17,15 +17,49 @@ function nextWithPathname(request: NextRequest) {
   });
 }
 
+const KNOWN_FR_ROOT_SEGMENTS = new Set([
+  "about-us",
+  "bridge-canadian-certification",
+  "bridging-programs",
+  "canadian-certification-internationally-educated",
+  "conferences",
+  "contact",
+  "course-offerings",
+  "courses",
+  "faq",
+  "message-from-the-president",
+  "my-account",
+  "privacy-policy",
+  "product",
+  "products",
+  "programs",
+  "search",
+  "sitemap",
+  "support",
+  "terms-of-service",
+]);
+
+function isKnownFrPath(pathname: string): boolean {
+  const firstSegment = pathname.split("/")[2];
+  return firstSegment ? KNOWN_FR_ROOT_SEGMENTS.has(firstSegment) : false;
+}
+
 /**
  * Redirect root paths to the user's preferred locale when they have a saved preference.
  * First-time visitors (no cookie) see the LanguageSplash and choose EN or FR.
+ * FR paths without a dedicated translation redirect to canonical EN.
  * Adds x-pathname to all requests so root layout can set <html lang> for SEO.
  */
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  // Only redirect exact root: "/" or "/fr" or "/fr/"
+  // FR catch-all: redirect /fr/:path* to /:path* when path is unknown
+  if (pathname.startsWith("/fr/") && pathname !== "/fr/" && !isKnownFrPath(pathname)) {
+    const rest = pathname.slice(4);
+    return NextResponse.redirect(new URL(rest, request.url));
+  }
+
+  // Root locale redirects: "/" or "/fr" or "/fr/"
   const isRootEn = pathname === "/";
   const isRootFr = pathname === "/fr" || pathname === "/fr/";
 

@@ -27,8 +27,8 @@ const Body = z.object({
   send_copy: z.boolean().optional(),
   locale: z.enum(["en", "fr"]).optional().default("en"),
   source_path: z.string().max(500).optional(),
-  /** Honeypot — must be empty. Real users never fill it. */
-  website: z.string().max(0).optional().or(z.literal("")),
+  /** Honeypot — must be empty. Real users never fill it. Validated broadly so bots get 200, not 400. */
+  website: z.string().optional().or(z.literal("")),
 });
 
 const NOTIFY_TO = process.env.CONTACT_NOTIFY_EMAIL ?? "info@richmondhillcollege.ca";
