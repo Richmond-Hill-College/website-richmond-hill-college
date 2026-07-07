@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
+  index: false,
   title: "Accommodations",
   description:
     "Accommodations for Nursing and Healthcare 2025. Hotel and travel information for the Toronto conference.",

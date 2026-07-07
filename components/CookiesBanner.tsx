@@ -33,6 +33,12 @@ export function CookiesBanner() {
     } catch {
       // ignore
     }
+    // Notify Analytics + any other consent-aware module to load/unload now
+    try {
+      window.dispatchEvent(new CustomEvent("rhc-consent-changed", { detail: value }));
+    } catch {
+      // ignore
+    }
   };
 
   const handleAccept = () => persist("accepted");
@@ -43,7 +49,7 @@ export function CookiesBanner() {
   return (
     <aside
       role="dialog"
-      aria-label={isFr ? "Consentement aux temoins" : "Cookie consent"}
+      aria-label={isFr ? "Consentement aux témoins" : "Cookie consent"}
       className="fixed left-0 right-0 bottom-20 z-50 animate-cookie-banner-in tablet:bottom-0 motion-reduce:animate-none"
     >
       <div className="mx-auto max-w-7xl px-4 pb-3 pt-3 tablet:px-6 tablet:pb-[calc(1rem+env(safe-area-inset-bottom,0))] tablet:pt-4 desktop:px-8">
@@ -51,13 +57,13 @@ export function CookiesBanner() {
           <div className="flex flex-col gap-3 px-4 py-3 tablet:flex-row tablet:items-center tablet:justify-between tablet:gap-4 tablet:px-6 tablet:py-4">
             <p className="text-sm leading-relaxed text-slate-700 tablet:text-base tablet:max-w-2xl">
               {isFr
-                ? "Nous utilisons des temoins pour ameliorer votre experience et analyser le trafic du site. En poursuivant, vous acceptez leur utilisation. "
+                ? "Nous utilisons des témoins pour améliorer votre expérience et analyser le trafic du site. En poursuivant, vous acceptez leur utilisation. "
                 : "We use cookies to improve your experience and analyze site traffic. By continuing you consent to our use of cookies. "}
               <Link
                 href={isFr ? "/fr/privacy-policy" : "/privacy-policy"}
                 className="font-medium text-rhc-primary underline decoration-rhc-primary/50 underline-offset-2 transition-colors hover:decoration-rhc-primary focus:outline-none focus:ring-2 focus:ring-rhc-primary focus:ring-offset-2 focus:ring-offset-white rounded"
               >
-                {isFr ? "Politique de confidentialite" : "Privacy Policy"}
+                {isFr ? "Politique de confidentialité" : "Privacy Policy"}
               </Link>
             </p>
             <div className="flex flex-shrink-0 items-center gap-2 tablet:gap-3">

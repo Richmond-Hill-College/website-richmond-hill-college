@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
+  index: false,
   title: "Inscription",
   description:
     "Inscription à Soins infirmiers et santé 2025. Conférence Avancer en soins infirmiers et en santé, Toronto, 28–30 novembre 2025.",

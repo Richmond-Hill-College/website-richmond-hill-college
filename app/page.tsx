@@ -9,6 +9,7 @@ import { ContactBlock } from "@/components/ContactBlock";
 import { FAQSection } from "@/components/FAQSection";
 import { ContactForm } from "@/components/ContactForm";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { EventsSection } from "@/components/EventsSection";
 import { getRhcCourses, RHC_GLOBAL_BRIDGE_COURSES_FALLBACK } from "@/lib/rhc-global-bridge-courses";
 
 const learningOptions = [
@@ -277,6 +278,8 @@ export default async function Home() {
             })}
           </div>
         </ScrollReveal>
+
+        <EventsSection />
 
         <ScrollReveal as="section" className="mb-16 tablet:mb-24 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-6 shadow-sm tablet:p-10">
           <div className="flex flex-col gap-6 tablet:gap-8 md:flex-row md:items-center md:justify-between">

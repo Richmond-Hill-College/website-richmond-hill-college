@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
+  index: false,
   title: "Lettre d'invitation",
   description:
     "Demande de lettre d'invitation pour la conférence Soins infirmiers et santé 2025. Toronto, 28–30 novembre 2025.",

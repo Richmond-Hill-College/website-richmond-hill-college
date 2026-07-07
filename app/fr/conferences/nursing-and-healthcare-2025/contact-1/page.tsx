@@ -4,6 +4,7 @@ import { ContactBlock } from "@/components/ContactBlock";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
+  index: false,
   title: "Contact conférence",
   description:
     "Contact pour la conférence Soins infirmiers et santé 2025. Toronto, 28–30 novembre 2025.",

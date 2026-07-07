@@ -23,16 +23,12 @@ export const staticRoutes: { path: string; priority: number; label: string; labe
   { path: "faq", priority: 0.8, label: "FAQ", labelFr: "FAQ" },
   { path: "faq/categories", priority: 0.75, label: "FAQ by Category", labelFr: "FAQ par catégorie" },
   { path: "conferences", priority: 0.8, label: "Conferences", labelFr: "Conférences" },
-  { path: "conferences/nursing-and-healthcare-2025", priority: 0.8, label: "Nursing and Healthcare 2025", labelFr: "Soins infirmiers et santé 2025" },
-  { path: "conferences/nursing-and-healthcare-2025/conference-main-page", priority: 0.8, label: "Conference Main Page", labelFr: "Page principale" },
-  { path: "conferences/nursing-and-healthcare-2025/registration", priority: 0.8, label: "Registration", labelFr: "Inscription" },
-  { path: "conferences/nursing-and-healthcare-2025/submit-abstract", priority: 0.8, label: "Submit Abstract", labelFr: "Soumettre un résumé" },
-  { path: "conferences/nursing-and-healthcare-2025/invitation-letter", priority: 0.8, label: "Invitation Letter", labelFr: "Lettre d'invitation" },
-  { path: "conferences/nursing-and-healthcare-2025/sponsorship", priority: 0.8, label: "Sponsorship", labelFr: "Commandites" },
-  { path: "conferences/nursing-and-healthcare-2025/accommodations", priority: 0.8, label: "Accommodations", labelFr: "Hébergement" },
-  { path: "conferences/nursing-and-healthcare-2025/program-table", priority: 0.8, label: "Program Table", labelFr: "Tableau du programme" },
-  { path: "conferences/nursing-and-healthcare-2025/abstract-proceeding-book", priority: 0.8, label: "Abstract & Proceeding Book", labelFr: "Résumés et actes" },
-  { path: "conferences/nursing-and-healthcare-2025/venue", priority: 0.8, label: "Venue", labelFr: "Lieu" },
-  { path: "conferences/nursing-and-healthcare-2025/contact-1", priority: 0.8, label: "Conference Contact", labelFr: "Contact conférence" },
+  { path: "conferences/nursing-and-healthcare-2025", priority: 0.7, label: "Nursing and Healthcare 2025 (Recap)", labelFr: "Soins infirmiers et santé 2025 (Récapitulatif)" },
+  // Conference is past (Nov 2025). Time-sensitive subpages are noindex and excluded
+  // from the sitemap. The hub, program-table and proceedings stay indexable.
+  { path: "conferences/nursing-and-healthcare-2025/conference-main-page", priority: 0.5, label: "Conference Overview (2025)", labelFr: "Aperçu de la conférence (2025)" },
+  { path: "conferences/nursing-and-healthcare-2025/program-table", priority: 0.5, label: "Program Table (2025)", labelFr: "Tableau du programme (2025)" },
+  { path: "conferences/nursing-and-healthcare-2025/abstract-proceeding-book", priority: 0.6, label: "Abstract & Proceeding Book (2025)", labelFr: "Résumés et actes (2025)" },
+  { path: "search", priority: 0.4, label: "Search", labelFr: "Rechercher" },
   { path: "sitemap", priority: 0.5, label: "Sitemap", labelFr: "Plan du site" },
 ];

@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { createPageMetadata } from "@/lib/seo";
+import { PastEventBanner } from "@/components/PastEventBanner";
+import { NotifyMeForm } from "@/components/NotifyMeForm";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Nursing and Healthcare 2025",
+  title: "Nursing and Healthcare 2025 — Past Event",
   description:
-    "Advancing Nursing and Healthcare Conference: A Global Dialogue. Toronto, Canada, November 28–30, 2025. Register, submit abstracts, and join healthcare professionals worldwide.",
+    "Recap of the Advancing Nursing and Healthcare Conference: A Global Dialogue (Toronto, Canada, November 28–30, 2025). View the proceedings book and sign up for the 2026 edition.",
   path: "conferences/nursing-and-healthcare-2025",
 });
 
@@ -25,6 +27,11 @@ const navItems = [
 export default function NursingHealthcare2025Page() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <PastEventBanner
+        locale="en"
+        proceedingsHref="/conferences/nursing-and-healthcare-2025/abstract-proceeding-book"
+      />
+
       <nav className="mb-8 flex flex-wrap gap-2 border-b border-slate-200 pb-6" aria-label="Conference sections">
         {navItems.map(({ href, label }) => (
           <Link
@@ -38,12 +45,12 @@ export default function NursingHealthcare2025Page() {
       </nav>
 
       <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">
-        Nursing and Healthcare 2025
+        Nursing and Healthcare 2025 — Recap
       </h1>
       <p className="mt-2 text-lg text-slate-600">
         Advancing Nursing and Healthcare Conference: A Global Dialogue
       </p>
-      <p className="mt-1 text-slate-600">Toronto, Canada — November 28–30, 2025</p>
+      <p className="mt-1 text-slate-600">Toronto, Canada — November 28–30, 2025 (concluded)</p>
 
       <section className="mt-10" aria-labelledby="welcome-heading">
         <h2 id="welcome-heading" className="text-2xl font-bold text-slate-900">
@@ -151,18 +158,20 @@ export default function NursingHealthcare2025Page() {
 
       <div className="mt-10 flex flex-wrap gap-4">
         <Link
-          href="/conferences/nursing-and-healthcare-2025/registration"
+          href="/conferences/nursing-and-healthcare-2025/abstract-proceeding-book"
           className="cta-primary rounded-md px-4 py-2 text-sm font-medium"
         >
-          Register Now
+          View Proceedings Book
         </Link>
         <Link
           href="/conferences/nursing-and-healthcare-2025/conference-main-page"
           className="inline-block font-medium text-slate-800 hover:underline"
         >
-          More Information
+          Conference Overview
         </Link>
       </div>
+
+      <NotifyMeForm locale="en" topic="nursing-healthcare-2026" />
     </div>
   );
 }

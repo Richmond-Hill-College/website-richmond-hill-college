@@ -1,22 +1,13 @@
-import type { Metadata } from "next";
-import { FrenchComingSoon } from "@/components/FrenchComingSoon";
-import { createPageMetadata } from "@/lib/seo";
+/**
+ * Catch-all for FR URLs with multi-segment paths that don't match a dedicated
+ * app/fr/{slug}/page.tsx. Permanent-redirects to the canonical English URL.
+ */
+import { permanentRedirect } from "next/navigation";
 
 type Props = { params: Promise<{ path: string; rest?: string[] }> };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export default async function FrenchNestedRedirect({ params }: Props) {
   const { path, rest } = await params;
-  const fullPath = rest?.length ? `${path}/${rest.join("/")}` : path;
-  return createPageMetadata({
-    title: "Version française à venir",
-    description: "Cette page n'est pas encore disponible en français.",
-    path: fullPath ?? "",
-    locale: "fr",
-  });
-}
-
-export default async function FrenchPlaceholderNestedPage({ params }: Props) {
-  const { path, rest } = await params;
-  const enPath = path ? `/${[path, ...(rest ?? [])].join("/")}` : "/";
-  return <FrenchComingSoon enPath={enPath} />;
+  const segments = [path, ...(rest ?? [])].filter(Boolean);
+  permanentRedirect(segments.length ? `/${segments.join("/")}` : "/");
 }

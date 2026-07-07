@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "workspace": {
+    "name": "Richmond Hill College",
+    "createdAt": 1783466094292,
+    "preset": "starter"
+  },
+  "authorizedRoots": [
+    "/Users/elijahroyaei/Desktop/Client_Projects/Richmond Hill College"
+  ],
+  "reload": null
+}

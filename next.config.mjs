@@ -1,3 +1,5 @@
+import { withSentryConfig } from "@sentry/nextjs";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -36,4 +38,23 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+// Wrap with Sentry only when DSN is configured. The wrapper is a no-op
+// at runtime if DSN is missing, but we still want to skip its build-time
+// source-map upload + auth-token requirement when not in use.
+const sentryEnabled = Boolean(process.env.NEXT_PUBLIC_SENTRY_DSN);
+
+export default sentryEnabled
+  ? withSentryConfig(nextConfig, {
+      // Suppress Sentry CLI logs during local dev unless explicitly verbose
+      silent: !process.env.SENTRY_VERBOSE,
+      org: process.env.SENTRY_ORG,
+      project: process.env.SENTRY_PROJECT,
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      // Only upload source maps on Vercel/CI builds where the auth token exists
+      sourcemaps: { disable: !process.env.SENTRY_AUTH_TOKEN },
+      // Tunneling avoids ad-blocker false-positives on production
+      tunnelRoute: "/monitoring",
+      hideSourceMaps: true,
+      disableLogger: true,
+    })
+  : nextConfig;

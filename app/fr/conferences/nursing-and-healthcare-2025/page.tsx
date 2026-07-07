@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { createPageMetadata } from "@/lib/seo";
+import { PastEventBanner } from "@/components/PastEventBanner";
+import { NotifyMeForm } from "@/components/NotifyMeForm";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Soins infirmiers et santé 2025",
+  title: "Soins infirmiers et santé 2025 — Événement passé",
   description:
-    "Conférence Avancer en soins infirmiers et en santé : un dialogue mondial. Toronto, Canada, 28–30 novembre 2025. Inscription, soumission de résumés, rencontres avec des professionnels de la santé du monde entier.",
+    "Récapitulatif de la Conférence Avancer en soins infirmiers et en santé : un dialogue mondial (Toronto, Canada, 28–30 novembre 2025). Consultez les actes et inscrivez-vous pour l'édition 2026.",
   path: "conferences/nursing-and-healthcare-2025",
   locale: "fr",
 });
@@ -26,6 +28,11 @@ const navItems = [
 export default function NursingHealthcare2025PageFr() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <PastEventBanner
+        locale="fr"
+        proceedingsHref="/fr/conferences/nursing-and-healthcare-2025/abstract-proceeding-book"
+      />
+
       <nav className="mb-8 flex flex-wrap gap-2 border-b border-slate-200 pb-6" aria-label="Sections de la conférence">
         {navItems.map(({ href, label }) => (
           <Link
@@ -39,12 +46,12 @@ export default function NursingHealthcare2025PageFr() {
       </nav>
 
       <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">
-        Soins infirmiers et santé 2025
+        Soins infirmiers et santé 2025 — Récapitulatif
       </h1>
       <p className="mt-2 text-lg text-slate-600">
         Conférence Avancer en soins infirmiers et en santé : un dialogue mondial
       </p>
-      <p className="mt-1 text-slate-600">Toronto, Canada — 28–30 novembre 2025</p>
+      <p className="mt-1 text-slate-600">Toronto, Canada — 28–30 novembre 2025 (terminée)</p>
 
       <section className="mt-10" aria-labelledby="welcome-heading">
         <h2 id="welcome-heading" className="text-2xl font-bold text-slate-900">
@@ -93,18 +100,20 @@ export default function NursingHealthcare2025PageFr() {
 
       <div className="mt-10 flex flex-wrap gap-4">
         <Link
-          href="/fr/conferences/nursing-and-healthcare-2025/registration"
+          href="/fr/conferences/nursing-and-healthcare-2025/abstract-proceeding-book"
           className="cta-primary rounded-md px-4 py-2 text-sm font-medium"
         >
-          S&apos;inscrire
+          Voir les actes
         </Link>
         <Link
           href="/fr/conferences/nursing-and-healthcare-2025/conference-main-page"
           className="inline-block font-medium text-slate-800 hover:underline"
         >
-          Plus d&apos;informations
+          Aperçu de la conférence
         </Link>
       </div>
+
+      <NotifyMeForm locale="fr" topic="nursing-healthcare-2026" />
     </div>
   );
 }

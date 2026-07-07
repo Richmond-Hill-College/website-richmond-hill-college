@@ -40,6 +40,7 @@ const footerLinkGroups = [
       { href: "/faq", label: "FAQ", labelFr: "FAQ" },
       { href: "/faq/categories", label: "FAQ by Category", labelFr: "FAQ par catégorie" },
       { href: "/support", label: "Support", labelFr: "Support" },
+      { href: "/search", label: "Search", labelFr: "Rechercher" },
     ],
   },
   {

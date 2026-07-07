@@ -10,6 +10,7 @@ import { WhatsAppChatWidget } from "@/components/WhatsAppChatWidget";
 import { OrganizationJsonLd } from "@/components/JsonLd";
 import { LangAttribute } from "@/components/LangAttribute";
 import { LanguageSplash } from "@/components/LanguageSplash";
+import { Analytics } from "@/components/Analytics";
 import { siteUrl } from "@/lib/site-url";
 import { FIRST_HERO_IMAGE } from "@/lib/hero";
 
@@ -85,6 +86,7 @@ export default function RootLayout({
         <MobileBottomNav />
         <CookiesBanner />
         <WhatsAppChatWidget />
+        <Analytics />
       </body>
     </html>
   );
