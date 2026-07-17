@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ContactBlock } from "@/components/ContactBlock";
+import { GeneratedVisual } from "@/components/GeneratedVisual";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
@@ -9,6 +10,9 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "Get Canadian certification as an internationally educated professional. Richmond Hill College bridging programs: healthcare PSW, pharmacy assistant, pet grooming, beauty. Enroll or contact us. Ontario.",
   path: "canadian-certification-internationally-educated",
+  image: "/images/generated/library/student-success.png",
+  imageWidth: 1672,
+  imageHeight: 941,
 });
 
 const pathways = [
@@ -37,16 +41,32 @@ const pathways = [
 export default function CanadianCertificationInternationallyEducatedPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">
-        Canadian Certification for Internationally Educated Professionals
-      </h1>
-      <p className="mt-4 text-lg text-slate-600">
-        If you were trained or certified abroad and want to work in your field in Canada,
-        Canadian certification—or a recognized pathway to it—is often the next step. Richmond
-        Hill College offers bridging programs designed for internationally educated
-        professionals (IEPs) so you can adapt your qualifications to Canadian standards and
-        move toward certification, licensing, or employment here.
-      </p>
+      <div className="grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-12">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-widest text-[#f6520a]">
+            Build on your international experience
+          </p>
+          <h1 className="mt-2 text-3xl font-bold text-slate-900 sm:text-4xl">
+            Canadian Certification for Internationally Educated Professionals
+          </h1>
+          <p className="mt-4 text-lg text-slate-600">
+            If you were trained or certified abroad and want to work in your field in Canada,
+            Canadian certification—or a recognized pathway to it—is often the next step. Richmond
+            Hill College offers bridging programs designed for internationally educated
+            professionals (IEPs) so you can adapt your qualifications to Canadian standards and
+            move toward certification, licensing, or employment here.
+          </p>
+          <Link href="/bridging-programs" className="cta-primary mt-6 inline-flex rounded-lg px-5 py-3 text-sm font-semibold">
+            Find your bridging pathway
+          </Link>
+        </div>
+        <GeneratedVisual
+          visualKey="studentSuccess"
+          priority
+          className="rounded-2xl shadow-xl ring-1 ring-slate-200"
+          sizes="(max-width: 1024px) 100vw, 50vw"
+        />
+      </div>
 
       {/* Certification preview – how your RHC certification will look */}
       <section className="mt-12" aria-labelledby="cert-preview-heading">

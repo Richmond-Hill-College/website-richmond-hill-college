@@ -8,16 +8,40 @@ import {
   type RhcCourse,
 } from "@/lib/rhc-global-bridge-courses";
 import { BridgingProgramsSearch } from "@/components/BridgingProgramsSearch";
+import { GENERATED_VISUALS } from "@/lib/generated-visuals";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Bridging Programs",
+  title: "Bridging Programs in Richmond Hill, Ontario",
   description:
-    "Richmond Hill College bridging programs: Healthcare & Human Services, Animal Care, Hospitality, Skilled Trades, IT & AI, Beauty. For internationally educated professionals and career changers.",
+    "Explore bridging programs in Richmond Hill, Ontario for internationally educated professionals seeking Canadian-ready skills in healthcare, technology and professional services.",
   path: "bridging-programs",
-  image: "/images/programs/programs-1.jpg",
-  imageWidth: 800,
-  imageHeight: 600,
+  image: GENERATED_VISUALS.credentialJourney.src,
+  imageWidth: 1672,
+  imageHeight: 941,
 });
+
+const howWeHelp = [
+  {
+    title: "Targeted skills training",
+    description: "Focus on the specific knowledge and workplace practices needed for your next step.",
+    visual: GENERATED_VISUALS.targetedTraining,
+  },
+  {
+    title: "Personalized mentorship",
+    description: "Get guidance as you adapt your experience to Canadian expectations.",
+    visual: GENERATED_VISUALS.mentorship,
+  },
+  {
+    title: "Career pathway support",
+    description: "Connect your learning to clear certification and employment goals.",
+    visual: GENERATED_VISUALS.careerPlacement,
+  },
+  {
+    title: "Multilingual support",
+    description: "Learn in an inclusive environment built for internationally educated professionals.",
+    visual: GENERATED_VISUALS.multilingualSupport,
+  },
+] as const;
 
 /** Group courses by category (category names from RHC may include a number prefix). */
 function groupCoursesByCategory(courses: RhcCourse[]): Map<string, RhcCourse[]> {
@@ -45,7 +69,7 @@ export default async function BridgingProgramsPage() {
       <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">
-            Bridging Programs
+            Bridging Programs in Richmond Hill, Ontario
           </h1>
           <p className="mt-4 text-lg text-slate-600">
             Looking to <strong className="text-slate-800">bridge to Canadian certification</strong> or
@@ -57,11 +81,12 @@ export default async function BridgingProgramsPage() {
         </div>
         <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-slate-200">
           <Image
-            src="/images/programs/programs-1.jpg"
-            alt="Bridging programs at Richmond Hill College: education and career pathways for internationally educated professionals"
+            src={GENERATED_VISUALS.credentialJourney.src}
+            alt={GENERATED_VISUALS.credentialJourney.alt.en}
             fill
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 50vw"
+            priority
           />
         </div>
       </div>
@@ -118,13 +143,38 @@ export default async function BridgingProgramsPage() {
           </div>
           <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-slate-200 lg:col-span-2">
             <Image
-              src="/images/programs/programs-2.jpeg"
-              alt="Diverse professionals in a Canadian workplace or classroom setting"
+              src={GENERATED_VISUALS.credentialAssessment.src}
+              alt={GENERATED_VISUALS.credentialAssessment.alt.en}
               fill
-              className="object-cover"
+              className="object-contain p-6"
               sizes="(max-width: 1024px) 100vw, 40vw"
             />
           </div>
+        </div>
+      </section>
+
+      <section className="mt-12" aria-labelledby="how-we-help-heading">
+        <h2 id="how-we-help-heading" className="text-2xl font-bold text-slate-900">
+          How Richmond Hill College helps you move forward
+        </h2>
+        <p className="mt-3 max-w-3xl text-slate-600">
+          Our bridging experience combines focused learning with practical support for your Canadian career journey.
+        </p>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {howWeHelp.map(({ title, description, visual }) => (
+            <article key={title} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <Image
+                src={visual.src}
+                alt={visual.alt.en}
+                width={96}
+                height={96}
+                className="h-20 w-20 object-contain"
+                sizes="80px"
+              />
+              <h3 className="mt-4 text-lg font-semibold text-slate-900">{title}</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{description}</p>
+            </article>
+          ))}
         </div>
       </section>
 

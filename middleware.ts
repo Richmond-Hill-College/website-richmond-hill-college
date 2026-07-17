@@ -34,6 +34,7 @@ const KNOWN_FR_ROOT_SEGMENTS = new Set([
   "products",
   "programs",
   "search",
+  "short-career-training-programs-ontario",
   "sitemap",
   "support",
   "terms-of-service",

@@ -8,6 +8,33 @@ import {
   DEFAULT_COURSE_IMAGE,
 } from "@/lib/rhc-global-bridge-courses";
 import { createPageMetadata } from "@/lib/seo";
+import { GeneratedVisual } from "@/components/GeneratedVisual";
+import { VisualFeatureGrid } from "@/components/VisualFeatureGrid";
+
+const HEALTHCARE_CATEGORY_SLUG = "1-healthcare-and-human-services";
+
+const healthcareAreas = [
+  {
+    visualKey: "nursingCare",
+    title: "Nursing and patient support",
+    description: "Build Canadian workplace knowledge for nursing, personal support, and patient-centred care.",
+  },
+  {
+    visualKey: "pharmacy",
+    title: "Pharmacy standards",
+    description: "Explore training that connects pharmacy experience with Canadian workplace expectations.",
+  },
+  {
+    visualKey: "medicalOffice",
+    title: "Medical office administration",
+    description: "Develop practical skills for healthcare coordination, records, and medical office environments.",
+  },
+  {
+    visualKey: "healthcareLearning",
+    title: "Healthcare career pathways",
+    description: "Compare focused programs for internationally educated professionals and career changers.",
+  },
+] as const;
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -23,10 +50,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!cat) return { title: "Category Not Found" };
 
   const path = `courses/category/${slug}`;
+  const isHealthcare = slug === HEALTHCARE_CATEGORY_SLUG;
   return createPageMetadata({
-    title: `${cat.name} – Courses`,
-    description: `Browse ${cat.count} bridging program${cat.count !== 1 ? "s" : ""} in ${cat.name} at Richmond Hill College. Register on RHC Global Bridge.`,
+    title: isHealthcare ? "Healthcare Bridging Programs in Canada" : `${cat.name} – Courses`,
+    description: isHealthcare
+      ? "Explore Richmond Hill College healthcare bridging programs in nursing, pharmacy, medical office administration, patient support and more."
+      : `Browse ${cat.count} bridging program${cat.count !== 1 ? "s" : ""} in ${cat.name} at Richmond Hill College. Register on RHC Global Bridge.`,
     path,
+    ...(isHealthcare && {
+      image: "/images/generated/library/global-healthcare-careers.png",
+      imageWidth: 1672,
+      imageHeight: 941,
+    }),
   });
 }
 
@@ -38,6 +73,7 @@ export default async function CourseCategoryPage({ params }: Props) {
   ]);
   const cat = categories.find((c) => c.slug === slug);
   if (!cat || courses.length === 0) notFound();
+  const isHealthcare = slug === HEALTHCARE_CATEGORY_SLUG;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 tablet:px-8 tablet:py-20 lg:px-8">
@@ -59,13 +95,57 @@ export default async function CourseCategoryPage({ params }: Props) {
         </ol>
       </nav>
 
-      <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl tablet:text-4xl">
-        {cat.name}
-      </h1>
-      <p className="mt-4 max-w-3xl text-lg text-slate-600 tablet:mt-5 tablet:max-w-2xl">
-        {cat.count} bridging program{cat.count !== 1 ? "s" : ""} in this category.
-        Select a course to view details and register on RHC Global Bridge.
-      </p>
+      {isHealthcare ? (
+        <div className="grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-12">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-widest text-[#f6520a]">
+              Healthcare and human services
+            </p>
+            <h1 className="mt-2 text-3xl font-bold text-slate-900 sm:text-4xl tablet:text-4xl">
+              Healthcare Bridging Programs in Canada
+            </h1>
+            <p className="mt-4 max-w-3xl text-lg text-slate-600 tablet:mt-5">
+              Compare {cat.count} current healthcare programs in nursing, pharmacy, patient
+              support, administration, and related fields. These pathways help internationally
+              educated professionals and career changers build Canadian workplace-relevant skills.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/bridging-programs" className="cta-primary rounded-lg px-5 py-3 text-sm font-semibold">
+                How bridging programs work
+              </Link>
+              <Link href="/contact" className="rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">
+                Ask about a pathway
+              </Link>
+            </div>
+          </div>
+          <GeneratedVisual
+            visualKey="globalHealthcareCareers"
+            priority
+            className="rounded-2xl shadow-xl ring-1 ring-slate-200"
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
+        </div>
+      ) : (
+        <>
+          <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl tablet:text-4xl">{cat.name}</h1>
+          <p className="mt-4 max-w-3xl text-lg text-slate-600 tablet:mt-5 tablet:max-w-2xl">
+            {cat.count} bridging program{cat.count !== 1 ? "s" : ""} in this category.
+            Select a course to view details and register on RHC Global Bridge.
+          </p>
+        </>
+      )}
+
+      {isHealthcare && (
+        <section className="mt-12" aria-labelledby="healthcare-pathways-heading">
+          <h2 id="healthcare-pathways-heading" className="text-2xl font-bold text-slate-900">
+            Explore Healthcare Career Areas
+          </h2>
+          <p className="mt-3 max-w-3xl text-slate-600">
+            Start with the area closest to your experience, then review the current course details below.
+          </p>
+          <VisualFeatureGrid items={healthcareAreas} className="mt-6 lg:grid-cols-4" ariaLabel="Healthcare program areas" />
+        </section>
+      )}
 
       <ul className="mt-10 grid list-none gap-5 p-0 sm:grid-cols-2 tablet:gap-6 lg:grid-cols-3">
         {courses.map((course) => (

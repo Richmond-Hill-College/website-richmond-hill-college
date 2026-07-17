@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ContactBlock } from "@/components/ContactBlock";
+import { GeneratedVisual } from "@/components/GeneratedVisual";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
@@ -8,6 +9,9 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "Bridge to Canadian certification with Richmond Hill College. Bridging programs for internationally educated professionals: healthcare, pharmacy, pet care, beauty. Enroll online. Ontario.",
   path: "bridge-canadian-certification",
+  image: "/images/generated/library/canada-career-future.png",
+  imageWidth: 1672,
+  imageHeight: 941,
 });
 
 const programAreas = [
@@ -20,32 +24,51 @@ const programAreas = [
 export default function BridgeCanadianCertificationPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">
-        Bridge to Canadian Certification
-      </h1>
-      <p className="mt-4 text-lg text-slate-600">
-        Richmond Hill College helps you bridge to Canadian certification so you can work in
-        your field in Canada. Our bridging programs are designed for internationally educated
-        professionals and career changers who want to meet Canadian workplace and licensing
-        standards.
-      </p>
+      <div className="grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-12">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-widest text-[#f6520a]">
+            Canadian career pathways
+          </p>
+          <h1 className="mt-2 text-3xl font-bold text-slate-900 sm:text-4xl">
+            Bridge to Canadian Certification
+          </h1>
+          <p className="mt-4 text-lg text-slate-600">
+            Richmond Hill College helps you bridge to Canadian certification so you can work in
+            your field in Canada. Our bridging programs are designed for internationally educated
+            professionals and career changers who want to meet Canadian workplace and licensing
+            standards.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link href="/bridging-programs" className="cta-primary rounded-lg px-5 py-3 text-sm font-semibold">
+              Explore bridging programs
+            </Link>
+            <Link href="/contact" className="rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">
+              Get pathway guidance
+            </Link>
+          </div>
+        </div>
+        <GeneratedVisual
+          visualKey="canadaCareerFuture"
+          priority
+          className="rounded-2xl shadow-xl ring-1 ring-slate-200"
+          sizes="(max-width: 1024px) 100vw, 50vw"
+        />
+      </div>
 
       <section className="mt-12" aria-labelledby="what-bridge-heading">
-        <h2 id="what-bridge-heading" className="text-2xl font-bold text-slate-900">
-          What It Means to Bridge Canadian Certification
-        </h2>
-        <p className="mt-4 text-slate-600">
-          To &ldquo;bridge&rdquo; to Canadian certification means to close the gap between
-          your current qualifications—often earned abroad—and what Canadian employers and
-          regulators require. Bridging programs provide targeted training, Canadian
-          standards education, and often exam or licensing preparation so you can gain
-          Canadian certification and enter the workforce with confidence.
-        </p>
-        <p className="mt-4 text-slate-600">
-          Whether you are in healthcare, pharmacy, animal care, beauty, or another sector,
-          a bridge to Canadian certification can shorten your path to employment and
-          recognition in Canada.
-        </p>
+        <div className="grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:grid-cols-[180px_1fr] md:items-center tablet:p-8">
+          <GeneratedVisual visualKey="credentialBridge" className="w-40" sizes="160px" />
+          <div>
+            <h2 id="what-bridge-heading" className="text-2xl font-bold text-slate-900">What It Means to Bridge Canadian Certification</h2>
+            <p className="mt-4 text-slate-600">
+              To &ldquo;bridge&rdquo; to Canadian certification means to close the gap between
+              your current qualifications—often earned abroad—and what Canadian employers and
+              regulators require. Bridging programs provide targeted training, Canadian standards
+              education, and often exam or licensing preparation.
+            </p>
+            <p className="mt-4 text-slate-600">Whether you are in healthcare, pharmacy, animal care, beauty, or another sector, a bridging pathway can connect your experience to Canadian requirements.</p>
+          </div>
+        </div>
       </section>
 
       <section className="mt-12" aria-labelledby="why-rhc-heading">

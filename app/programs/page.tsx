@@ -7,16 +7,28 @@ import {
   getRhcCourses,
   RHC_GLOBAL_BRIDGE_COURSES_FALLBACK,
 } from "@/lib/rhc-global-bridge-courses";
+import { GENERATED_VISUALS } from "@/lib/generated-visuals";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Programs",
+  title: "Career Programs in Richmond Hill, Ontario",
   description:
-    "Programs at Richmond Hill College: healthcare, pharmacy, pet grooming, hair styling, and more. Browse current courses and bridging programs aligned with Canadian standards.",
+    "Explore career programs in Richmond Hill, Ontario, including healthcare, pharmacy, technology, business and bridging courses aligned with Canadian workplace standards.",
   path: "programs",
-  image: "/images/programs/programs-1.jpg",
-  imageWidth: 800,
-  imageHeight: 600,
+  image: GENERATED_VISUALS.technologyLearningLab.src,
+  imageWidth: 1672,
+  imageHeight: 941,
 });
+
+const programAreas = [
+  { title: "Nursing & Patient Care", visual: GENERATED_VISUALS.nursingCare },
+  { title: "Pharmacy", visual: GENERATED_VISUALS.pharmacy },
+  { title: "Medical Office", visual: GENERATED_VISUALS.medicalOffice },
+  { title: "Mental Health", visual: GENERATED_VISUALS.mentalHealth },
+  { title: "AI & Technology", visual: GENERATED_VISUALS.aiTechnology },
+  { title: "Cybersecurity", visual: GENERATED_VISUALS.cybersecurity },
+  { title: "Business Leadership", visual: GENERATED_VISUALS.businessLeadership },
+  { title: "Hospitality", visual: GENERATED_VISUALS.hospitality },
+] as const;
 
 export default async function ProgramsPage() {
   const courses = await getRhcCourses().catch(
@@ -32,7 +44,7 @@ export default async function ProgramsPage() {
       <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">
-            Programs at Richmond Hill College
+            Career Programs in Richmond Hill, Ontario
           </h1>
           <p className="mt-4 text-lg text-slate-600">
             We offer a variety of programs and courses designed to equip you with
@@ -43,11 +55,12 @@ export default async function ProgramsPage() {
         </div>
         <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-slate-200">
           <Image
-            src="/images/programs/programs-1.jpg"
-            alt="Healthcare and professional programs at Richmond Hill College of Healthcare and Technology Management"
+            src={GENERATED_VISUALS.technologyLearningLab.src}
+            alt={GENERATED_VISUALS.technologyLearningLab.alt.en}
             fill
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 50vw"
+            priority
           />
         </div>
       </div>
@@ -83,15 +96,58 @@ export default async function ProgramsPage() {
         </Link>
       </section>
 
+      <section className="mt-12" aria-labelledby="program-areas-heading">
+        <h2 id="program-areas-heading" className="text-2xl font-bold text-slate-900">
+          Explore our program areas
+        </h2>
+        <p className="mt-2 max-w-3xl text-slate-600">
+          Build practical, Canadian-relevant skills across healthcare, technology and professional services.
+        </p>
+        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {programAreas.map(({ title, visual }) => (
+            <article
+              key={title}
+              className="flex min-h-44 flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-4 text-center shadow-sm"
+            >
+              <Image
+                src={visual.src}
+                alt={visual.alt.en}
+                width={112}
+                height={112}
+                className="h-20 w-20 object-contain sm:h-24 sm:w-24"
+                sizes="(max-width: 640px) 80px, 96px"
+              />
+              <h3 className="mt-3 text-sm font-semibold text-slate-900 sm:text-base">{title}</h3>
+            </article>
+          ))}
+        </div>
+        <Link
+          href="/short-career-training-programs-ontario"
+          className="mt-6 inline-flex font-semibold text-slate-800 underline decoration-slate-300 underline-offset-4 hover:decoration-[#f6520a]"
+        >
+          Compare short 10- to 40-hour career programs →
+        </Link>
+      </section>
+
       <section className="mt-12" aria-labelledby="formats-heading">
         <h2 id="formats-heading" className="text-2xl font-bold text-slate-900">
           Flexible learning formats
         </h2>
-        <p className="mt-4 text-slate-600">
-          We offer online, hybrid, and in-person options so you can learn in a way that
-          fits your schedule. Course details and format are listed on each program page
-          on <a href="https://www.rhcglobalbridge.com/courses/" target="_blank" rel="noopener noreferrer" className="font-medium text-slate-800 underline hover:no-underline">RHC Global Bridge</a>.
-        </p>
+        <div className="mt-4 grid gap-5 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:grid-cols-[96px_1fr] sm:items-center sm:p-6">
+          <Image
+            src={GENERATED_VISUALS.flexibleSchedule.src}
+            alt={GENERATED_VISUALS.flexibleSchedule.alt.en}
+            width={96}
+            height={96}
+            className="h-20 w-20 object-contain sm:h-24 sm:w-24"
+            sizes="96px"
+          />
+          <p className="text-slate-600">
+            We offer online, hybrid, and in-person options so you can learn in a way that
+            fits your schedule. Course details and format are listed on each program page
+            on <a href="https://www.rhcglobalbridge.com/courses/" target="_blank" rel="noopener noreferrer" className="font-medium text-slate-800 underline hover:no-underline">RHC Global Bridge</a>.
+          </p>
+        </div>
       </section>
 
       <section className="mt-12" aria-labelledby="bridge-heading">

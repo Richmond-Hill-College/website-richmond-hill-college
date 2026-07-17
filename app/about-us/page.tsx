@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ContactBlock } from "@/components/ContactBlock";
 import { createPageMetadata } from "@/lib/seo";
+import { GENERATED_VISUALS } from "@/lib/generated-visuals";
 
 export const metadata: Metadata = createPageMetadata({
   title: "About Us",
@@ -96,16 +97,16 @@ export default function AboutUsPage() {
         </ul>
       </section>
 
-      <section className="mt-10 tablet:mt-12" aria-labelledby="community-heading">
-        <h2 id="community-heading" className="text-2xl font-bold text-slate-900 tablet:text-3xl">
-          Community Focus
-        </h2>
-        <p className="mt-4 text-slate-600">
-          <strong className="text-slate-800">Workforce Development:</strong> Our mission extends
-          beyond education; we aim to contribute to workforce development in the healthcare
-          and technology sectors, addressing the skills gap and preparing students for the job
-          market.
-        </p>
+      <section className="mt-10 grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm tablet:mt-12 md:grid-cols-[160px_1fr] md:items-center tablet:p-8" aria-labelledby="community-heading">
+        <Image src={GENERATED_VISUALS.communityNetwork.src} alt={GENERATED_VISUALS.communityNetwork.alt.en} width={160} height={160} className="h-36 w-36 object-contain" sizes="144px" />
+        <div>
+          <h2 id="community-heading" className="text-2xl font-bold text-slate-900 tablet:text-3xl">Community Focus</h2>
+          <p className="mt-4 text-slate-600">
+            <strong className="text-slate-800">Workforce Development:</strong> Our mission extends
+            beyond education; we aim to contribute to workforce development in the healthcare
+            and technology sectors, addressing the skills gap and preparing students for the job market.
+          </p>
+        </div>
       </section>
 
       <section className="mt-10 tablet:mt-12 rounded-xl border border-slate-200 bg-slate-50 p-6 tablet:p-8">

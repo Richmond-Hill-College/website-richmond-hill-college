@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ContactBlock } from "@/components/ContactBlock";
+import { GeneratedVisual } from "@/components/GeneratedVisual";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
@@ -9,6 +10,9 @@ export const metadata: Metadata = createPageMetadata({
     "Obtenez une certification canadienne en tant que professionnel formé à l'étranger. Programmes de transition du Collège Richmond Hill : santé, pharmacie, soins aux animaux, beauté. Ontario.",
   path: "canadian-certification-internationally-educated",
   locale: "fr",
+  image: "/images/generated/library/student-success.png",
+  imageWidth: 1672,
+  imageHeight: 941,
 });
 
 const pathways = [
@@ -21,16 +25,33 @@ const pathways = [
 export default function CanadianCertificationInternationallyEducatedPageFr() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">
-        Certification canadienne pour les professionnels formés à l&apos;étranger
-      </h1>
-      <p className="mt-4 text-lg text-slate-600">
-        Si vous avez été formé ou certifié à l&apos;étranger et souhaitez exercer votre métier au Canada,
-        la certification canadienne — ou un parcours reconnu pour y accéder — est souvent l&apos;étape
-        suivante. Le Collège Richmond Hill offre des programmes de transition conçus pour les
-        professionnels formés à l&apos;étranger afin d&apos;adapter vos qualifications aux normes
-        canadiennes et d&apos;avancer vers la certification, l&apos;agrément ou l&apos;emploi au Canada.
-      </p>
+      <div className="grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-12">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-widest text-[#f6520a]">
+            Valorisez votre expérience internationale
+          </p>
+          <h1 className="mt-2 text-3xl font-bold text-slate-900 sm:text-4xl">
+            Certification canadienne pour les professionnels formés à l&apos;étranger
+          </h1>
+          <p className="mt-4 text-lg text-slate-600">
+            Si vous avez été formé ou certifié à l&apos;étranger et souhaitez exercer votre métier au Canada,
+            la certification canadienne — ou un parcours reconnu pour y accéder — est souvent l&apos;étape
+            suivante. Le Collège Richmond Hill offre des programmes de transition conçus pour les
+            professionnels formés à l&apos;étranger afin d&apos;adapter vos qualifications aux normes
+            canadiennes et d&apos;avancer vers la certification, l&apos;agrément ou l&apos;emploi au Canada.
+          </p>
+          <Link href="/fr/bridging-programs" className="cta-primary mt-6 inline-flex rounded-lg px-5 py-3 text-sm font-semibold">
+            Trouver votre parcours de transition
+          </Link>
+        </div>
+        <GeneratedVisual
+          visualKey="studentSuccess"
+          locale="fr"
+          priority
+          className="rounded-2xl shadow-xl ring-1 ring-slate-200"
+          sizes="(max-width: 1024px) 100vw, 50vw"
+        />
+      </div>
 
       <section className="mt-12" aria-labelledby="pathways-heading">
         <h2 id="pathways-heading" className="text-2xl font-bold text-slate-900">

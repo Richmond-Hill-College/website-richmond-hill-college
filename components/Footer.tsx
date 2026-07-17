@@ -25,6 +25,7 @@ const footerLinkGroups = [
     links: [
       { href: "/programs", label: "Programs", labelFr: "Programmes" },
       { href: "/course-offerings", label: "Course Offerings", labelFr: "Offre de cours" },
+      { href: "/short-career-training-programs-ontario", label: "Short Career Training", labelFr: "Formations professionnelles courtes" },
       { href: "/bridging-programs", label: "Bridging Programs", labelFr: "Programmes de transition" },
       { href: "/courses", label: "Courses", labelFr: "Cours" },
       { href: "/courses/categories", label: "Course Categories", labelFr: "Catégories de cours" },

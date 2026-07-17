@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { createPageMetadata } from "@/lib/seo";
+import { GeneratedVisual } from "@/components/GeneratedVisual";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Conférences",
@@ -8,19 +9,39 @@ export const metadata: Metadata = createPageMetadata({
     "Conférences et événements au Collège Richmond Hill. Conférences scientifiques, rencontres et ateliers avec des participants nationaux et internationaux.",
   path: "conferences",
   locale: "fr",
+  image: "/images/generated/library/nursing-conference.png",
+  imageWidth: 1672,
+  imageHeight: 941,
 });
 
 export default function ConferencesPageFr() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">
-        Conférences et rencontres
-      </h1>
-      <p className="mt-4 max-w-3xl text-lg text-slate-600">
-        Bienvenue sur la page des conférences et événements du Collège Richmond Hill. Nous y présentons
-        nos conférences scientifiques, rencontres et ateliers qui réunissent des participants du Canada
-        et de l&apos;international.
-      </p>
+      <div className="grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-12">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-widest text-[#f6520a]">
+            Savoir, pratique et liens professionnels
+          </p>
+          <h1 className="mt-2 text-3xl font-bold text-slate-900 sm:text-4xl">
+            Conférences et rencontres
+          </h1>
+          <p className="mt-4 max-w-3xl text-lg text-slate-600">
+            Le Collège Richmond Hill organise des conférences scientifiques, des rencontres et
+            des ateliers qui réunissent des participants du Canada et de l&apos;international dans
+            les domaines de la santé, de la technologie et de la pratique professionnelle.
+          </p>
+          <Link href="/fr/conferences/nursing-and-healthcare-2025" className="cta-primary mt-6 inline-flex rounded-lg px-5 py-3 text-sm font-semibold">
+            Explorer les archives de la conférence 2025
+          </Link>
+        </div>
+        <GeneratedVisual
+          visualKey="nursingConference"
+          locale="fr"
+          priority
+          className="rounded-2xl shadow-xl ring-1 ring-slate-200"
+          sizes="(max-width: 1024px) 100vw, 50vw"
+        />
+      </div>
 
       <section className="mt-12" aria-labelledby="upcoming-heading">
         <h2 id="upcoming-heading" className="text-2xl font-bold text-slate-900">

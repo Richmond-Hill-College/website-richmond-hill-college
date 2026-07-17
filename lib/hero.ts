@@ -1,8 +1,11 @@
+import { GENERATED_VISUALS } from "@/lib/generated-visuals";
+
 /**
  * First hero slide asset used on the landing page.
  * Used for the hero carousel and for the index/OG thumbnail so they stay in sync.
  */
 export const FIRST_HERO_IMAGE = {
-  src: "https://primary.jwwb.nl/public/y/c/x/temp-dyefbwmwppidsbcuawqm/image-standard-0nj6vo.png?enable-io=true&enable=upscale&crop=1482%2C844%2Cx11%2Cy0%2Csafe&width=1020&height=581",
-  alt: "Your bridge to Canadian credentials – Richmond Hill College bridging programs for internationally educated professionals and career changers",
+  src: GENERATED_VISUALS.globalBridgeHero.src,
+  alt: GENERATED_VISUALS.globalBridgeHero.alt.en,
+  altFr: GENERATED_VISUALS.globalBridgeHero.alt.fr,
 } as const;

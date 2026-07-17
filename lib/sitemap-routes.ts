@@ -8,6 +8,7 @@ export const staticRoutes: { path: string; priority: number; label: string; labe
   { path: "about-us/team", priority: 0.75, label: "Our Team", labelFr: "Notre équipe" },
   { path: "message-from-the-president", priority: 0.8, label: "Message from the President", labelFr: "Message de la présidente" },
   { path: "programs", priority: 0.8, label: "Programs", labelFr: "Programmes" },
+  { path: "short-career-training-programs-ontario", priority: 0.8, label: "Short Career Training Programs in Ontario", labelFr: "Programmes courts de formation professionnelle en Ontario" },
   { path: "course-offerings", priority: 0.8, label: "Course Offerings", labelFr: "Offre de cours" },
   { path: "bridging-programs", priority: 0.8, label: "Bridging Programs", labelFr: "Programmes de transition" },
   { path: "bridge-canadian-certification", priority: 0.8, label: "Bridge to Canadian Certification", labelFr: "Passerelle vers la certification canadienne" },

@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ContactBlock } from "@/components/ContactBlock";
 import { createPageMetadata } from "@/lib/seo";
+import { GENERATED_VISUALS } from "@/lib/generated-visuals";
 
 export const metadata: Metadata = createPageMetadata({
   title: "À propos",
@@ -90,15 +91,15 @@ export default function AboutUsPageFr() {
         </ul>
       </section>
 
-      <section className="mt-10 tablet:mt-12" aria-labelledby="community-heading">
-        <h2 id="community-heading" className="text-2xl font-bold text-slate-900 tablet:text-3xl">
-          Au service de la communauté
-        </h2>
-        <p className="mt-4 text-slate-600">
-          <strong className="text-slate-800">Développement de la main-d&apos;œuvre :</strong> Contribuer
-          au développement des secteurs de la santé et de la technologie et préparer les étudiants au
-          marché du travail.
-        </p>
+      <section className="mt-10 grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm tablet:mt-12 md:grid-cols-[160px_1fr] md:items-center tablet:p-8" aria-labelledby="community-heading">
+        <Image src={GENERATED_VISUALS.communityNetwork.src} alt={GENERATED_VISUALS.communityNetwork.alt.fr} width={160} height={160} className="h-36 w-36 object-contain" sizes="144px" />
+        <div>
+          <h2 id="community-heading" className="text-2xl font-bold text-slate-900 tablet:text-3xl">Au service de la communauté</h2>
+          <p className="mt-4 text-slate-600">
+            <strong className="text-slate-800">Développement de la main-d&apos;œuvre :</strong> Contribuer
+            au développement des secteurs de la santé et de la technologie et préparer les étudiants au marché du travail.
+          </p>
+        </div>
       </section>
 
       <section className="mt-10 tablet:mt-12 rounded-xl border border-slate-200 bg-slate-50 p-6 tablet:p-8">
