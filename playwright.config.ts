@@ -21,7 +21,8 @@ export default defineConfig({
   },
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
-    { name: "mobile-safari", use: { ...devices["iPhone 13"] } },
+    { name: "tablet-chromium", use: { ...devices["iPad Mini"], browserName: "chromium" } },
+    { name: "mobile-chromium", use: { ...devices["iPhone 13"], browserName: "chromium" } },
   ],
   webServer: process.env.PLAYWRIGHT_BASE_URL
     ? undefined

@@ -13,6 +13,44 @@ test.describe("Smoke", () => {
     await expect(page.locator("main")).toBeVisible();
   });
 
+  test("course catalog includes all published RHC Global Bridge courses", async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem("rhc-locale", "en"));
+    await page.goto("/courses");
+
+    await expect(page.getByText("28 courses", { exact: true })).toBeVisible();
+    await expect(
+      page.getByRole("link", {
+        name: /View AI-Powered Digital Skills & Workplace Readiness course details/i,
+      })
+    ).toBeVisible();
+
+    await page
+      .getByRole("searchbox", { name: /Search courses by name or category/i })
+      .fill("Medical Tourism");
+    await expect(page.getByText("1 of 28 courses", { exact: true })).toBeVisible();
+    const medicalTourismCourse = page.getByRole("link", {
+      name: /View Cross-Border Healthcare Coordination & Medical Tourism Management course details/i,
+    });
+    await expect(medicalTourismCourse).toBeVisible();
+    await medicalTourismCourse.click();
+    await expect(
+      page.getByRole("heading", {
+        level: 1,
+        name: "Cross-Border Healthcare Coordination & Medical Tourism Management",
+      })
+    ).toBeVisible();
+    await expect(page.getByRole("link", { name: /View course & register/i })).toHaveAttribute(
+      "href",
+      "https://www.rhcglobalbridge.com/courses/cross-border-healthcare-coordination-medical-tourism-management/"
+    );
+  });
+
+  test("French catalog exposes the complete course set", async ({ page }) => {
+    await page.goto("/fr/courses");
+    await expect(page.locator("html")).toHaveAttribute("lang", "fr");
+    await expect(page.getByText("28 cours", { exact: true })).toBeVisible();
+  });
+
   test("legacy /en/* paths 308 to canonical EN", async ({ page }) => {
     const res = await page.goto("/en/about-us", { waitUntil: "domcontentloaded" });
     expect(res?.url()).toContain("/about-us");
