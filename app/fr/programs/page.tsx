@@ -26,6 +26,7 @@ const programAreas = [
   { title: "Administration médicale", visual: GENERATED_VISUALS.medicalOffice },
   { title: "Santé mentale", visual: GENERATED_VISUALS.mentalHealth },
   { title: "IA et technologie", visual: GENERATED_VISUALS.aiTechnology },
+  { title: "Apprentissage appliqué de l’IA", visual: GENERATED_VISUALS.aiLearning },
   { title: "Cybersécurité", visual: GENERATED_VISUALS.cybersecurity },
   { title: "Leadership en affaires", visual: GENERATED_VISUALS.businessLeadership },
   { title: "Hôtellerie", visual: GENERATED_VISUALS.hospitality },
@@ -101,7 +102,7 @@ export default async function ProgramsPageFr() {
         <p className="mt-2 max-w-3xl text-slate-600">
           Développez des compétences pratiques adaptées au marché canadien en santé, technologie et services professionnels.
         </p>
-        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-3">
           {programAreas.map(({ title, visual }) => (
             <article
               key={title}
@@ -133,8 +134,8 @@ export default async function ProgramsPageFr() {
         </h2>
         <div className="mt-4 grid gap-5 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:grid-cols-[96px_1fr] sm:items-center sm:p-6">
           <Image
-            src={GENERATED_VISUALS.flexibleSchedule.src}
-            alt={GENERATED_VISUALS.flexibleSchedule.alt.fr}
+            src={GENERATED_VISUALS.flexibleLearning.src}
+            alt={GENERATED_VISUALS.flexibleLearning.alt.fr}
             width={96}
             height={96}
             className="h-20 w-20 object-contain sm:h-24 sm:w-24"

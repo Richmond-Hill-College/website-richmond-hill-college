@@ -11,9 +11,9 @@ export const metadata: Metadata = createPageMetadata({
     "Le Collège Richmond Hill de gestion des soins de santé et de la technologie a été fondé pour offrir des programmes rapides et ciblés aux professionnels et aux personnes en réorientation. Découvrez notre mission.",
   path: "about-us",
   locale: "fr",
-  image: "/images/hero/about-hero.jpg",
-  imageWidth: 800,
-  imageHeight: 600,
+  image: GENERATED_VISUALS.campusCollaboration.src,
+  imageWidth: 1672,
+  imageHeight: 941,
 });
 
 export default function AboutUsPageFr() {
@@ -35,13 +35,14 @@ export default function AboutUsPageFr() {
             inclusif qui favorise la croissance et la réussite de tous les étudiants.
           </p>
         </div>
-        <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-slate-200">
+        <div className="relative aspect-video overflow-hidden rounded-xl bg-slate-200 shadow-lg">
           <Image
-            src="/images/hero/about-hero.jpg"
-            alt="Le Collège Richmond Hill – éducation en gestion des soins de santé et de la technologie"
+            src={GENERATED_VISUALS.campusCollaboration.src}
+            alt={GENERATED_VISUALS.campusCollaboration.alt.fr}
             fill
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 50vw"
+            priority
           />
         </div>
       </div>

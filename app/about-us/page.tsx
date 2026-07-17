@@ -10,9 +10,9 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "Richmond Hill College of Healthcare and Technology Management was founded to provide quick, targeted programs for working professionals and career changers. Learn about our mission and commitment to student success.",
   path: "about-us",
-  image: "/images/hero/about-hero.jpg",
-  imageWidth: 800,
-  imageHeight: 600,
+  image: GENERATED_VISUALS.campusCollaboration.src,
+  imageWidth: 1672,
+  imageHeight: 941,
 });
 
 export default function AboutUsPage() {
@@ -35,13 +35,14 @@ export default function AboutUsPage() {
             learning environment that fosters growth and success for all students.
           </p>
         </div>
-        <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-slate-200">
+        <div className="relative aspect-video overflow-hidden rounded-xl bg-slate-200 shadow-lg">
           <Image
-            src="/images/hero/about-hero.jpg"
-            alt="Richmond Hill College campus and community – healthcare and technology management education"
+            src={GENERATED_VISUALS.campusCollaboration.src}
+            alt={GENERATED_VISUALS.campusCollaboration.alt.en}
             fill
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 50vw"
+            priority
           />
         </div>
       </div>

@@ -25,6 +25,7 @@ const programAreas = [
   { title: "Medical Office", visual: GENERATED_VISUALS.medicalOffice },
   { title: "Mental Health", visual: GENERATED_VISUALS.mentalHealth },
   { title: "AI & Technology", visual: GENERATED_VISUALS.aiTechnology },
+  { title: "Applied AI Learning", visual: GENERATED_VISUALS.aiLearning },
   { title: "Cybersecurity", visual: GENERATED_VISUALS.cybersecurity },
   { title: "Business Leadership", visual: GENERATED_VISUALS.businessLeadership },
   { title: "Hospitality", visual: GENERATED_VISUALS.hospitality },
@@ -103,7 +104,7 @@ export default async function ProgramsPage() {
         <p className="mt-2 max-w-3xl text-slate-600">
           Build practical, Canadian-relevant skills across healthcare, technology and professional services.
         </p>
-        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-3">
           {programAreas.map(({ title, visual }) => (
             <article
               key={title}
@@ -135,8 +136,8 @@ export default async function ProgramsPage() {
         </h2>
         <div className="mt-4 grid gap-5 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:grid-cols-[96px_1fr] sm:items-center sm:p-6">
           <Image
-            src={GENERATED_VISUALS.flexibleSchedule.src}
-            alt={GENERATED_VISUALS.flexibleSchedule.alt.en}
+            src={GENERATED_VISUALS.flexibleLearning.src}
+            alt={GENERATED_VISUALS.flexibleLearning.alt.en}
             width={96}
             height={96}
             className="h-20 w-20 object-contain sm:h-24 sm:w-24"
