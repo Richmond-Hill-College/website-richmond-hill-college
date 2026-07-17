@@ -9,12 +9,12 @@ const faqsEn = [
     a: "We offer online, hybrid, and in-person courses in healthcare and technology management.",
   },
   {
-    q: "Are the courses accredited?",
-    a: "Yes, our courses are accredited and recognized by industry professionals.",
+    q: "What is the approval status of the courses?",
+    a: "Status and credential details depend on the individual offering. Richmond Hill College is currently pursuing registration and program approvals under Ontario’s career-college legislation. Please review the specific course page or contact us for written confirmation before registering.",
   },
   {
     q: "How can I enroll in a course?",
-    a: "To enroll in a course, simply fill out our online application form or contact our admissions team for assistance.",
+    a: "Review the individual course page, then contact an advisor if you need to confirm requirements, availability, program status or the credential offered. When registration is available, use only the official registration link shown on the course page.",
   },
 ];
 
@@ -24,12 +24,12 @@ const faqsFr = [
     a: "Nous offrons des cours en ligne, hybrides et en personne en gestion des soins de santé et de la technologie.",
   },
   {
-    q: "Les cours sont-ils accrédités?",
-    a: "Oui, nos cours sont accrédités et reconnus par les professionnels du milieu.",
+    q: "Quel est le statut d’approbation des cours?",
+    a: "Le statut et le titre varient selon l’offre. Le Collège Richmond Hill poursuit actuellement son inscription et l’approbation de ses programmes conformément à la législation ontarienne sur les collèges d’enseignement professionnel. Consultez la page du cours ou communiquez avec nous pour obtenir une confirmation écrite avant de vous inscrire.",
   },
   {
     q: "Comment puis-je m'inscrire à un cours?",
-    a: "Pour vous inscrire, remplissez notre formulaire en ligne ou communiquez avec notre équipe des admissions.",
+    a: "Consultez la page du cours, puis communiquez avec un conseiller pour confirmer les exigences, les disponibilités, le statut du programme ou le titre offert. Lorsque l’inscription est disponible, utilisez uniquement le lien officiel affiché sur la page du cours.",
   },
 ];
 

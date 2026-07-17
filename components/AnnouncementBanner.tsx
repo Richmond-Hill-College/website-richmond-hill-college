@@ -43,11 +43,11 @@ export function AnnouncementBanner() {
     >
       <span className="flex flex-1 flex-shrink-0 flex-wrap items-center justify-center gap-1.5 gap-y-1 sm:gap-2">
         <span className="inline-flex items-center gap-1 rounded bg-white/20 px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide sm:px-2">
-          {isFr ? "Places limitees" : "Limited spots"}
+          {isFr ? "Orientation" : "Career planning"}
         </span>
         {/* Mobile: short line to save vertical space */}
         <span className="sm:hidden">
-          {isFr ? "Inscrivez-vous maintenant. " : "Enrol now. "}
+          {isFr ? "Explorez les options actuelles. " : "Explore current options. "}
           <Link
             href={isFr ? "/fr/courses" : "/courses"}
             className="underline decoration-white/80 underline-offset-2 transition-colors hover:decoration-white hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#f6520a]"
@@ -56,7 +56,7 @@ export function AnnouncementBanner() {
           </Link>
         </span>
         <span className="hidden sm:inline">
-          {isFr ? "Inscrivez-vous maintenant pour les prochaines cohortes - les places partent vite. " : "Enrol now for upcoming intakes - places fill quickly. "}
+          {isFr ? "Explorez les cours actuels, puis confirmez les exigences et le statut avant de vous inscrire. " : "Explore current courses, then confirm requirements and program status before registering. "}
           <Link
             href={isFr ? "/fr/courses" : "/courses"}
             className="underline decoration-white/80 underline-offset-2 transition-colors hover:decoration-white hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#f6520a]"

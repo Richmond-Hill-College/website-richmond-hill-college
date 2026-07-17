@@ -32,6 +32,7 @@ const navItems: NavItem[] = [
     children: [
       { href: "/programs", label: "Programs", labelFr: "Programmes" },
       { href: "/course-offerings", label: "Course Offerings", labelFr: "Offre de cours" },
+      { href: "/short-career-training-programs-ontario", label: "Short Career Training", labelFr: "Formations professionnelles courtes" },
       { href: "/bridging-programs", label: "Bridging Programs", labelFr: "Programmes de transition" },
       { href: "/courses", label: "Courses", labelFr: "Cours" },
       { href: "/courses/categories", label: "Course Categories", labelFr: "Catégories de cours" },
@@ -351,12 +352,17 @@ export function Header() {
   const isFr = localePrefix === "/fr";
   const [menuOpen, setMenuOpen] = useState(false);
   const [logoError, setLogoError] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   useEffect(() => {
     if (!menuOpen) return;
-    const handleEscape = (e: KeyboardEvent) => e.key === "Escape" && closeMenu();
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      closeMenu();
+      menuButtonRef.current?.focus();
+    };
     document.addEventListener("keydown", handleEscape);
     document.body.style.overflow = "hidden";
     return () => {
@@ -429,6 +435,7 @@ export function Header() {
 
         {/* Mobile & tablet: hamburger button (hidden on lg+ desktop) */}
         <button
+          ref={menuButtonRef}
           type="button"
           onClick={() => setMenuOpen((o) => !o)}
           className="lg:hidden flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1"
@@ -449,20 +456,14 @@ export function Header() {
       </div>
 
       {/* Mobile & tablet menu panel — max-height so expanded sub-pages are visible and scrollable */}
-      <div
+      {menuOpen && <div
         id="mobile-nav"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Mobile navigation"
-        className={
-          "lg:hidden overflow-hidden transition-[max-height] duration-200 ease-out " +
-          (menuOpen ? "max-h-[min(80vh,600px)]" : "max-h-0")
-        }
+        className="lg:hidden max-h-[min(80vh,600px)] overflow-hidden"
       >
         <div
           className={
             "border-t border-slate-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/95 transition-opacity duration-200 overflow-y-auto " +
-            (menuOpen ? "opacity-100" : "opacity-0")
+            "opacity-100"
           }
         >
           <nav className="flex flex-col px-4 py-4" aria-label="Mobile navigation">
@@ -476,7 +477,7 @@ export function Header() {
             />
           </nav>
         </div>
-      </div>
+      </div>}
     </header>
   );
 }

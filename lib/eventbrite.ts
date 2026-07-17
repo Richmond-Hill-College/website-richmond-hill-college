@@ -102,7 +102,15 @@ export async function getUpcomingEvents(): Promise<RenderedEvent[]> {
     const orgId = await getOrganizationId();
     const data = await getOrganizationEvents(orgId);
     if (!data?.events) return [];
-    return data.events.map(renderEvent);
+    const now = Date.now();
+    return data.events
+      .map(renderEvent)
+      .filter((event) => {
+        const end = new Date(event.end).getTime();
+        return Number.isFinite(end) && end >= now;
+      })
+      .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
+      .slice(0, 6);
   } catch {
     return [];
   }

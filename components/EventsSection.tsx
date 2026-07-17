@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Calendar, Clock } from "lucide-react";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { getUpcomingEvents } from "@/lib/eventbrite";
@@ -48,12 +47,14 @@ export async function EventsSection() {
           >
             {event.image && (
               <div className="relative aspect-[16/9] w-full flex-shrink-0 overflow-hidden bg-slate-100">
-                <Image
+                {/* Eventbrite image URLs are dynamic; a regular image keeps them
+                    contained even when the upstream URL format changes. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={event.image}
                   alt={event.name}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                 />
               </div>
             )}

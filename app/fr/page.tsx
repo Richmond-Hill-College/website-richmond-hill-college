@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Laptop, LayoutGrid, GraduationCap, ChevronRight } from "lucide-react";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { CourseSlideshow } from "@/components/CourseSlideshow";
 import { FAQJsonLd } from "@/components/JsonLd";
@@ -9,9 +8,12 @@ import { ContactBlock } from "@/components/ContactBlock";
 import { FAQSection } from "@/components/FAQSection";
 import { ContactForm } from "@/components/ContactForm";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { HomepageDecisionExperience } from "@/components/HomepageDecisionExperience";
 import { getRhcCourses, RHC_GLOBAL_BRIDGE_COURSES_FALLBACK } from "@/lib/rhc-global-bridge-courses";
 import type { Metadata } from "next";
 import { createPageMetadata } from "@/lib/seo";
+import { GENERATED_VISUALS } from "@/lib/generated-visuals";
+import { VisualFeatureGrid } from "@/components/VisualFeatureGrid";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Accueil",
@@ -27,43 +29,43 @@ const learningOptions = [
     title: "Cours en ligne",
     description: "Des cours en ligne flexibles avec des instructeurs chevronnés.",
     href: "/fr/course-offerings",
-    icon: Laptop,
+    visualKey: "onlineLearningHome",
   },
   {
     title: "Cours hybrides",
     description: "Une combinaison d'apprentissage en ligne et en personne pour une expérience complète.",
     href: "/fr/course-offerings",
-    icon: LayoutGrid,
+    visualKey: "flexibleLearning",
   },
   {
     title: "Cours en personne",
     description: "Des cours en présentiel avec formation pratique.",
     href: "/fr/course-offerings",
-    icon: GraduationCap,
+    visualKey: "campusCollaboration",
   },
-];
+] as const;
 
 const bridgingCategories = [
   {
     title: "Santé et services à la personne",
     description: "Parcours vers les carrières en santé au Canada pour les professionnels formés à l'étranger.",
     href: "/fr/bridging-programs",
-    image: "/images/hero/hero-2.jpg",
-    imageAlt: "Programmes de transition en santé et soins infirmiers au Collège Richmond Hill",
+    image: GENERATED_VISUALS.healthcareLearning.src,
+    imageAlt: GENERATED_VISUALS.healthcareLearning.alt.fr,
   },
   {
     title: "Hôtellerie et services",
     description: "Maîtrisez l'hôtellerie et les arts culinaires selon les normes canadiennes.",
     href: "/fr/bridging-programs",
-    image: "/images/programs/programs-1.jpg",
-    imageAlt: "Programmes de transition en hôtellerie et arts culinaires au Collège Richmond Hill",
+    image: GENERATED_VISUALS.hospitality.src,
+    imageAlt: GENERATED_VISUALS.hospitality.alt.fr,
   },
   {
     title: "TI, IA et informatique",
-    description: "Bâtissez votre avenir en technologie avec des titres reconnus au Canada.",
+    description: "Développez des compétences technologiques adaptées aux besoins des milieux de travail canadiens.",
     href: "/fr/bridging-programs",
-    image: "/images/programs/programs-2.jpeg",
-    imageAlt: "Programmes de transition en technologie et innovation au Collège Richmond Hill",
+    image: GENERATED_VISUALS.aiLearning.src,
+    imageAlt: GENERATED_VISUALS.aiLearning.alt.fr,
   },
 ];
 
@@ -81,6 +83,7 @@ export default async function FrenchHomePage() {
     <>
       <FAQJsonLd locale="fr" />
       <HeroCarousel locale="fr" />
+      <HomepageDecisionExperience locale="fr" />
 
       <div className="relative z-0 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-20 tablet:px-8 tablet:py-24 lg:px-8">
         <ScrollReveal as="section" className="mb-16 tablet:mb-24">
@@ -116,9 +119,9 @@ export default async function FrenchHomePage() {
           staggerMs={90}
         >
           <div className="mb-10 text-center tablet:mb-12">
-            <span className="text-xs font-semibold uppercase tracking-widest text-slate-500">
-              Nos outils gratuits pour votre carrière
-            </span>
+              <span className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+                Parcours professionnels
+              </span>
             <h2
               id="bridging-programs-heading"
               className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl tablet:text-3xl lg:text-4xl"
@@ -137,13 +140,13 @@ export default async function FrenchHomePage() {
                 href={cat.href}
                 className="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-lg transition hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-offset-2"
               >
-                <div className="aspect-[4/3] overflow-hidden">
+                <div className="aspect-[4/3] overflow-hidden bg-gradient-to-br from-[#192640] via-[#2a3156] to-[#442e66]">
                   <Image
                     src={cat.image}
                     alt={cat.imageAlt}
                     width={400}
                     height={300}
-                    className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                    className="h-full w-full object-contain p-7 transition duration-300 group-hover:scale-105 sm:p-9"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent" />
@@ -265,31 +268,11 @@ export default async function FrenchHomePage() {
           >
             Formules d&apos;apprentissage flexibles
           </h2>
-          <div className="grid gap-6 tablet:gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {learningOptions.map((opt) => {
-              const Icon = opt.icon;
-              return (
-                <article
-                  key={opt.title}
-                  className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-slate-300 hover:shadow-md"
-                >
-                  <Icon
-                    className="h-10 w-10 text-slate-700"
-                    aria-hidden
-                  />
-                  <h3 className="mt-4 text-lg font-semibold text-slate-900">{opt.title}</h3>
-                  <p className="mt-2 text-slate-600">{opt.description}</p>
-                  <Link
-                    href={opt.href}
-                    className="mt-4 inline-flex items-center text-sm font-medium text-slate-800 hover:underline"
-                  >
-                    Plus d&apos;info
-                    <ChevronRight className="ml-1 h-4 w-4" aria-hidden />
-                  </Link>
-                </article>
-              );
-            })}
-          </div>
+          <VisualFeatureGrid
+            items={learningOptions}
+            locale="fr"
+            ariaLabel="Formats d’apprentissage flexibles"
+          />
         </ScrollReveal>
 
         <ScrollReveal as="section" className="mb-16 tablet:mb-24 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-6 shadow-sm tablet:p-10">

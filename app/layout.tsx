@@ -74,6 +74,12 @@ export default function RootLayout({
   return (
     <html lang={lang} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col bg-slate-50 text-slate-900 antialiased" suppressHydrationWarning>
+        <a
+          href="#main-content"
+          className="fixed left-4 top-3 z-[100] -translate-y-24 rounded-lg bg-white px-4 py-3 font-semibold text-rhc-primary-dark shadow-xl ring-2 ring-rhc-primary transition-transform focus:translate-y-0"
+        >
+          {lang === "fr" ? "Passer au contenu principal" : "Skip to main content"}
+        </a>
         <LangAttribute />
         <LanguageSplash />
         <OrganizationJsonLd />
@@ -81,7 +87,7 @@ export default function RootLayout({
           <Header />
           <AnnouncementBanner />
         </div>
-        <main className="flex-1 pb-20 tablet:pb-0">{children}</main>
+        <main id="main-content" tabIndex={-1} className="flex-1 pb-20 outline-none tablet:pb-0">{children}</main>
         <Footer />
         <MobileBottomNav />
         <CookiesBanner />
