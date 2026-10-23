@@ -57,6 +57,8 @@ def check(record):
         if page.title != archive['title']: errors.append('archive title changed')
         if 'Registration, abstract submissions and invitation-letter requests for this edition are closed.' not in source: errors.append('missing closed archive notice')
         if not path.endswith('/contact-1') and page.forms: errors.append('active form on closed archive')
+        if path.endswith('/registration') and 'Refund &amp; Cancellation Policy' not in source: errors.append('missing archived refund policy')
+        if path.endswith('/invitation-letter') and '1. How can I receive an official invitation letter?' not in source: errors.append('missing archived invitation FAQ')
     return {'path': path, 'status': status, 'title': page.title, 'canonical': page.canonical, 'robots': page.robots, 'h1_count': page.h1, 'errors': errors}
 with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
     pages = list(pool.map(check, [r for r in records if r['in_old_sitemap']]))
