@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { CollegeOfferingsStatement } from "@/components/CollegeOfferingsStatement";
+import { RHC_GLOBAL_BRIDGE_URL } from "@/lib/college-offerings";
 import { useMemo, useState } from "react";
 import {
   ArrowRight,
@@ -66,15 +68,13 @@ const copy = {
       ["EN / FR", "bilingual website guidance"],
       ["3 formats", "online, hybrid and in person"],
     ],
-    statusTitle: "Program-status transparency",
-    status:
-      "Richmond Hill College is currently pursuing registration and program approvals under Ontario’s career-college legislation. Current course pages identify the available learning option and direct you to the appropriate registration platform. Contact us before registering if you need confirmation of a program’s status or credential.",
-    statusLink: "Read our institutional information",
+    statusTitle: "Short courses and Certificates of Completion",
+    statusLink: "Explore RHC Global Bridge",
     journeyEyebrow: "A simpler admissions journey",
     journeyTitle: "Know what happens next",
     journey: [
       ["Explore", "Use the pathway finder and compare current course options."],
-      ["Confirm", "Ask an advisor about fit, requirements, schedule and program status."],
+      ["Confirm", "Ask an advisor about fit, requirements, schedule and course duration."],
       ["Register", "Continue to the official registration platform only when you are ready."],
     ],
   },
@@ -120,15 +120,13 @@ const copy = {
       ["FR / EN", "orientation bilingue sur le site"],
       ["3 modes", "en ligne, hybride et en personne"],
     ],
-    statusTitle: "Transparence sur le statut des programmes",
-    status:
-      "Le Collège Richmond Hill poursuit actuellement son inscription et l’approbation de ses programmes conformément à la législation ontarienne sur les collèges d’enseignement professionnel. Les pages de cours présentent les options offertes et dirigent vers la plateforme d’inscription appropriée. Communiquez avec nous avant de vous inscrire si vous devez confirmer le statut ou le titre associé à un programme.",
-    statusLink: "Consulter nos renseignements institutionnels",
+    statusTitle: "Cours courts et certificats de participation",
+    statusLink: "Découvrir RHC Global Bridge",
     journeyEyebrow: "Un parcours d’admission plus simple",
     journeyTitle: "Sachez ce qui vient ensuite",
     journey: [
       ["Explorer", "Utilisez l’outil d’orientation et comparez les options actuelles."],
-      ["Confirmer", "Validez l’adéquation, les exigences, l’horaire et le statut avec un conseiller."],
+      ["Confirmer", "Validez l’adéquation, les exigences, l’horaire et la durée du cours avec un conseiller."],
       ["S’inscrire", "Passez à la plateforme officielle seulement lorsque vous êtes prêt."],
     ],
   },
@@ -293,10 +291,10 @@ export function HomepageDecisionExperience({ locale = "en" }: { locale?: Locale 
             <ShieldCheck className="h-6 w-6 shrink-0 text-amber-300" aria-hidden />
             <div className="mt-3 sm:mt-0">
               <h3 className="font-semibold text-white">{t.statusTitle}</h3>
-              <p className="mt-2 max-w-5xl text-sm leading-6 text-slate-200">{t.status}</p>
-              <Link href={`${prefix}/about-us`} className="mt-3 inline-flex items-center text-sm font-semibold text-amber-200 hover:text-white hover:underline">
+              <CollegeOfferingsStatement locale={locale} className="mt-2 max-w-5xl text-sm leading-6 text-slate-200" />
+              <a href={RHC_GLOBAL_BRIDGE_URL} className="mt-3 inline-flex items-center text-sm font-semibold text-amber-200 hover:text-white hover:underline">
                 {t.statusLink}<ArrowRight className="ml-1.5 h-4 w-4" aria-hidden />
-              </Link>
+              </a>
             </div>
           </div>
         </div>
