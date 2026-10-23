@@ -31,7 +31,9 @@ const nextConfig = {
   // and crawlers land on the canonical English URL instead of a 404.
   async redirects() {
     return [
-      { source: "/fr/conferences/nursing-and-healthcare-2026/:path*", destination: "/conferences/nursing-and-healthcare-2026/:path*", permanent: true },
+      { source: "/fr/conferences/nursing-and-healthcare-2026", destination: "/conferences/nursing-and-healthcare-2026", permanent: true },
+      { source: "/fr/conferences/nursing-and-healthcare-2026/confernce-main-pages", destination: "/conferences/nursing-and-healthcare-2026/confernce-main-pages", permanent: true },
+      { source: "/fr/conferences/nursing-and-healthcare-2026/sponsership-and-partnership", destination: "/conferences/nursing-and-healthcare-2026/sponsership-and-partnership", permanent: true },
       { source: "/_downloads/3782770cc79861ba2ca1d6fd7c4efad4", destination: "/downloads/conference-2026/abstract-template.docx", permanent: true },
       { source: "/en", destination: "/", permanent: true },
       { source: "/en/", destination: "/", permanent: true },
