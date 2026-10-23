@@ -35,9 +35,6 @@ const nextConfig = {
       { source: "/fr/conferences/nursing-and-healthcare-2026/confernce-main-pages", destination: "/conferences/nursing-and-healthcare-2026/confernce-main-pages", permanent: true },
       { source: "/fr/conferences/nursing-and-healthcare-2026/sponsership-and-partnership", destination: "/conferences/nursing-and-healthcare-2026/sponsership-and-partnership", permanent: true },
       { source: "/_downloads/3782770cc79861ba2ca1d6fd7c4efad4", destination: "/downloads/conference-2026/abstract-template.docx", permanent: true },
-      { source: "/en", destination: "/", permanent: true },
-      { source: "/en/", destination: "/", permanent: true },
-      { source: "/en/:path*", destination: "/:path*", permanent: true },
     ];
   },
 };

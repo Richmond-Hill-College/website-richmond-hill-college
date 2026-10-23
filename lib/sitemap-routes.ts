@@ -29,11 +29,17 @@ export const staticRoutes: { path: string; priority: number; label: string; labe
   { path: "conferences/nursing-and-healthcare-2026/confernce-main-pages", priority: 0.8, label: "Conference Details (2026)", labelFr: "Détails de la conférence 2026", englishOnly: true },
   { path: "conferences/nursing-and-healthcare-2026/sponsership-and-partnership", priority: 0.8, label: "Sponsorship and Partnership (2026)", labelFr: "Commandites et partenariats 2026", englishOnly: true },
   { path: "conferences/nursing-and-healthcare-2025", priority: 0.7, label: "Nursing and Healthcare 2025 (Recap)", labelFr: "Soins infirmiers et santé 2025 (Récapitulatif)" },
-  // Conference is past (Nov 2025). Time-sensitive subpages are noindex and excluded
-  // from the sitemap. The hub, program-table and proceedings stay indexable.
+  // Existing English 2025 pages remain indexable as closed historical archives.
   { path: "conferences/nursing-and-healthcare-2025/conference-main-page", priority: 0.5, label: "Conference Overview (2025)", labelFr: "Aperçu de la conférence (2025)" },
   { path: "conferences/nursing-and-healthcare-2025/program-table", priority: 0.5, label: "Program Table (2025)", labelFr: "Tableau du programme (2025)" },
   { path: "conferences/nursing-and-healthcare-2025/abstract-proceeding-book", priority: 0.6, label: "Abstract & Proceeding Book (2025)", labelFr: "Résumés et actes (2025)" },
+  { path: "conferences/nursing-and-healthcare-2025/registration", priority: 0.4, label: "Registration Information (2025 Archive)", labelFr: "Archives 2025", englishOnly: true },
+  { path: "conferences/nursing-and-healthcare-2025/submit-abstract", priority: 0.4, label: "Abstract Submission (2025 Archive)", labelFr: "Archives 2025", englishOnly: true },
+  { path: "conferences/nursing-and-healthcare-2025/invitation-letter", priority: 0.4, label: "Invitation Letter (2025 Archive)", labelFr: "Archives 2025", englishOnly: true },
+  { path: "conferences/nursing-and-healthcare-2025/accommodations", priority: 0.4, label: "Accommodation Information (2025 Archive)", labelFr: "Archives 2025", englishOnly: true },
+  { path: "conferences/nursing-and-healthcare-2025/venue", priority: 0.4, label: "Conference Venue (2025 Archive)", labelFr: "Archives 2025", englishOnly: true },
+  { path: "conferences/nursing-and-healthcare-2025/contact-1", priority: 0.4, label: "Conference Contact (2025 Archive)", labelFr: "Archives 2025", englishOnly: true },
+  { path: "conferences/nursing-and-healthcare-2025/sponsorship", priority: 0.4, label: "Sponsorship (2025 Archive)", labelFr: "Commandites 2025", englishOnly: true },
   { path: "search", priority: 0.4, label: "Search", labelFr: "Rechercher" },
   { path: "sitemap", priority: 0.5, label: "Sitemap", labelFr: "Plan du site" },
 ];

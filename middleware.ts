@@ -1,3 +1,4 @@
+import legacyRedirects from "@/lib/legacy-redirects.json";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { LOCALE_COOKIE_NAME, type Locale } from "@/lib/locale-cookie";
@@ -53,6 +54,17 @@ function isKnownFrPath(pathname: string): boolean {
  */
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
+
+  // Explicit legacy aliases preserve the existing Webador destinations.
+  // Middleware also handles the EN prefix because the older Cloudflare adapter
+  // does not interpolate wildcard redirect destinations reliably.
+  const legacyTarget = (legacyRedirects as Record<string, string>)[pathname];
+  if (legacyTarget || pathname === "/en" || pathname.startsWith("/en/")) {
+    const target = request.nextUrl.clone();
+    const unprefixed = pathname === "/en" ? "/" : pathname.slice(3) || "/";
+    target.pathname = legacyTarget || (legacyRedirects as Record<string, string>)[unprefixed] || unprefixed;
+    return NextResponse.redirect(target, 308);
+  }
 
   // FR catch-all: redirect /fr/:path* to /:path* when path is unknown
   if (pathname.startsWith("/fr/") && pathname !== "/fr/" && !isKnownFrPath(pathname)) {

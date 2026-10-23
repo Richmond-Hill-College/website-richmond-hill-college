@@ -17,6 +17,7 @@ export default function RegistrationPageFr() {
       <Link href="/fr/conferences/nursing-and-healthcare-2025" className="text-sm font-medium text-slate-600 hover:text-slate-900">
         ← Retour à Soins infirmiers et santé 2025
       </Link>
+      <aside className="my-6 rounded-xl border border-sky-200 bg-sky-50 p-5 text-slate-700">Archives de la conférence 2025. Les inscriptions, demandes de lettres et soumissions sont closes. Les renseignements ci-dessous sont historiques.</aside>
       <h1 className="mt-4 text-3xl font-bold text-slate-900">Inscription</h1>
       <p className="mt-4 text-slate-600">
         Inscrivez-vous à la conférence Avancer en soins infirmiers et en santé : un dialogue mondial.
@@ -26,8 +27,8 @@ export default function RegistrationPageFr() {
         Choisissez votre type d&apos;inscription (présentation orale, poster, virtuel, étudiant, sans présentation)
         et complétez votre inscription via nos pages Produits et inscription.
       </p>
-      <Link href="/fr/products" className="cta-primary mt-6 inline-block rounded-md px-4 py-2 text-sm font-medium">
-        Voir les options d&apos;inscription
+      <Link href="/fr/contact" className="cta-primary mt-6 inline-block rounded-md px-4 py-2 text-sm font-medium">
+        Contacter le Collège
       </Link>
     </div>
   );
