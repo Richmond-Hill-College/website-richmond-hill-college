@@ -1,9 +1,11 @@
+import { COLLEGE_OFFERINGS } from "@/lib/college-offerings";
 import { siteUrl } from "@/lib/site-url";
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "Richmond Hill College of Healthcare and Technology Management",
+  description: COLLEGE_OFFERINGS.en,
   url: siteUrl,
   logo: `${siteUrl}/images/logo/rhc-logo.png`,
   contactPoint: {
@@ -36,7 +38,7 @@ const localBusinessJsonLd = {
   "@type": "EducationalOrganization",
   name: "Richmond Hill College of Healthcare and Technology Management",
   description:
-    "Richmond Hill College offers online, hybrid, and in-person courses in healthcare and technology management. Unlocking potential, building futures.",
+    COLLEGE_OFFERINGS.en,
   url: siteUrl,
   telephone: "+1-855-328-6065",
   email: "info@richmondhillcollege.ca",
@@ -65,14 +67,14 @@ const faqItemsEn = [
       "We offer online, hybrid, and in-person courses in healthcare and technology management.",
   },
   {
-    question: "What is the approval status of the courses?",
+    question: "What courses and certificates does the College currently offer?",
     answer:
-      "Status and credential details depend on the individual offering. Richmond Hill College is currently pursuing registration and program approvals under Ontario’s career-college legislation. Review the specific course page or contact the college for written confirmation before registering.",
+      COLLEGE_OFFERINGS.en,
   },
   {
     question: "How can I enroll in a course?",
     answer:
-      "Review the individual course page, then contact an advisor if you need to confirm requirements, availability, program status or the credential offered. When registration is available, use only the official registration link shown on the course page.",
+      "Review the individual course page, then contact an advisor if you need to confirm requirements, availability, course duration or the Certificate of Completion offered. When registration is available, use only the official registration link shown on the course page.",
   },
 ];
 
@@ -83,14 +85,14 @@ const faqItemsFr = [
       "Nous offrons des cours en ligne, hybrides et en personne en gestion des soins de santé et de la technologie.",
   },
   {
-    question: "Quel est le statut d’approbation des cours?",
+    question: "Quels cours et certificats le Collège offre-t-il actuellement?",
     answer:
-      "Le statut et le titre varient selon l’offre. Le Collège Richmond Hill poursuit actuellement son inscription et l’approbation de ses programmes conformément à la législation ontarienne sur les collèges d’enseignement professionnel. Consultez la page du cours ou communiquez avec le collège pour obtenir une confirmation écrite avant de vous inscrire.",
+      COLLEGE_OFFERINGS.fr,
   },
   {
     question: "Comment puis-je m'inscrire à un cours?",
     answer:
-      "Consultez la page du cours, puis communiquez avec un conseiller pour confirmer les exigences, les disponibilités, le statut du programme ou le titre offert. Lorsque l’inscription est disponible, utilisez uniquement le lien officiel affiché sur la page du cours.",
+      "Consultez la page du cours, puis communiquez avec un conseiller pour confirmer les exigences, les disponibilités, la durée du cours ou le certificat de participation offert. Lorsque l’inscription est disponible, utilisez uniquement le lien officiel affiché sur la page du cours.",
   },
 ];
 
