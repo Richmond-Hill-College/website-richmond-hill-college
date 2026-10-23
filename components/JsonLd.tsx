@@ -5,7 +5,6 @@ const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "Richmond Hill College of Healthcare and Technology Management",
-  description: COLLEGE_OFFERINGS.en,
   url: siteUrl,
   logo: `${siteUrl}/images/logo/rhc-logo.png`,
   contactPoint: {
@@ -38,7 +37,7 @@ const localBusinessJsonLd = {
   "@type": "EducationalOrganization",
   name: "Richmond Hill College of Healthcare and Technology Management",
   description:
-    COLLEGE_OFFERINGS.en,
+    "Richmond Hill College offers online, hybrid, and in-person courses in healthcare and technology management. Unlocking potential, building futures.",
   url: siteUrl,
   telephone: "+1-855-328-6065",
   email: "info@richmondhillcollege.ca",
