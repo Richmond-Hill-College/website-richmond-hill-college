@@ -1,4 +1,3 @@
-import { COLLEGE_OFFERINGS } from "@/lib/college-offerings";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,7 +8,7 @@ import { GENERATED_VISUALS } from "@/lib/generated-visuals";
 export const metadata: Metadata = createPageMetadata({
   title: "À propos",
   description:
-    COLLEGE_OFFERINGS.fr,
+    "Le Collège Richmond Hill de gestion des soins de santé et de la technologie a été fondé pour offrir des programmes rapides et ciblés aux professionnels et aux personnes en réorientation. Découvrez notre mission.",
   path: "about-us",
   locale: "fr",
   image: GENERATED_VISUALS.campusCollaboration.src,
@@ -71,8 +70,8 @@ export default function AboutUsPageFr() {
             en ligne, en hybride et en personne, pour s&apos;adapter à votre mode de vie.
           </li>
           <li>
-            <strong className="text-slate-800">Programmes variés :</strong> Cours courts de perfectionnement professionnel et de transition éducative
-            de moins de 40 heures sous la marque RHC Global Bridge, avec des certificats de participation délivrés par le Collège.
+            <strong className="text-slate-800">Programmes variés :</strong> Cours courts spécialisés,
+            programmes de carrière certifiés et programmes de diplôme en co-diplômation.
           </li>
         </ul>
       </section>
