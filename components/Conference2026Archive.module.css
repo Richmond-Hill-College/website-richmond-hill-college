@@ -1,0 +1,18 @@
+.content { color: #475569; line-height: 1.8; overflow-wrap: anywhere; }
+.content section + section { margin-top: 2rem; }
+.content h2 { color: #0f172a; font-size: 1.5rem; font-weight: 700; line-height: 1.35; margin: 1.5rem 0 .8rem; }
+.content h3, .content h4 { color: #0f172a; font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 .6rem; }
+.content p + p { margin-top: .9rem; }
+.content strong { color: #1e293b; font-weight: 650; }
+.content ul, .content ol { padding-left: 1.5rem; margin: .8rem 0; }
+.content ul { list-style: disc; }
+.content ol { list-style: decimal; }
+.content li + li { margin-top: .55rem; }
+.content a { color: #334155; text-decoration: underline; text-underline-offset: 3px; }
+.content a:hover { color: #b93c08; }
+.content section:has(table) { overflow-x: auto; border: 1px solid #e2e8f0; border-radius: .75rem; }
+.content table { border-collapse: collapse; min-width: 680px; width: 100%; font-size: .9rem; }
+.content th, .content td { padding: .9rem 1rem; text-align: left; vertical-align: top; border-bottom: 1px solid #e2e8f0; }
+.content tr:nth-child(odd) { background: #f8fafc; }
+.content tr:first-child { color: #0f172a; font-weight: 600; }
+.content img { height: auto; max-width: 100%; }

@@ -43,6 +43,12 @@ export default function ConferencesPageFr() {
         />
       </div>
 
+      <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm" aria-labelledby="conference-2026-heading">
+        <h2 id="conference-2026-heading" className="text-2xl font-bold text-slate-900">Archives de la conférence 2026</h2>
+        <p className="mt-3 text-slate-600">Retrouvez les renseignements publiés pour la conférence Soins infirmiers et santé du 17 au 19 septembre 2026 à Toronto. Contenu en anglais.</p>
+        <Link href="/conferences/nursing-and-healthcare-2026" className="mt-4 inline-block font-semibold text-slate-800 underline underline-offset-4">Consulter les archives 2026 (en anglais)</Link>
+      </section>
+
       <section className="mt-12" aria-labelledby="upcoming-heading">
         <h2 id="upcoming-heading" className="text-2xl font-bold text-slate-900">
           Conférences à venir
@@ -75,10 +81,10 @@ export default function ConferencesPageFr() {
           pour réserver votre place et élargir votre réseau professionnel.
         </p>
         <Link
-          href="/fr/conferences/nursing-and-healthcare-2025/registration"
+          href="/fr/contact"
           className="cta-primary mt-4 inline-block rounded-md px-4 py-2 text-sm font-medium"
         >
-          S&apos;inscrire
+          Contacter notre équipe
         </Link>
       </section>
     </div>

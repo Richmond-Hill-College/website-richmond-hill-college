@@ -12,11 +12,11 @@ import { getFaqSlugs, getFaqCategories } from "@/lib/faq";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
   const entries: MetadataRoute.Sitemap = [];
-  for (const { path, priority } of staticRoutes) {
+  for (const { path, priority, englishOnly } of staticRoutes) {
     const enUrl = path ? `${siteUrl}/${path}` : siteUrl;
     const frUrl = path ? `${siteUrl}/fr/${path}` : `${siteUrl}/fr`;
     entries.push({ url: enUrl, lastModified, changeFrequency: "weekly", priority });
-    entries.push({ url: frUrl, lastModified, changeFrequency: "weekly", priority });
+    if (!englishOnly) entries.push({ url: frUrl, lastModified, changeFrequency: "weekly", priority });
   }
 
   const products = getAllProducts();

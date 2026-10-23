@@ -2,7 +2,7 @@
  * Single source of truth for static sitemap routes (EN + FR).
  * When adding a new page: add path, priority, label, labelFr; create app/{path}/page.tsx and app/fr/{path}/page.tsx.
  */
-export const staticRoutes: { path: string; priority: number; label: string; labelFr: string }[] = [
+export const staticRoutes: { path: string; priority: number; label: string; labelFr: string; englishOnly?: boolean }[] = [
   { path: "", priority: 0.9, label: "Home", labelFr: "Accueil" },
   { path: "about-us", priority: 0.8, label: "About Us", labelFr: "À propos" },
   { path: "about-us/team", priority: 0.75, label: "Our Team", labelFr: "Notre équipe" },
@@ -24,6 +24,10 @@ export const staticRoutes: { path: string; priority: number; label: string; labe
   { path: "faq", priority: 0.8, label: "FAQ", labelFr: "FAQ" },
   { path: "faq/categories", priority: 0.75, label: "FAQ by Category", labelFr: "FAQ par catégorie" },
   { path: "conferences", priority: 0.8, label: "Conferences", labelFr: "Conférences" },
+  // Preserve the three existing Webador URLs. No FR translations exist yet.
+  { path: "conferences/nursing-and-healthcare-2026", priority: 0.8, label: "Nursing and Healthcare 2026 (Archive)", labelFr: "Archives de la conférence 2026", englishOnly: true },
+  { path: "conferences/nursing-and-healthcare-2026/confernce-main-pages", priority: 0.8, label: "Conference Details (2026)", labelFr: "Détails de la conférence 2026", englishOnly: true },
+  { path: "conferences/nursing-and-healthcare-2026/sponsership-and-partnership", priority: 0.8, label: "Sponsorship and Partnership (2026)", labelFr: "Commandites et partenariats 2026", englishOnly: true },
   { path: "conferences/nursing-and-healthcare-2025", priority: 0.7, label: "Nursing and Healthcare 2025 (Recap)", labelFr: "Soins infirmiers et santé 2025 (Récapitulatif)" },
   // Conference is past (Nov 2025). Time-sensitive subpages are noindex and excluded
   // from the sitemap. The hub, program-table and proceedings stay indexable.

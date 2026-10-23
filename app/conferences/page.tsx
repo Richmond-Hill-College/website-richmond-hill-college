@@ -41,6 +41,12 @@ export default function ConferencesPage() {
         />
       </div>
 
+      <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm" aria-labelledby="conference-2026-heading">
+        <h2 id="conference-2026-heading" className="text-2xl font-bold text-slate-900">2026 Conference Archive</h2>
+        <p className="mt-3 text-slate-600">Explore the published conference information, themes, speakers and sponsorship packages for the September 17–19, 2026 edition in Toronto.</p>
+        <Link href="/conferences/nursing-and-healthcare-2026" className="mt-4 inline-block font-semibold text-slate-800 underline underline-offset-4">Explore the 2026 conference archive</Link>
+      </section>
+
       <section className="mt-12" aria-labelledby="upcoming-heading">
         <h2 id="upcoming-heading" className="text-2xl font-bold text-slate-900">
           Upcoming Conferences
@@ -84,13 +90,13 @@ export default function ConferencesPage() {
         <h2 className="text-xl font-bold text-slate-900">Join Us at Our Next Conference</h2>
         <p className="mt-2 text-slate-600">
           Don&apos;t miss out on the opportunity to participate in our upcoming conferences.
-          Register now to secure your spot and expand your professional network.
+          Contact our team for information about future editions and participation opportunities.
         </p>
         <Link
-          href="/conferences/nursing-and-healthcare-2025/registration"
+          href="/contact"
           className="cta-primary mt-4 inline-block rounded-md px-4 py-2 text-sm font-medium"
         >
-          Register Now
+          Contact the conference team
         </Link>
       </section>
     </div>

@@ -59,7 +59,7 @@ export default async function SitemapPage() {
           </Link>
         </p>
         <ul className="mt-3 list-inside list-disc space-y-2 text-slate-700">
-          {staticRoutes.map(({ path, labelFr }) => (
+          {staticRoutes.filter((route) => !route.englishOnly).map(({ path, labelFr }) => (
             <li key={path ? `fr-${path}` : "fr-home"}>
               <Link
                 href={path ? `/fr/${path}` : "/fr"}

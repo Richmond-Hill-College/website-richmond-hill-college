@@ -38,7 +38,7 @@ export function buildSearchDocs(): SearchDoc[] {
       type: "page",
       locale: "en",
     });
-    out.push({
+    if (!r.englishOnly) out.push({
       id: `page:fr:${r.path || "home"}`,
       title: r.labelFr,
       description: r.labelFr,
