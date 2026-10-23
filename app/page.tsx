@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import Image from "next/image";
 import { HeroCarousel } from "@/components/HeroCarousel";
@@ -13,6 +15,15 @@ import { HomepageDecisionExperience } from "@/components/HomepageDecisionExperie
 import { VisualFeatureGrid } from "@/components/VisualFeatureGrid";
 import { getRhcCourses, RHC_GLOBAL_BRIDGE_COURSES_FALLBACK } from "@/lib/rhc-global-bridge-courses";
 import { GENERATED_VISUALS } from "@/lib/generated-visuals";
+
+export const metadata: Metadata = {
+  ...createPageMetadata({
+    title: "Richmond Hill College",
+    description: "Richmond Hill College offers specialized healthcare and technology management courses for professionals and career changers. Boost your career with flexible, targeted programs designed for quick learning and enhanced outcomes.",
+    image: GENERATED_VISUALS.globalBridgeHero.src,
+  }),
+  title: { absolute: "Richmond Hill College" },
+};
 
 const learningOptions = [
   {
@@ -84,7 +95,7 @@ export default async function Home() {
               </span>
               <SectionHeading title="Welcome to Richmond Hill College">
                 <p className="max-w-xl text-lg leading-relaxed text-slate-600">
-                  At Richmond Hill College of Healthcare and Technology Management we offer a
+                  At Richmond Hill College of Healthcare and Technology Management, we offer a
                   range of courses to help you excel in healthcare and technology management.
                   Our programs are designed to cater to working professionals and career
                   changers, providing quick and targeted learning experiences to enhance

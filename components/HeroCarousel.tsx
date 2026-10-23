@@ -10,8 +10,8 @@ const slidesEn = [
   {
     src: FIRST_HERO_IMAGE.src,
     alt: FIRST_HERO_IMAGE.alt,
-    badge: "Career pathways built around you",
-    title: "Your Bridge to Canadian Career Skills",
+    badge: "Healthcare and Technology Management",
+    title: "Richmond Hill College",
     subtitle:
       "Build practical, Canadian-context skills—whether you're internationally educated or changing careers. Explore focused pathways in healthcare, technology, and professional development.",
     cta: "Find my pathway",
