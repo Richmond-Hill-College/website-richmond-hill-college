@@ -29,7 +29,7 @@ checks = [
 ]
 results = []
 for path, title, description, headings in checks:
-    with urllib.request.urlopen(BASE + path, timeout=60) as response:
+    with urllib.request.urlopen(urllib.request.Request(BASE + path, headers={'User-Agent': 'RichmondHillCollege-Owner-Verification/1.0'}), timeout=60) as response:
         assert response.status == 200
         assert response.url == BASE + path, response.url
         page = Page(response.read().decode())
