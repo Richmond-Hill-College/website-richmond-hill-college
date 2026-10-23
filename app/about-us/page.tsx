@@ -1,3 +1,4 @@
+import { COLLEGE_OFFERINGS } from "@/lib/college-offerings";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,7 +9,7 @@ import { GENERATED_VISUALS } from "@/lib/generated-visuals";
 export const metadata: Metadata = createPageMetadata({
   title: "About Us",
   description:
-    "Richmond Hill College of Healthcare and Technology Management was founded to provide quick, targeted programs for working professionals and career changers. Learn about our mission and commitment to student success.",
+    COLLEGE_OFFERINGS.en,
   path: "about-us",
   image: GENERATED_VISUALS.campusCollaboration.src,
   imageWidth: 1672,
@@ -73,8 +74,8 @@ export default function AboutUsPage() {
           </li>
           <li>
             <strong className="text-slate-800">Diverse Programs:</strong> We offer a range of
-            educational programs, including short skilled courses, certified career programs,
-            and diploma co-programs, designed to meet the needs of various learners.
+            short professional development and educational bridging courses of less than
+            40 hours through RHC Global Bridge, with Certificates of Completion issued by the College.
           </li>
         </ul>
       </section>
