@@ -1,3 +1,4 @@
+import { COLLEGE_OFFERINGS } from "@/lib/college-offerings";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import "./globals.css";
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
     template: "%s | Richmond Hill College",
   },
   description:
-    "Richmond Hill College of Healthcare and Technology Management offers online, hybrid, and in-person courses. Unlocking potential, building futures.",
+    COLLEGE_OFFERINGS.en,
   icons: {
     icon: [{ url: "/icon", type: "image/png", sizes: "32x32" }],
     apple: "/apple-icon",
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
     siteName: "Richmond Hill College",
     title: "Richmond Hill College | Healthcare and Technology Management",
     description:
-      "Richmond Hill College of Healthcare and Technology Management offers online, hybrid, and in-person courses. Unlocking potential, building futures.",
+      COLLEGE_OFFERINGS.en,
     url: siteUrl,
     images: [{ url: FIRST_HERO_IMAGE.src, width: 1200, height: 630, alt: FIRST_HERO_IMAGE.alt }],
   },
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Richmond Hill College | Healthcare and Technology Management",
     description:
-      "Richmond Hill College of Healthcare and Technology Management offers online, hybrid, and in-person courses. Unlocking potential, building futures.",
+      COLLEGE_OFFERINGS.en,
     images: [FIRST_HERO_IMAGE.src],
   },
   robots: {
