@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { CollegeOfferingsStatement } from "@/components/CollegeOfferingsStatement";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -91,11 +92,7 @@ export function Footer() {
                 className="h-14 w-auto opacity-95 hover:opacity-100 lg:h-16"
               />
             </Link>
-            <p className="mt-4 max-w-md text-sm leading-relaxed text-slate-300 lg:text-base">
-              {isFr
-                ? "Le Collège Richmond Hill de gestion des soins de santé et de la technologie s'engage à offrir une formation de qualité pour permettre à chacun de réaliser ses objectifs académiques et professionnels. Nous privilégions l'apprentissage pratique et les compétences reconnues par l'industrie."
-                : "Richmond Hill College of Healthcare and Technology Management is dedicated to empowering individuals through quality education in healthcare and technology management. We focus on practical learning and industry-relevant skills to help students achieve their academic and professional goals."}
-            </p>
+            <CollegeOfferingsStatement locale={isFr ? "fr" : "en"} className="mt-4 max-w-md text-sm leading-relaxed text-slate-300 lg:text-base" />
           </div>
 
           {/* Link groups */}
